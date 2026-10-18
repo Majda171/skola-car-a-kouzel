@@ -38,15 +38,16 @@
     '„Tady se nebude běhat! A jestli se tu něco ztratí, vím, koho si předvolám.“'
   ];
   const closeDialog=()=>{dialog.hidden=true;document.body.style.overflow='';button.focus()};
-  const openDialog=()=>{
+  const openDialog=(automatic=false)=>{
     p.textContent=thirdFloor
       ? '„Tak tebe jsem tu chtěl načapat! Třetí poschodí není místo pro potulování. Půjdeš se mnou. Profesorka Umbridgeová si tě pěkně podá!“'
       : messages[Math.floor(Math.random()*messages.length)];
     next.textContent=thirdFloor?'Jít s Filchem k Umbridgeové':'Rozumím, pane Filchi';
-    dialog.hidden=false;document.body.style.overflow='hidden';next.focus();
+    dialog.hidden=false;document.body.style.overflow='hidden';next.focus({preventScroll:true});if(automatic&&thirdFloor){next.textContent='Filch tě odvádí k Umbridgeové…';next.disabled=true;setTimeout(()=>{next.disabled=false;next.click()},1100)}
   };
-  button.addEventListener('click',openDialog);
+  button.addEventListener('click',()=>openDialog(false));if(thirdFloor)setTimeout(()=>openDialog(true),1300);
   next.addEventListener('click',async()=>{
+    if(thirdFloor&&next.textContent==='Odejít')return;
     if(thirdFloor){
       // Incident vydava Supabase; klient si nesmi vymyslet identifikator pro odpocet bodu.
       next.disabled=true;p.textContent='Pan Filch zapisuje zadržení do školní evidence…';
@@ -55,7 +56,7 @@
         const {data,error}=await db.rpc('v449_filch_start');if(error)throw error;
         if(data==='cooldown'){
           p.textContent='„Ehm! Dneska už si tě zapisuju. Tentokrát mazej do své koleje a znovu mě nedráždi!“';
-          next.textContent='Odejít';next.onclick=closeDialog;return;
+          next.textContent='Odejít';next.onclick=closeDialog;next.disabled=false;return;
         }
         if(!/^[0-9a-f]{8}-[0-9a-f-]{27,}$/.test(String(data||'')))throw new Error('Databáze nepotvrdila zadržení.');
         sessionStorage.setItem('bradavice_filch_incident_v446',data);

@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap');
+*{box-sizing:border-box}
+.v450-page{margin:0;background:#07080b;color:#f5e7cb;font-family:Georgia,serif;min-height:100vh}
+.v450-top{position:relative;z-index:70;display:flex;gap:20px;justify-content:space-between;flex-wrap:wrap;padding:12px clamp(15px,3vw,40px);background:#15110e;border-bottom:1px solid #8f724a8a;font:15px Georgia,serif}
+.v450-top a{color:#f1d7ab;text-decoration:none}.v450-top a:hover{text-decoration:underline}
+.v450-place{position:relative;width:100%;height:clamp(550px,calc(100vh - 55px),950px);min-height:550px;overflow:hidden;isolation:isolate;background-position:center;background-size:cover;background-repeat:no-repeat}
+.v450-place::after{content:'';pointer-events:none;position:absolute;inset:0;z-index:2;background:linear-gradient(90deg,#03030660,transparent 36%,transparent 70%,#03030630),linear-gradient(0deg,#0101029f,transparent 43%)}
+.v450-divination{background-image:url('img/jasnovidectvi-v450.webp')}
+.v450-trelawney{position:absolute;z-index:11;left:41%;bottom:6%;height:75%;max-width:35%;border:0;background:transparent;padding:0;cursor:pointer;filter:brightness(.83) sepia(.12) drop-shadow(4px 10px 10px #000c);transition:filter .2s ease;transform:translateX(-22%)}
+.v450-trelawney img{display:block;width:100%;height:100%;object-fit:contain;object-position:bottom}.v450-trelawney:hover,.v450-trelawney:focus-visible{filter:brightness(1) drop-shadow(0 0 14px #d4b57f80)}
+.v450-nick-scene{background-image:url('img/nick-hodovni-sin-prazdna-v450.webp')}
+.v450-nick-scene.v450-celebration{background-image:url('img/nick-hodovni-sin-oslava-v450.webp')}
+.v450-nick-character{position:absolute;z-index:12;left:8%;bottom:12%;width:clamp(90px,14vw,225px);max-height:67%;border:0;background:transparent;padding:0;cursor:pointer;filter:brightness(.72) drop-shadow(0 7px 9px #000c)}
+.v450-nick-character img{width:100%;height:100%;object-fit:contain;filter:opacity(.75)}.v450-nick-character:hover{filter:brightness(.98) drop-shadow(0 0 16px #c6d7e080)}
+.v450-caption{position:absolute;z-index:20;bottom:4%;right:3%;max-width:min(430px,45vw);padding:16px 19px;border:1px solid #b4995e70;background:#130e12db;box-shadow:0 16px 40px #0009;border-radius:4px;text-align:left}
+.v450-caption span{font-size:.76rem;color:#ceb581;letter-spacing:.08em;text-transform:uppercase}.v450-caption h1{margin:4px 0 5px;font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:clamp(1.5rem,3vw,2.4rem)}.v450-caption p{font:15px/1.5 Georgia,serif;margin:6px 0 11px}.v450-caption button,.v450-dialog button{padding:9px 12px;background:#46301e;border:1px solid #c7a46e;color:#fbe6ca;font:14px Georgia,serif;cursor:pointer;margin:3px;border-radius:4px}.v450-caption button:hover,.v450-dialog button:hover{background:#795333}
+.v450-dialog-shade{position:fixed;inset:0;z-index:48000;background:#030308d9;display:grid;place-items:center;padding:18px;backdrop-filter:blur(3px)}
+.v450-dialog{max-width:560px;width:100%;max-height:85svh;overflow:auto;padding:clamp(19px,4vw,32px);background:#241a17;border:1px solid #bfa06d;box-shadow:0 15px 80px #000;border-radius:8px;color:#f9e3bf}
+.v450-dialog h2{font:600 clamp(1.6rem,4vw,2.1rem) 'Cormorant Garamond',Georgia,serif;color:#ead09b;margin:0 0 12px}.v450-dialog p{font:1rem/1.65 Georgia,serif;white-space:pre-line}.v450-dialog-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.v450-nick-entrance{position:absolute;z-index:25;bottom:22%;left:50%;transform:translateX(-50%);font:14px Georgia,serif;color:#f3ddb2;border:1px solid #9f8456;padding:10px 14px;background:#20160fcf;text-decoration:none;box-shadow:0 6px 24px #000b}.v450-nick-entrance:hover{background:#55402a}
+.v450-corridor-divination{position:absolute!important;z-index:20;top:21%;left:23%;max-width:290px;padding:8px;background:#20180fcc;color:#f9e3b1;border:1px solid #977348;font-size:14px}
+.v450-dobby{position:absolute;z-index:16;right:11%;bottom:8%;height:clamp(210px,52vh,490px);max-width:27%;padding:0;border:0;background:transparent;filter:brightness(.82) drop-shadow(0 9px 10px #000e);cursor:pointer}
+.v450-dobby img{display:block;height:100%;width:100%;object-fit:contain;object-position:bottom}.v450-dobby:hover{filter:brightness(1.05) drop-shadow(0 0 14px #f9dca36a)}.v450-dobby[hidden]{display:none!important}
+/* Kitchen gallery: similar real frame sizes, no repeated art, no floating fragments. */
+.kitchen-v25 .kitchen-wall-gallery .kitchen-wall-painting{top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;width:clamp(68px,8.2vw,132px)!important;height:clamp(115px,20vh,172px)!important;object-fit:contain;opacity:.83!important;transform:none!important;filter:brightness(.72) sepia(.12) drop-shadow(0 7px 9px #000e)!important}
+.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-a{left:4.5%!important;top:13%!important}
+.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-b{left:18%!important;top:36%!important}
+.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-c{right:18%!important;top:38%!important}
+.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-d{right:4.5%!important;top:13%!important}
+.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-e{left:6%!important;top:65%!important;display:block!important}
+.kitchen-v25.open .kitchen-wall-gallery{opacity:0!important;pointer-events:none!important}
+/* social dropdown never obscures modal dialogs or the entire game on mobile */
+.v449-chat-bar{z-index:1250!important;right:12px!important;width:min(345px,calc(100vw - 24px))!important}.v449-chat-panel{max-height:min(56svh,410px);height:min(56svh,410px)}.v449-chat-toggle{padding:7px 12px!important}.v449-chat-heading{min-height:30px}
+.v450-stink{position:fixed;inset:0;pointer-events:none;z-index:18000;opacity:0;background:radial-gradient(ellipse at 60% 68%,#5e7b2cb8,transparent 55%),radial-gradient(ellipse at 23% 80%,#89a34c8c,transparent 50%);animation:v450-stink-animation 5s ease-in-out forwards;filter:blur(13px)}@keyframes v450-stink-animation{8%,55%{opacity:.65}100%{opacity:0}}
+@media(max-width:700px){.v450-place{height:calc(100svh - 65px);min-height:520px;background-position:52% center}.v450-trelawney{left:39%;height:62%;max-width:56%;bottom:18%}.v450-nick-character{width:115px;left:4%;bottom:29%}.v450-caption{bottom:12%;left:4%;right:4%;max-width:none;padding:12px}.v450-caption h1{font-size:1.75rem}.v450-dobby{right:4%;max-width:38%;height:37vh;bottom:10%}.v450-corridor-divination{top:16%;left:5%;font-size:12px;max-width:42%}.kitchen-v25 .kitchen-wall-gallery .kitchen-wall-painting{width:clamp(54px,12vw,85px)!important;height:clamp(75px,12vh,110px)!important}.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-a{left:1%!important;top:19%!important}.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-b{left:3%!important;top:46%!important}.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-c{right:2%!important;top:45%!important}.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-d{right:1%!important;top:18%!important}.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-e{left:5%!important;top:71%!important}}
+@media(prefers-reduced-motion:reduce){.v450-stink{animation:none;opacity:.3}}
+.v450-food-preview{display:block;margin:6px auto 0;width:min(230px,70vw);height:115px;object-fit:contain;filter:brightness(.85)}
+.v450-quest-bag{border:1px solid #967c52;margin:10px 0;padding:11px;background:#211b16;border-radius:6px}.v450-quest-bag[hidden]{display:none!important}.v450-quest-bag h3{font:700 17px Georgia,serif;margin:0 0 9px}.v450-quest-food{display:flex;align-items:center;gap:12px}.v450-quest-food img{width:82px;height:65px;object-fit:contain}.v450-quest-food p{font:13px/1.45 Georgia,serif;color:#f0dfba;margin:0}
+
+.v450-stink-toast{position:fixed;z-index:19000;left:50%;bottom:60px;transform:translateX(-50%);width:min(500px,90vw);border:1px solid #ac925d;background:#201912ed;color:#efd5a4;text-align:center;padding:12px 16px;box-shadow:0 9px 26px #000b;border-radius:7px;font:14px Georgia,serif}

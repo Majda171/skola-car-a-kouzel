@@ -168,3 +168,6 @@ a{color:inherit}
 .hs39-zapad{left:27.6%;top:21.9%;width:10.0%;height:5.0%}
 .hs39-vychod{left:57.1%;top:28.9%;width:10.5%;height:5.0%}
 @media(max-width:900px){.v39-map .castle-map{min-width:1120px}}
+
+/* v450: nová pergamenová mapa se školní učebnou jasnovidectví. */
+.hs450-jasnovidectvi{left:23.6%;top:7.8%;width:12.4%;height:5.1%}

@@ -1,0 +1,10 @@
+(()=>{'use strict';
+ const open=document.querySelector('#divinationStart'),teacher=document.querySelector('#trelawney');
+ if(!open||!teacher)return;
+ function dialog(title,text,options){const shade=document.createElement('div');shade.className='v450-dialog-shade';shade.setAttribute('role','dialog');shade.setAttribute('aria-modal','true');shade.setAttribute('aria-label',title);const box=document.createElement('section');box.className='v450-dialog';const h=document.createElement('h2');h.textContent=title;const p=document.createElement('p');p.textContent=text;const actions=document.createElement('div');actions.className='v450-dialog-actions';for(const [label,fn] of options){const b=document.createElement('button');b.type='button';b.textContent=label;b.addEventListener('click',()=>{shade.remove();fn?.()});actions.append(b)}box.append(h,p,actions);shade.append(box);document.body.append(shade);actions.querySelector('button')?.focus({preventScroll:true});shade.addEventListener('click',e=>{if(e.target===shade)shade.remove()});}
+ const omens=['V šálku vidím stezku, která se stočí tam, kde ji nikdo nečekal.','Někdo v hradním sklepení čeká na pomoc… a podivuhodně mnoho talířů.','Závoj budoucnosti je dnes obzvlášť neprůhledný. Přesto z něj vystupují dvě číslice: sedm a tři.','Ticho ještě neznamená bezpečí. Některé portréty si pamatují víc, než říkají.'];
+ function greet(){dialog('Profesorka Trelawneyová','„Ach… drahé dítě! Tušila jsem tvůj příchod. Křišťálová koule dnes promlouvá zvláštním hlasem. Posadíš se, nebo je budoucnost příliš děsivá?“', [['Nahlédnout do křišťálové koule',crystal],['Vyložit čajové lístky',tea],['Raději odejít',null]])}
+ function crystal(){const index=Math.floor(Math.random()*omens.length);dialog('Zamlžená křišťálová koule','„Vidím… vidím! '+omens[index]+'“',[['Poděkovat profesorce',null],['Zeptat se znovu',greet]])}
+ function tea(){dialog('Čajové lístky','„Podívej! Na dně šálku se rýsuje znamení. Je to šálek, který ti vypráví o odvaze a trpělivosti. Zkus naslouchat i těm, kdo už dávno opustili svět živých.“',[['Poděkovat',null],['Ještě jedna věštba',crystal]])}
+ open.onclick=greet;teacher.onclick=greet;
+})();

@@ -3,7 +3,7 @@
  const stage=document.getElementById('umbridgeOffice');if(!stage)return;
  const DB=window.BradaviceDB?.client, character=document.getElementById('umbridgeCharacter'),talk=document.getElementById('umbridgeTalk');
  const UI=window.BradaviceUmbridgeDialog;
- const key='bradavice_umbridge_visit_v446';let userId='guest';
+ const kittenSound=new Audio('audio/umbridge-kotatka-v450.mp3');kittenSound.volume=.16;let audioUnlocked=false;document.addEventListener('pointerdown',()=>{audioUnlocked=true},{once:true});const kittenTimer=setInterval(()=>{if(audioUnlocked&&!document.hidden&&Math.random()<.48){try{kittenSound.currentTime=0;kittenSound.play().catch(()=>{})}catch{}}},39000);window.addEventListener('pagehide',()=>{clearInterval(kittenTimer);kittenSound.pause()});const key='bradavice_umbridge_visit_v446';let userId='guest';
  function notice(message){const bar=document.createElement('p');bar.className='v446-office-notice';bar.textContent=message;stage.append(bar);setTimeout(()=>bar.remove(),8500)}
  const pop=(title,body)=>{const ov=document.createElement('div');ov.className='v446-note-overlay';ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');const pane=document.createElement('section');pane.className='v446-note';const h=document.createElement('h2');h.textContent=title;const p=document.createElement('p');p.textContent=body;const actions=document.createElement('div');actions.className='v446-note-actions';pane.append(h,p,actions);ov.append(pane);document.body.append(ov);return {ov,actions,p,close:()=>ov.remove(),btn(label,callback){const b=document.createElement('button');b.type='button';b.textContent=label;b.onclick=callback;actions.append(b);return b}}};
  function counter(name){try{return Number(localStorage.getItem(`${key}_${userId}_${name}`)||0)}catch{return 0}}
@@ -78,7 +78,7 @@
    if(!DB){q.p.textContent='Úkol čeká na dokončení databázového nastavení.';activate.disabled=false;return}
    const {data,error}=await DB.rpc('v446_sabotage');
    if(error||data!=='success'){q.p.textContent=error?.message||'Úkol zatím nelze dokončit. Zkontroluj aktivní časové okno, pergamen a nastavení Supabase.';activate.disabled=false;return}
-   stage.classList.add('v446-stinky');story.markDone();await window.BradaviceInventory?.reload?.();
+   stage.classList.add('v446-stinky');try{kittenSound.currentTime=0;kittenSound.play().catch(()=>{})}catch{}story.markDone();await window.BradaviceInventory?.reload?.();
    q.p.textContent='Pod stolem se začíná šířit nevídaný zápach. Fred a George by na tebe byli pyšní. Teď rychle pryč!';q.actions.replaceChildren();q.btn('Utéct z kabinetu',()=>{q.close();location.href='chodby-horni.html'});
   });
  }

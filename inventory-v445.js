@@ -44,6 +44,10 @@ function repaint(){
    const remove=document.createElement('button');remove.type='button';remove.textContent='Odložit';remove.className='bag-discard';remove.setAttribute('aria-label',`Odložit: ${item.label}`);
    remove.addEventListener('click',async()=>{if(!confirm(`Odložit předmět „${item.label}“ z batohu? V hradě ho bude možné znovu najít.`))return;
       remove.disabled=true;const result=await discard(id);if(!result.ok){remove.disabled=false;inform(result.message||'Předmět se nepodařilo odložit.')} });
+   if(id==='hnojova-bomba'){
+      const use=document.createElement('button');use.type='button';use.textContent='💨 Použít';use.className='bag-discard';use.setAttribute('aria-label','Použít bomby hnojůvky');
+      use.addEventListener('click',()=>{closeBag();window.dispatchEvent(new Event('bradavice:dungbomb-use'))});slot.append(use);
+   }
    slot.append(title,desc,remove);grid.append(slot);
  }
  for(let i=owned.size;i<MAX;i++){const slot=document.createElement('div');slot.className='bag-item bag-empty';slot.setAttribute('aria-label','Volné místo');slot.textContent='✧';grid.append(slot)} }

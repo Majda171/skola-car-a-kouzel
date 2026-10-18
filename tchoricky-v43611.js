@@ -2,6 +2,7 @@
  const DB=window.BradaviceDB;
  const lobby=document.getElementById('tchorickyLobby'),game=document.getElementById('tchorickyGame'),canvas=document.getElementById('tchorickyCanvas'),ctx=canvas?.getContext('2d'),turnLabel=document.getElementById('turnLabel'),leftCount=document.getElementById('leftCount'),rightCount=document.getElementById('rightCount'),leftLabel=document.getElementById('leftLabel'),rightLabel=document.getElementById('rightLabel'),toastEl=document.getElementById('tchorickyToast'),splat=document.getElementById('tchorickySplat'),result=document.getElementById('gameResult'),resultTitle=document.getElementById('resultTitle'),resultText=document.getElementById('resultText'),roomStatus=document.getElementById('roomStatus');
  if(!canvas||!ctx)return;ctx.imageSmoothingEnabled=true;try{ctx.imageSmoothingQuality='high'}catch{}
+ const sfxHit=new Audio('audio/tchoricky-naraz-v450.mp3'),sfxSlime=new Audio('audio/tchoricky-sliz-v450.mp3');sfxHit.volume=.26;sfxSlime.volume=.34;let lastHitSound=0;function playHit(){if(Date.now()-lastHitSound<240)return;lastHitSound=Date.now();try{sfxHit.currentTime=0;sfxHit.play().catch(()=>{})}catch{}}function playSlime(){try{sfxSlime.currentTime=0;sfxSlime.play().catch(()=>{})}catch{}}
  const W=canvas.width,H=canvas.height,arena={x:W/2,y:H/2,r:304},FRICTION=.985,BOUNCE=.91,STOP=.055,MAX_POWER=21;
  let stones=[],mode='training',role='player',turn='player',phase='idle',selected=null,pointer=null,roomCode='',roomVersion=0,pollTimer=null,toastTimer=null,shotOwner='',onlineNames={host:'Student 1',guest:'Student 2'};
  const rnd=(a,b)=>a+Math.random()*(b-a),clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
@@ -11,7 +12,7 @@
  const opponentOf=o=>mode==='online'?(o==='host'?'guest':'host'):(o==='player'?'ai':'player');
  const canShoot=()=>phase==='aim'&&turn===myOwner();
  function toast(t){toastEl.textContent=t;toastEl.classList.remove('show');void toastEl.offsetWidth;toastEl.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toastEl.classList.remove('show'),1800)}
- function showSplat(){splat.classList.remove('show');void splat.offsetWidth;splat.classList.add('show')}
+ function showSplat(){playSlime();splat.classList.remove('show');void splat.offsetWidth;splat.classList.add('show')}
  function stoneRadius(type){return type==='heavy'?21:type==='swift'?17:18.5}
  function stoneMass(s){return s.type==='heavy'?1.75:s.type==='swift'?0.82:1}
  function makeStone(owner,x,y,i,type='normal'){return{owner,x,y,vx:0,vy:0,r:stoneRadius(type),type,alive:true,id:`${owner}-${i}`,spin:rnd(0,6.28),rotV:0,slimed:0}}
@@ -117,9 +118,9 @@
    for(let i=0;i<alive.length;i++)for(let j=i+1;j<alive.length;j++){
      const a=alive[i],b=alive[j];let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy),min=a.r+b.r;if(d===0){d=.001;dx=.001}
      if(d>=min)continue;const nx=dx/d,ny=dy/d,over=min-d;a.x-=nx*over/2;a.y-=ny*over/2;b.x+=nx*over/2;b.y+=ny*over/2;
-     const rvx=b.vx-a.vx,rvy=b.vy-a.vy,sep=rvx*nx+rvy*ny;if(sep>=0)continue;
+     const rvx=b.vx-a.vx,rvy=b.vy-a.vy,sep=rvx*nx+rvy*ny;if(sep>=0)continue;playHit();
      const ma=stoneMass(a),mb=stoneMass(b),imp=-(1+BOUNCE)*sep/(1/ma+1/mb),ix=imp*nx,iy=imp*ny;a.vx-=ix/ma;a.vy-=iy/ma;b.vx+=ix/mb;b.vy+=iy/mb;
-     if(a.type==='slime'&&a.owner!==b.owner){const fresh=!(b.slimed>0);b.slimed=Math.max(b.slimed||0,2);if(fresh&&b.owner===myOwner())toast('Tvůj tchoříček je obalený slizem.')}if(b.type==='slime'&&a.owner!==b.owner){const fresh=!(a.slimed>0);a.slimed=Math.max(a.slimed||0,2);if(fresh&&a.owner===myOwner())toast('Tvůj tchoříček je obalený slizem.')}
+     if(a.type==='slime'&&a.owner!==b.owner){const fresh=!(b.slimed>0);b.slimed=Math.max(b.slimed||0,2);if(fresh){playSlime();if(b.owner===myOwner())toast('Tvůj tchoříček je obalený slizem.')}}if(b.type==='slime'&&a.owner!==b.owner){const fresh=!(a.slimed>0);a.slimed=Math.max(a.slimed||0,2);if(fresh){playSlime();if(a.owner===myOwner())toast('Tvůj tchoříček je obalený slizem.')}}
    }
  }
  function checkOut(){
