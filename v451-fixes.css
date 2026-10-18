@@ -1,0 +1,29 @@
+
+/* v451 – diskrétní klikací místa a žádné velké textové cedule */
+.corridor-stage .v451-hotspot{position:absolute!important;display:block!important;z-index:36!important;pointer-events:auto!important;background:transparent!important;border:1px solid transparent!important;box-shadow:none!important;color:transparent!important;font-size:0!important;padding:0!important;margin:0!important;text-decoration:none!important;border-radius:10px;transition:background .2s,box-shadow .2s,border-color .2s}
+.corridor-stage .v451-hotspot:hover,.corridor-stage .v451-hotspot:focus-visible{background:rgba(228,184,104,.08)!important;border-color:#e2bf797a!important;box-shadow:0 0 24px #e1bb6a4f!important;outline:2px solid transparent}
+.corridor-stage .v451-hotspot::after{content:attr(data-hint);position:absolute;top:100%;left:0;z-index:37;padding:5px 9px;max-width:240px;white-space:nowrap;font:600 12px Georgia,serif;color:#fff2ce;background:#1c1612eb;border:1px solid #b59762;border-radius:5px;opacity:0;transition:opacity .2s;pointer-events:none}
+.corridor-stage .v451-hotspot:hover::after,.corridor-stage .v451-hotspot:focus-visible::after{opacity:1}
+.v451-mytrle{position:absolute;right:7%;bottom:7%;height:min(72vh,650px);width:auto;max-width:35%;z-index:15;border:0;padding:0;background:none;cursor:pointer;filter:brightness(.80) drop-shadow(0 7px 12px #090909a8);animation:v451-float 5s ease-in-out infinite}
+.v451-mytrle img{display:block;width:100%;height:100%;object-fit:contain;opacity:.82}
+.v451-mytrle:hover,.v451-mytrle:focus-visible{filter:brightness(1.06) drop-shadow(0 0 15px #9db8e3c0)}
+@keyframes v451-float{50%{transform:translateY(-10px)}}
+.scene-item[data-item-id="tlustocervi"] img,.scene-item[data-item-id="dyne-450"] img{opacity:1!important;filter:brightness(.88) drop-shadow(0 8px 9px #000b)!important;max-height:none!important}
+.scene-item[data-item-id="dyne-450"]{width:clamp(110px,20vw,235px)!important;z-index:12}
+.v451-party-ghosts{position:absolute;inset:0;pointer-events:none;z-index:10;overflow:hidden}
+.v451-party-ghost{position:absolute;bottom:13%;height:min(50vh,380px);max-width:24vw;object-fit:contain;opacity:0;filter:brightness(.76) drop-shadow(0 4px 14px #b3c8d83b);animation:v451-arrival 3.8s ease-out forwards,v451-hover 6s ease-in-out 3.8s infinite alternate}
+.v451-party-ghost:nth-child(1){left:28%;bottom:14%}.v451-party-ghost:nth-child(2){left:51%;bottom:18%;height:min(42vh,320px)}.v451-party-ghost:nth-child(3){left:69%;bottom:22%;height:min(36vh,280px)}.v451-party-ghost:nth-child(4){left:39%;bottom:19%;height:min(34vh,270px)}
+@keyframes v451-arrival{0%{opacity:0;transform:translateY(130px) scale(.90)}100%{opacity:.56;transform:translateY(0) scale(1)}}
+@keyframes v451-hover{to{transform:translateY(-15px)}}
+@media(max-width:700px){.v451-mytrle{height:min(52vh,400px);max-width:54%;right:2%;bottom:10%}.v451-party-ghost{max-width:33vw;height:30vh!important}}
+@media(prefers-reduced-motion:reduce){.v451-mytrle,.v451-party-ghost{animation:none}.v451-party-ghost{opacity:.52}}
+
+/* Nick ve skutečném podzemí: viditelná, klikací postava, ne další navigační cedule. */
+.corridor-stage .v451-cellar-nick{position:absolute;z-index:38;left:6%;bottom:8%;width:clamp(130px,19vw,270px);height:65%;padding:0;border:0;background:transparent;cursor:pointer;filter:brightness(.72) drop-shadow(0 7px 15px #050609);transition:filter .2s,transform .2s;transform-origin:center bottom}
+.corridor-stage .v451-cellar-nick img{width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:opacity(.85)}
+.corridor-stage .v451-cellar-nick:hover,.corridor-stage .v451-cellar-nick:focus-visible{filter:brightness(1) drop-shadow(0 0 16px #acc8e0);transform:translateY(-4px)}
+@media(max-width:700px){.corridor-stage .v451-cellar-nick{left:2%;bottom:13%;width:clamp(105px,27vw,155px);height:43%}}
+
+/* Při návratu na již rozběhnutou oslavu jsou hosté přítomní okamžitě. */
+.v451-party-ghost.v451-resident{opacity:.56;animation:v451-hover 6s ease-in-out infinite alternate!important}
+@media(prefers-reduced-motion:reduce){.v451-party-ghost.v451-resident{animation:none!important}}

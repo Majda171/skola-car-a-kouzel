@@ -28,21 +28,25 @@
     const wrap=$('wallFeed');clean(wrap);
     if(!data?.length){wrap.append(node('p','','Na nástěnce zatím nikdo nic nepřipnul.'));return}
     for(const p of data){
-      const post=node('article','wall-post');const hdr=node('header');const who=node('div');who.append(node('strong','',p.author_name||'Student'),node('span','house',p.house_name||'Bradavice'));
-      const when=node('time','',fmt(p.created_at));hdr.append(who,when);post.append(hdr,node('p','',p.message));
+      const post=node('article','wall-post');const hdr=node('header','post-author-row');
+      const avatar=node('div','post-avatar',(p.author_name||'S').trim().charAt(0).toLocaleUpperCase('cs-CZ'));
+      avatar.setAttribute('aria-hidden','true');
+      const who=node('div','post-author-info');who.append(node('strong','',p.author_name||'Student'));
+      const meta=node('div','post-meta');meta.append(node('span','house',p.house_name||'Bradavice'),node('span','post-separator',' · '),node('time','',fmt(p.created_at)));who.append(meta);
+      hdr.append(avatar,who);post.append(hdr,node('p','post-content',p.message));
       const safeLink=p.link_url&&urlFor(p.link_url);if(safeLink){const a=node('a','post-link','🔗 Otevřít přiložený odkaz');a.href=safeLink;a.target='_blank';a.rel='noopener noreferrer nofollow';post.append(a)}
       if(p.image_path){
         const {data:img,error:imgError}=await DB.storage.from('bradavice-wall').createSignedUrl(p.image_path,3600);
         if(!imgError&&img?.signedUrl){const picture=node('img','post-image');picture.src=img.signedUrl;picture.alt='Obrázek přiložený studentem';picture.loading='lazy';post.append(picture)}
       }
       const tools=node('div','post-tools');
-      const report=node('button','report-dot','⋯');report.type='button';report.title='Možnosti příspěvku – nahlásit';report.setAttribute('aria-label','Nahlásit příspěvek');report.onclick=()=>reportContent('post',p.id);tools.append(report);
+      const report=node('button','report-dot','⋯');report.type='button';report.title='Možnosti příspěvku – nahlásit';report.setAttribute('aria-label','Nahlásit příspěvek');report.onclick=()=>{if(confirm('Nahlásit tento příspěvek správci?'))reportContent('post',p.id)};tools.append(report);
       if(p.author_id===me.id){const remove=node('button','','Odstranit');remove.type='button';remove.onclick=async()=>{
         if(!confirm('Opravdu odstranit tento příspěvek?'))return;
         const {error}=await DB.from('v443_wall_posts').delete().eq('id',p.id);if(error){show(error.message,true);return}
         if(p.image_path)await DB.storage.from('bradavice-wall').remove([p.image_path]);
         await loadWall().catch(e=>show(e.message,true));
-      };tools.append(remove)}
+      };remove.className='post-delete';tools.append(remove)}
       post.append(tools);wrap.append(post);
     }
   }

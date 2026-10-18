@@ -1,19 +1,19 @@
 <!doctype html><html lang="cs"><head><meta name="referrer" content="strict-origin-when-cross-origin"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Velká nástěnka · Přátelé · Soví pošta — Bradavice</title>
-<link rel="stylesheet" href="social-v443.css?v=449"><link rel="stylesheet" href="access-guard.css?v=448b"><link rel="stylesheet" href="ui-v435.css?v=4352">
+<link rel="stylesheet" href="social-v443.css?v=451"><link rel="stylesheet" href="access-guard.css?v=448b"><link rel="stylesheet" href="ui-v435.css?v=4352">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js?v=443"></script><script src="access-guard.js?v=448b"></script><link rel="stylesheet" href="v450-new.css?v=450"></head>
+<script src="supabase-config.js?v=443"></script><script src="access-guard.js?v=448b"></script><link rel="stylesheet" href="v450-new.css?v=450a"></head>
 <body><header class="social-top"><a href="hrad.html">← Zpět do hradu</a><a href="profil.html">Můj profil</a></header>
 <main class="social-wrap"><div class="social-heading"><span class="eyebrow">Studentský život</span><h1>Velká nástěnka</h1><p>Vzkazy ze všech kolejí, noví přátelé a soukromá soví pošta.</p></div>
 <nav class="social-tabs" aria-label="Studentská síť"><button type="button" data-tab="wall" class="active">📌 Nástěnka</button><button type="button" data-tab="friends">🫶 Přátelé</button><button type="button" data-tab="messages">✉️ Soukromé zprávy</button><a href="chat.html?scope=school">Školní chat ↗</a></nav>
 <p class="social-notice" id="socialNotice" role="status" aria-live="polite"></p>
-<section id="wallSection" class="social-section"><div class="social-card"><h2>Připni vzkaz pro celý hrad</h2><p>Tvůj příspěvek mohou číst všichni studenti.</p>
+<section id="wallSection" class="social-section"><div class="social-card social-composer"><h2>Co se děje v Bradavicích?</h2><p>Napiš příspěvek, který uvidí studenti všech kolejí.</p>
 <form id="wallForm"><label for="wallText">Zpráva</label><textarea id="wallText" maxlength="1500" rows="4" placeholder="Co by měli ostatní studenti vědět?" required></textarea>
 <div class="social-duo"><div><label for="wallLink">Odkaz (nepovinný)</label><input id="wallLink" type="url" maxlength="500" placeholder="https://..."></div><div><label for="wallImage">Obrázek (automaticky zmenšíme pod 1 MB)</label><input id="wallImage" type="file" accept="image/png,image/jpeg,image/webp"></div></div>
-<button type="submit">Připnout na nástěnku</button></form></div><div id="wallFeed" class="social-feed" aria-live="polite"><p>Načítám vzkazy…</p></div></section>
+<button type="submit">Zveřejnit příspěvek</button></form></div><h2 class="feed-heading">Příspěvky studentů</h2><div id="wallFeed" class="social-feed wall-feed" aria-live="polite"><p>Načítám vzkazy…</p></div></section>
 <section id="friendsSection" class="social-section" hidden><div class="social-card"><h2>Najdi spolužáka</h2><p>Žádost o přátelství může druhý student přijmout nebo odmítnout. Soukromé zprávy fungují až po přijetí.</p><form id="searchFriends" class="social-inline"><input id="studentSearch" type="search" maxlength="70" placeholder="Hledat jméno studenta" aria-label="Hledat studenta"><button type="submit">Hledat</button></form></div><div id="friendsRequests" class="social-feed"></div><div id="friendsDirectory" class="social-feed"></div></section>
 <section id="messagesSection" class="social-section" hidden><div class="social-card"><h2>Soukromá soví pošta</h2><p>Konverzace vidíte pouze vy a druhý student. Psát si lze jen s přijatými přáteli.</p><label for="messagePeer">Vyber přítele</label><select id="messagePeer"><option value="">Vyber studenta…</option></select>
 <div id="dmList" class="social-messages"><p>Zatím není vybraná konverzace.</p></div>
 <form id="dmForm" class="social-inline"><input id="dmText" maxlength="1000" placeholder="Napiš soukromou zprávu…" aria-label="Text soukromé zprávy" required><button type="submit">Odeslat</button></form></div></section>
 <p class="social-disclaimer">Nesdílej hesla ani osobní kontaktní údaje. Nevhodný obsah lze nahlásit; konverzaci lze ukončit odebráním nebo zablokováním studenta.</p>
-</main><script src="social-v443.js?v=449"></script><script src="ui-v435.js?v=449"></script><script src="v449-quickmail.js?v=449" defer></script><script src="v450-dungbombs.js?v=450" defer></script><script src="v450-quest-bag.js?v=450" defer></script></body></html>
+</main><script src="social-v443.js?v=451"></script><script src="ui-v435.js?v=449"></script><script src="v449-quickmail.js?v=449" defer></script><script src="v450-dungbombs.js?v=450" defer></script><script src="v450-quest-bag.js?v=450" defer></script></body></html>

@@ -2,3 +2,26 @@
 
 /* v449 — nenapadne nahlašování. */
 .wall-post .post-tools .report-dot,.dm .report-dot{display:inline-flex;align-items:center;justify-content:center;width:26px;height:23px;min-width:26px;padding:0;border-radius:6px;border:1px solid #87704d55;background:#17151499;color:#c9b9a0;font:700 16px/1 sans-serif;opacity:.70;float:right;cursor:pointer}.wall-post .post-tools .report-dot:hover,.dm .report-dot:hover,.wall-post .post-tools .report-dot:focus-visible,.dm .report-dot:focus-visible{opacity:1;background:#393024}.dm .report-dot{margin-left:auto}
+
+/* v451 – souvislý studentský feed podobný příspěvkům na sociální síti */
+.social-wrap{max-width:780px}.social-tabs{justify-content:center}.social-composer{border-radius:13px;padding:20px 24px;background:#17151af5;margin-bottom:30px}
+.social-composer h2{font-size:1.34rem}.social-composer p{margin:4px 0 10px}
+.social-composer textarea{min-height:85px;border-radius:12px;background:#211d20;padding:16px;border-color:#9c7e5480}
+.social-composer textarea:focus{outline:2px solid #d8b777;outline-offset:1px}
+.social-composer button[type=submit]{display:block;margin-left:auto;border-radius:8px;padding:11px 22px}
+.feed-heading{font:600 1.2rem Georgia,serif;margin:12px 0;color:#e2c899}
+.wall-feed{display:flex;flex-direction:column;gap:18px;margin-top:10px}
+.wall-post{border-radius:13px;padding:0;background:#1c1a1eF7;overflow:hidden;border:1px solid #8b734d66;box-shadow:0 12px 24px #0006}
+.wall-post .post-author-row{display:flex;justify-content:flex-start;align-items:center;gap:12px;padding:17px 20px 4px}
+.wall-post .post-avatar{height:44px;width:44px;flex:0 0 44px;display:grid;place-items:center;border-radius:50%;color:#f5e9ce;font:600 21px Georgia,serif;border:1px solid #a88853;background:linear-gradient(145deg,#644932,#28222a)}
+.wall-post .post-author-info{display:flex;flex-direction:column;min-width:0}
+.wall-post .post-author-info strong{font-size:1.03rem;color:#f5e6cf;line-height:1.3}
+.wall-post .post-meta{font-size:.77rem;color:#b7a991;display:flex;align-items:center;gap:3px;flex-wrap:wrap}
+.wall-post .post-meta .house{display:inline;font-size:inherit}.wall-post .post-meta time{font-size:inherit;color:inherit}
+.wall-post .post-content{margin:12px 20px 17px;white-space:pre-wrap;overflow-wrap:anywhere;font:1.06rem/1.58 Georgia,serif}
+.wall-post .post-image{display:block;width:100%;max-width:100%;max-height:610px;height:auto;object-fit:contain;border:0;border-radius:0;background:#0e0e12}
+.wall-post .post-link{padding:13px 20px;margin:0;background:#262127;color:#e8c98d}
+.wall-post .post-tools{display:flex;justify-content:flex-end;align-items:center;gap:10px;padding:9px 17px;border-top:1px solid #91744736;margin:0;min-height:43px}
+.wall-post .post-tools .report-dot{font-size:18px!important;width:29px;height:27px;opacity:.65}
+.wall-post .post-tools .post-delete{font-size:.77rem;color:#c6b18e;background:none;border:none;padding:6px 9px}
+@media(max-width:680px){.social-wrap{width:min(100%,560px);margin:15px auto 50px;padding:0 10px}.social-composer{padding:15px}.wall-post .post-content{margin:12px 15px}.wall-post .post-author-row{padding:14px 15px 4px}.wall-feed{gap:13px}}
