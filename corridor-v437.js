@@ -1,0 +1,1 @@
+(()=>{const f=document.getElementById('filchEncounter'),d=document.getElementById('filchDialog'),c=document.getElementById('filchClose');if(!f||!d)return;f.addEventListener('click',()=>{d.hidden=!d.hidden});c?.addEventListener('click',e=>{e.stopPropagation();d.hidden=true});})();

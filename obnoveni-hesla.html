@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head><meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nastavení nového hesla | Bradavice</title>
+  <link rel="stylesheet" href="portal.css">
+  <link rel="stylesheet" href="hesla-v448.css?v=448">
+  <link rel="stylesheet" href="magic-cursor.css">
+  <link rel="stylesheet" href="v40.css">
+  <script>
+  (function(){
+    try {
+      const search=new URLSearchParams(location.search);
+      const hash=new URLSearchParams(location.hash.slice(1));
+      const hasRecovery=(search.get('type')==='recovery'||hash.get('type')==='recovery'||search.has('code')||(search.has('token_hash')&&search.get('type')==='recovery')||hash.has('access_token'));
+      if(hasRecovery)sessionStorage.setItem('bradavice_password_recovery_started',String(Date.now()));
+      if(search.has('error')||hash.has('error'))sessionStorage.setItem('bradavice_password_recovery_error','1');
+    } catch (_) {}
+  })();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js?v=448"></script>
+</head>
+<body>
+<main class="login-layout">
+  <section class="login-art">
+    <a href="index.html" style="position:absolute;top:25px;left:28px;font-family:Cinzel;text-transform:uppercase;letter-spacing:.12em;text-decoration:none;font-size:.65rem">← Hlavní síň</a>
+    <img src="img/bradavice-erb.webp" alt="Erb Bradavic">
+  </section>
+  <section class="login-panel">
+    <div class="login-box">
+      <p class="kicker">Studentský portál</p>
+      <h1>Nové heslo</h1>
+      <p class="recovery-lead">Vyber si nové heslo ke svému studentskému účtu. Kolej, body, odznaky ani batoh se nezmění.</p>
+      <p class="recovery-wait" id="recoveryWait" role="status">Ověřuji kouzelný odkaz…</p>
+      <form id="setPasswordForm" hidden>
+        <div class="login-field"><label for="newStudentPassword">Nové heslo</label>
+          <input id="newStudentPassword" type="password" autocomplete="new-password" minlength="12" required></div>
+        <div class="login-field"><label for="confirmStudentPassword">Znovu nové heslo</label>
+          <input id="confirmStudentPassword" type="password" autocomplete="new-password" minlength="12" required></div>
+        <button type="button" class="password-visibility" id="toggleNewPassword" aria-pressed="false">Zobrazit hesla</button>
+        <p class="password-rules">Alespoň 12 znaků, malé i velké písmeno, číslo a speciální znak – stejně jako při registraci.</p>
+        <button class="login-submit" id="updatePasswordButton" type="submit">Uložit nové heslo</button>
+      </form>
+      <p class="recovery-feedback" id="recoveryFeedback" role="status" aria-live="polite"></p>
+      <div class="recovery-result" id="recoveryResult" hidden></div>
+      <div class="login-links"><a href="prihlaseni-student.html">Zpět na přihlášení</a><a href="kontakt.html">Pomoc</a></div>
+    </div>
+  </section>
+</main>
+<script src="hesla-v448.js?v=448"></script>
+</body>
+</html>

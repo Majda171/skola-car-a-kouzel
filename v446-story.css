@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap');
+/* v446, tajne utrzky, Umbridgeova a tresty */
+.v446-paper-fragment{position:absolute;z-index:25;transform:translate(-50%,-50%) rotate(-18deg);border:0;background:none;padding:0;width:clamp(32px,3.6vw,54px);cursor:pointer;opacity:.84;filter:brightness(.44) saturate(.46) sepia(.20) contrast(.88) drop-shadow(0 2px 3px #000c)}
+.v446-paper-fragment img{display:block;width:100%;height:auto;max-height:9vh;object-fit:contain}
+.v446-paper-fragment:hover,.v446-paper-fragment:focus-visible{opacity:.98;filter:brightness(.68) saturate(.55) sepia(.16) drop-shadow(0 4px 6px #000c)}
+.v446-paper-fragment[hidden]{display:none}
+.v446-note-overlay{position:fixed;z-index:30000;inset:0;display:grid;place-items:center;padding:18px;background:#020301d9;backdrop-filter:blur(5px)}
+.v446-note{width:min(540px,96vw);max-height:90svh;overflow:auto;padding:26px;background:linear-gradient(145deg,#3b2820,#151210);border:1px solid #bb955e;border-radius:8px;color:#f6e5c5;box-shadow:0 22px 75px #000}
+.v446-note h2{font-family:Georgia,serif;font-size:clamp(1.35rem,3vw,1.9rem);margin:0 0 13px;color:#f3d18f}
+.v446-note p{font:1.08rem/1.5 Georgia,serif;white-space:pre-line}
+.v446-note-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.v446-note button{border:1px solid #ae8c55;background:#806337;color:#fff1d5;border-radius:4px;cursor:pointer;padding:10px 13px;font:600 .85rem Georgia,serif}
+.v446-note button:first-child{background:#33271d}
+.v446-note input{width:100%;box-sizing:border-box;padding:11px;background:#130e0e;border:1px solid #bd995f;color:#fff8e8;font:1rem Georgia,serif}
+.v446-progress{display:block;color:#efda9b;font-size:1.25rem;margin-top:10px}
+.v446-office-notice{position:fixed;z-index:10000;left:50%;bottom:24px;max-width:650px;width:90vw;transform:translateX(-50%);padding:13px;text-align:center;background:#1c1319;color:#f8d5e5;border:1px solid #d19aaf;border-radius:6px}
+.umbridge-office.v446-empty .umbridge-character,.umbridge-office.v446-empty .umbridge-desk-foreground{display:none!important}
+.v446-bomb-place{position:absolute;z-index:23;right:8%;bottom:9%;padding:12px;background:#4f312b;color:#fbe7d4;border:1px solid #b98c65;cursor:pointer}
+.umbridge-office.v446-stinky::after{content:''!important;display:block!important;position:absolute;z-index:14;inset:12% 9% 23%;pointer-events:none;background:radial-gradient(ellipse at 55% 66%,rgba(113,143,49,.59),rgba(41,83,14,.18) 30%,transparent 55%);filter:blur(16px)}
+@media(max-width:700px){.v446-bomb-place{bottom:30%;right:2%;font-size:.79rem;max-width:45vw}}
+
+/* v447: skutečný pergamenový dopis s rukopisným písmem, ne tmavý dialog. */
+.v446-note.v446-note-letter {
+  box-sizing:border-box;width:min(570px,95vw);max-height:min(90svh,830px);overflow-y:auto;
+  padding:clamp(30px,5vw,48px) clamp(30px,8vw,64px) clamp(24px,4vw,32px);
+  border:0;border-radius:3px;outline:1px solid rgba(70,40,17,.32);
+  color:#3c2716;background:#ead3a2 url('img/letter-parchment-v42.webp') center/100% 100% no-repeat;
+  box-shadow:0 22px 84px #000e,0 0 0 8px rgba(21,12,6,.18);
+  scrollbar-color:#a2875a transparent;
+}
+.v446-note-letter::before {content:'DŮVĚRNÉ • POUZE PRO SPOLUPACHATELE';display:block;text-align:center;font:700 .67rem/1.35 Georgia,serif;letter-spacing:.15em;color:#806348;margin:-3px 0 17px}
+.v446-note-letter h2 {font:600 clamp(1.5rem,4vw,2.05rem)/1.2 Georgia,serif;letter-spacing:.01em;text-align:center;color:#50321d;margin:0 0 20px}
+.v446-note-letter p.v446-letter-text {font-family:'Caveat','Segoe Print','Segoe Script','Comic Neue',cursive;font-size:clamp(1.3rem,2.45vw,1.56rem);font-weight:600;line-height:1.17;letter-spacing:.004em;white-space:pre-line;color:#3b2418;margin:0;text-shadow:none}
+.v446-note-letter p.v446-letter-signature {font-family:'Caveat','Segoe Print','Segoe Script','Comic Neue',cursive;font-size:clamp(1.58rem,3.3vw,2.03rem);font-weight:700;color:#452616;line-height:1.12;text-align:right;margin:21px 3px 0;transform:rotate(-3deg)}
+.v446-note-letter .v446-note-actions {justify-content:center;margin-top:25px}
+.v446-note-letter .v446-note-actions button,.v446-note-letter .v446-note-actions button:first-child {border:1px solid #795534;border-radius:3px;background:#735336;color:#f8e8c4;padding:10px 25px;font:600 .9rem Georgia,serif;letter-spacing:.03em}
+.v446-note-letter .v446-note-actions button:hover{background:#50341e}
+@media(max-width:600px){.v446-note.v446-note-letter{padding:28px 27px 24px;max-height:94svh}.v446-note-letter p.v446-letter-text{font-size:1.29rem;line-height:1.11}.v446-note-letter p.v446-letter-signature{margin-top:12px}.v446-note-letter h2{margin-bottom:13px}.v446-note-letter::before{font-size:.57rem}}
+/* v447: Umbridge – volby v rozhovoru, stav skutečného odečtu bodů. */
+.v447-umbridge-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.umbridge-dialog .v447-umbridge-actions button {position:static!important;right:auto;top:auto;font:600 .78rem/1.35 Georgia,serif;cursor:pointer;border:1px solid #eab6c7;background:#5a283f;color:#ffe9ef;padding:9px 11px;border-radius:4px;text-align:left;max-width:100%;min-height:38px}
+.umbridge-dialog .v447-umbridge-actions button:hover,.umbridge-dialog .v447-umbridge-actions button:focus-visible{background:#84415b;outline-color:#ffdfe8}
+.v447-umbridge-status {margin:11px 0 0;color:#ffe1a9;font:.86rem/1.4 Georgia,serif}
+.umbridge-dialog{max-width: min(430px,calc(100vw - 28px));}
+@media(max-width:800px){.umbridge-dialog{z-index:35000!important;padding-bottom:20px}.v447-umbridge-actions{flex-direction:column}}

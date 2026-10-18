@@ -1,0 +1,20 @@
+/* Bradavice v448 – bezpečné obnovení studentského hesla */
+.forgot-password-link{margin-top:12px;text-align:right;font-size:.9rem}
+.forgot-password-link a{color:#dec68b;text-decoration:underline;text-underline-offset:3px}
+.forgot-password-link a:hover,.forgot-password-link a:focus-visible{color:#fff0ba}
+.login-box .recovery-lead{color:#bfb49e;font-size:1rem;line-height:1.6}
+.login-box .recovery-hint{color:#aeaa99;font-size:.86rem;line-height:1.55;margin-top:14px}
+.login-box .recovery-feedback{min-height:48px;padding-top:7px;color:#e8d7a9;line-height:1.55}
+.login-box .recovery-feedback[data-status="error"]{color:#f0aba1}
+.login-box .recovery-feedback[data-status="success"]{color:#c9e8b0}
+.login-box .recovery-feedback:empty{display:none}
+.login-box .recovery-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:21px}
+.login-box .recovery-controls a{color:#dac18a}
+.login-box .recovery-wait{margin-top:24px;color:#e0c991}
+.login-box .recovery-result{padding:17px 0;font-size:1rem;line-height:1.6}
+.login-box .recovery-result a{color:#dec68b}
+.login-box .password-rules{font-size:.82rem;color:#b8aa8b;line-height:1.5;margin-top:8px}
+.login-box .password-visibility{padding:5px 0;border:0;background:transparent;color:#ddc389;cursor:pointer;text-decoration:underline;text-underline-offset:3px;font-size:.85rem}
+.login-box [hidden]{display:none!important}
+.login-box .login-submit:disabled{opacity:.64;cursor:wait}
+@media(max-width:600px){.login-box .recovery-controls{display:grid}}
