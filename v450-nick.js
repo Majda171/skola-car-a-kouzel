@@ -11,7 +11,7 @@
   box.append(h,p);if(title==='Dobby'&&/plesniv|tác|zkažen/.test(text)){const platter=document.createElement('img');platter.src='img/nick-zkazene-jidlo-v450.webp';platter.alt='Podnos plesnivého jídla';platter.className='v450-food-preview';box.append(platter)}box.append(buttons);overlay.append(box);document.body.append(overlay);buttons.firstElementChild?.focus({preventScroll:true});overlay.onclick=e=>{if(e.target===overlay)overlay.remove()};overlay.addEventListener('keydown',e=>{if(e.key==='Escape')overlay.remove()})
  }
  function guests(arriving){if(!isNick||guestsShown)return;guestsShown=true;const layer=document.getElementById('v451PartyGuests');if(!layer)return;
-  const images=['ghost-seda-dama.webp','ghost-mnich.webp','ghost-krvavy-baron.webp','ghost-protiva.webp'];
+  const images=['ghost-seda-dama.webp','ghost-mnich.webp','ghost-krvavy-baron.webp','ghost-protiva.webp','ufnukana-ursula-v451.webp'];
   images.forEach((src,i)=>{const img=document.createElement('img');img.className='v451-party-ghost'+(arriving?'':' v451-resident');img.alt='';img.src='img/'+src;img.style.animationDelay=arriving?`${1.3+i*2.2}s,${5.1+i*2.2}s`:'0s,0s';layer.append(img)});
  }
  async function refresh(){if(!client){state='offline';paint();return}try{const {data,error}=await client.rpc('v450_nick_status');if(error)throw error;state=data||'not-started'}catch(e){state='offline';console.info('Nickův úkol čeká na SQL pro v450:',e?.message)}paint()}

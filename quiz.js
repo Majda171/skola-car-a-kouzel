@@ -28,13 +28,15 @@
     all[id]={...old,attempts:Number(old.attempts||0)+1,lastScore:score,lastTotal:total,lastGrade:g[0],bestScore:best,bestTotal:total,bestGrade:bestG,passed:Boolean(old.passed||passed),lastAt:now,completedAt:old.completedAt||now};
     if(firstPass){
       all[id].firstPassAt=now;all[id].firstPassRewarded=true;
-      if(id==='year1')A?.addPoints(25,'Ročníková zkouška');else A?.addPoints(10,`Test: ${banks[id]?.title||id}`);
-      const dbKey=id==='year1'?'exam-year1':`test-${id}`;
-      window.BradaviceDB?.claimV40Activity?.(dbKey).catch(err=>console.warn('Body za první úspěšný test se nepodařilo synchronizovat:',err));
+      if(id!=='divination'){
+        if(id==='year1')A?.addPoints(25,'Ročníková zkouška');else A?.addPoints(10,`Test: ${banks[id]?.title||id}`);
+        const dbKey=id==='year1'?'exam-year1':`test-${id}`;
+        window.BradaviceDB?.claimV40Activity?.(dbKey).catch(err=>console.warn('Body za první úspěšný test se nepodařilo synchronizovat:',err));
+      }
     }
     write(all);
-    if(total===10)A?.award('prvni-test',{silent:true});
-    if(total===10&&score===10)A?.award('bez-jedine-chyby');
+    if(total===10&&id!=='divination')A?.award('prvni-test',{silent:true});
+    if(total===10&&score===10&&id!=='divination')A?.award('bez-jedine-chyby');
     if(subjectIds.every(s=>all[s]?.attempts>0))A?.award('pilny-student',{silent:true});
     if(subjectIds.filter(s=>Number(all[s]?.bestScore||0)>=8).length>=5)A?.award('bystra-mysl');
     if(id==='year1'&&passed)A?.award('rocnikova-zkouska');
@@ -47,20 +49,41 @@
     modal=document.createElement('div');modal.id='bradaviceQuizModal';modal.className='quiz-modal';modal.hidden=true;modal.innerHTML=`<section class="quiz-card" role="dialog" aria-modal="true" aria-labelledby="quizTitle"><button class="quiz-close" type="button" aria-label="Zavřít">×</button><p class="quiz-kicker">Bradavická zkouška</p><h2 id="quizTitle">Test</h2><div id="quizBody"></div></section>`;document.body.appendChild(modal);
     modal.querySelector('.quiz-close').addEventListener('click',()=>modal.hidden=true);modal.addEventListener('click',e=>{if(e.target===modal)modal.hidden=true});return modal;
   }
-  function start(id){
+  async function start(id){
     if(id!=='year1'&&!banks[id])return;
-    const questions=makeSet(id),total=questions.length,modal=ensureModal(),body=modal.querySelector('#quizBody'),title=modal.querySelector('#quizTitle');
+    const modal=ensureModal(),body=modal.querySelector('#quizBody'),title=modal.querySelector('#quizTitle');
     title.textContent=id==='year1'?'Ročníková zkouška · 1. ročník':banks[id].title;
-    let index=0,score=0,selected=null;
+    modal.hidden=false;
+    let questions=makeSet(id),total=questions.length,index=0,score=0,selected=null,attemptId=null;
+    const chosenAnswers=[];
+    if(id==='divination'){
+      body.textContent='Profesorka připravuje otázky. Ověřuji přístup k Supabase…';
+      try{
+        const client=window.BradaviceDB?.client;if(!client)throw Error('Supabase není dostupné.');
+        const {data,error}=await client.rpc('v453_divination_start');if(error)throw error;
+        if(!data?.attempt_id||!Array.isArray(data.questions)||data.questions.length!==10)throw Error('Neplatná sada otázek.');
+        attemptId=data.attempt_id;
+        questions=data.questions.map(r=>({q:r.q,answers:r.answers}));total=questions.length;
+      }catch(e){body.textContent='Test nelze spustit. Nejdřív je potřeba nastavit SQL v453 v Supabase. '+(e.message||'');return;}
+    }
     const render=()=>{
       const q=questions[index],pct=Math.round(index/total*100),answers=shuffle(q.answers);
       body.innerHTML=`<div class="quiz-meta"><span>Otázka ${index+1} z ${total}</span><span>${id==='year1'?q.subjectTitle:'Krátký test · 10 otázek'}</span></div><div class="quiz-progress"><span style="--quiz-p:${pct}%"></span></div><p class="quiz-question">${q.q}</p><div class="quiz-answers">${answers.map((a,i)=>`<button class="quiz-answer" type="button" data-answer="${encodeURIComponent(a)}"><span class="quiz-letter">${String.fromCharCode(65+i)}</span><span>${a}</span></button>`).join('')}</div><div class="quiz-actions"><button class="quiz-btn primary" id="quizNext" type="button" disabled>${index===total-1?'Vyhodnotit':'Další otázka'}</button></div>`;
       selected=null;body.querySelectorAll('.quiz-answer').forEach(btn=>btn.addEventListener('click',()=>{body.querySelectorAll('.quiz-answer').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');selected=decodeURIComponent(btn.dataset.answer);body.querySelector('#quizNext').disabled=false}));
-      body.querySelector('#quizNext').addEventListener('click',()=>{if(selected===q.correct)score++;index++;if(index<total)render();else finish()});
+      body.querySelector('#quizNext').addEventListener('click',()=>{if(id==='divination')chosenAnswers.push(selected);else if(selected===q.correct)score++;index++;if(index<total)render();else finish()});
     };
-    const finish=()=>{
+    const finish=async()=>{
+      if(id==='divination'){
+        body.textContent='Profesorka vyhodnocuje odpovědi…';
+        try{
+          const {data,error}=await window.BradaviceDB.client.rpc('v453_divination_finish',{p_attempt_id:attemptId,p_answers:chosenAnswers});
+          if(error)throw error;
+          score=Number(data.score);
+          if(data.rewarded)window.BradaviceDB?.hydrateStudent?.().catch(()=>{});
+        }catch(e){body.textContent='Výsledek se nepodařilo uložit. Nebyly přiděleny žádné body. '+(e.message||'');return;}
+      }
       const out=saveResult(id,score,total),best=out.result.bestScore,perfect=score===total;
-      body.innerHTML=`<div class="quiz-result"><div class="quiz-grade">${out.grade}</div><h3>${out.label}</h3><p class="quiz-score">${score} z ${total} správně</p><p class="${out.passed?'quiz-pass':'quiz-fail'}">${out.passed?'Zkouška je splněna.':'Zkouška zatím není splněna. Můžeš ji zopakovat.'}</p>${out.firstPass?`<p>${id==='year1'?'+25':'+10'} bodů pro kolej za první úspěšné složení.</p>`:''}${perfect&&total===10?'<p>Bez jediné chyby — výborný výkon.</p>':''}<p class="quiz-best">Nejlepší výsledek: ${best} / ${total} · ${out.result.bestGrade}</p><div class="quiz-actions"><button class="quiz-btn" id="quizAgain" type="button">Zkusit znovu</button><button class="quiz-btn primary" id="quizDone" type="button">Hotovo</button></div>${id!=='year1'?'<a class="quiz-year-link" href="rocnikova-zkouska.html">Přejít na ročníkovou zkoušku</a>':''}</div>`;
+      body.innerHTML=`<div class="quiz-result"><div class="quiz-grade">${out.grade}</div><h3>${out.label}</h3><p class="quiz-score">${score} z ${total} správně</p><p class="${out.passed?'quiz-pass':'quiz-fail'}">${out.passed?'Zkouška je splněna.':'Zkouška zatím není splněna. Můžeš ji zopakovat.'}</p>${out.firstPass?`<p>${id==='year1'?'+25':'+10'} bodů za první úspěšné složení${id==='divination'?' (po potvrzení Supabase)':''}.</p>`:''}${perfect&&total===10?'<p>Bez jediné chyby — výborný výkon.</p>':''}<p class="quiz-best">Nejlepší výsledek: ${best} / ${total} · ${out.result.bestGrade}</p><div class="quiz-actions"><button class="quiz-btn" id="quizAgain" type="button">Zkusit znovu</button><button class="quiz-btn primary" id="quizDone" type="button">Hotovo</button></div>${id!=='year1'?'<a class="quiz-year-link" href="rocnikova-zkouska.html">Přejít na ročníkovou zkoušku</a>':''}</div>`;
       body.querySelector('#quizAgain').addEventListener('click',()=>start(id));body.querySelector('#quizDone').addEventListener('click',()=>modal.hidden=true);
     };
     modal.hidden=false;render();

@@ -25,3 +25,20 @@
 .wall-post .post-tools .report-dot{font-size:18px!important;width:29px;height:27px;opacity:.65}
 .wall-post .post-tools .post-delete{font-size:.77rem;color:#c6b18e;background:none;border:none;padding:6px 9px}
 @media(max-width:680px){.social-wrap{width:min(100%,560px);margin:15px auto 50px;padding:0 10px}.social-composer{padding:15px}.wall-post .post-content{margin:12px 15px}.wall-post .post-author-row{padding:14px 15px 4px}.wall-feed{gap:13px}}
+
+/* v451a — zkrácený text příspěvků jako na sociální síti. */
+.wall-post .post-body{min-width:0}
+.wall-post .post-content.post-content-collapsed{
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;
+  line-clamp:4;overflow:hidden;
+}
+.wall-post .post-expand{
+  display:inline-block;margin:0 20px 16px;padding:2px 0;
+  background:transparent;border:0;border-radius:0;
+  color:#e4c387;font:600 .88rem/1.4 Georgia,serif;
+  text-decoration:underline;text-underline-offset:3px;
+  cursor:pointer;
+}
+.wall-post .post-expand:hover,.wall-post .post-expand:focus-visible{color:#ffe3a9;text-decoration-thickness:2px}
+.wall-post .post-expand[hidden]{display:none!important}
+@media(max-width:680px){.wall-post .post-expand{margin-left:15px;margin-right:15px}}

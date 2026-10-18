@@ -10,5 +10,9 @@
   };
   const i=route.indexOf(page);if(i<0)return;
   const make=(href,dir)=>{if(!href)return null;const a=document.createElement('a');a.className=`castle-side-nav castle-side-${dir}`;a.href=href;a.setAttribute('aria-label',`${dir==='prev'?'Předchozí':'Další'} lokace: ${names[href]||href}`);a.innerHTML=`<span class="castle-side-arrow">${dir==='prev'?'‹':'›'}</span><small>${names[href]||''}</small>`;a.addEventListener('click',()=>document.documentElement.classList.add('castle-leaving'));return a};
-  const prev=make(route[i-1],'prev'),next=make(route[i+1],'next');if(prev)document.body.append(prev);if(next)document.body.append(next);
+  if(document.querySelector('.castle-side-nav'))return;
+  const prev=make(document.querySelector('main a.corridor-way-prev[href]')?.getAttribute('href')||route[i-1],'prev');
+  const next=make(document.querySelector('main a.corridor-way-next[href]')?.getAttribute('href')||route[i+1],'next');
+  if(prev)document.body.append(prev);if(next)document.body.append(next);
+  document.querySelectorAll('main a.corridor-way-prev,main a.corridor-way-next,main a.corridor-way.map-return').forEach(a=>a.remove());
 })();

@@ -89,6 +89,28 @@
       Q('Jak reaguje Vrba mlátička na někoho, kdo se přiblíží příliš blízko?','Útočí svými větvemi','Začne křičet','Zmizí','Otevře tajné dveře sama od sebe'),
       Q('Ve které části školy probíhá většina hodin bylinkářství?','Ve sklenících','V žalářích','V Astronomické věži','Ve Velké síni')
     ]},
+    divination:{title:'Jasnovidectví',questions:[
+      Q('Kdo v Bradavicích vyučuje jasnovidectví?','Sybilla Trelawneyová','Pomona Prýtová','Minerva McGonagallová','Profesorka Vectorová'),
+      Q('Ve které části hradu se nachází učebna jasnovidectví?','Ve věži','V podzemí','Vedle skleníků','Pod Velkou síní'),
+      Q('Z čeho se při tasseografii předpovídá budoucnost?','Z čajových lístků','Z hvězdných map','Z karet famfrpálu','Z knižních hřbetů'),
+      Q('Jak se říká znamení velkého černého psa, které profesorka spatří v Harryho šálku?','Smrtonoš','Mozkomor','Hipogryf','Krátura'),
+      Q('Jaký předmět se v jasnovidectví používá k nahlížení do obrazů budoucnosti?','Křišťálová koule','Bezoár','Mnoholičný lektvar','Tříštivá hůlka'),
+      Q('Kdo v knize označuje jasnovidectví za velmi nepřesné umění?','Hermiona Grangerová','Rubeus Hagrid','Neville Longbottom','Ron Weasley'),
+      Q('Kterého předmětu se Hermiona ve třetím ročníku vzdala?','Jasnovidectví','Přeměňování','Lektvarů','Kouzelné péče o tvory'),
+      Q('Co Trelawneyová často předpovídá Harrymu?','Blížící se smrt nebo neštěstí','Jisté vítězství v turnaji','Dlouhé prázdniny','Výhru v loterii'),
+      Q('Jak se nazývá věštění z dlaně?','Chiromancie','Herbologie','Legilimence','Astronomie'),
+      Q('Jak se označuje věštění ze snů?','Oneiromancie','Transfigurace','Oklumencie','Alchymie'),
+      Q('Kdo vyučuje jasnovidectví vedle Trelawneyové během pátého ročníku?','Kentaur Firenze','Profesor Lupin','Severus Snape','Alastor Moody'),
+      Q('Který z předmětů bývá spojován s věštěním budoucnosti?','Tarotové karty','Zlatonka','Přísady do lektvarů','Řetěz na kotlík'),
+      Q('Jaká zvláštnost Trelawneyové předpovědí se ukázala důležitá?','Občas pronášela skutečná proroctví v transu','Vždy poznala výsledek zápasu','Nikdy se nemýlila','Věštila jen z knih'),
+      Q('Co se na hodině jasnovidectví obvykle dělá s čajovým šálkem?','Studují se tvary usazených lístků','Šálek se promění ve zvíře','Přidává se do něj dračí krev','Měří se jeho hmotnost'),
+      Q('Jak Harry a Ron často přistupovali k domácím úkolům z jasnovidectví?','Vymýšleli si děsivé předpovědi','Počítali oběžné doby planet','Pěstovali mandragory','Pracovali s mapou hradu'),
+      Q('Jaký obor se soustředí na výklad znamení a předtuch?','Jasnovidectví','Lektvary','Přeměňování','Obrana proti černé magii'),
+      Q('Který nápoj připravují studenti při věštění z lístků?','Čaj','Máslový ležák','Dýňovou šťávu','Vlkodlačí lektvar'),
+      Q('Která postava je známá dramatickými předpověďmi neštěstí?','Profesorka Trelawneyová','Madam Pomfreyová','Profesorka Prýtová','Paní Norrisová'),
+      Q('Jaký typ věšteckého znamení se hledá na dně šálku?','Obrazce vytvořené lístky','Jméno vydry','Barva hůlky','Počet košťat'),
+      Q('Co je pro skutečné proroctví profesorky Trelawneyové typické?','Pronáší ho bez běžného vědomí','Musí ho zapsat na pergamen','Vysloví ho po vypití lektvaru','Vytvoří ho s pomocí famfrpálového míče')
+    ]},
     astronomy:{title:'Astronomie',questions:[
       Q('Kdo vyučuje astronomii během Harryho studia?','Profesorka Sinistrová','Profesorka Trelawneyová','Profesorka Vectorová','Madame Hoochová'),
       Q('Kdy se v Bradavicích běžně konají hodiny astronomie?','V noci','Každé ráno před snídaní','Pouze o víkendech','V poledne'),

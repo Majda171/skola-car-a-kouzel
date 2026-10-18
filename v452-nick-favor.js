@@ -37,7 +37,7 @@
  }
  function bustTalk(){if(!ready)return say('Stará busta','Busta mlčí. Školní evidence nového úkolu ještě není připravená.');if(status!=='revealed')return say('Stará busta kouzelníka','Bronzová tvář tiše hledí před sebe. Snad existuje způsob, jak ji probudit…');return dialog('Stará busta kouzelníka','Když třikrát poklepeš na podstavec, kámen slabě zaduní. Za bustou se odsunuje část zdi. Objevuje se úzký průchod.',[['Vstoupit do tajné místnosti',()=>{location.href='tajna-mistnost.html'}],['Zatím zůstat',null]])}
  function display(){
-  const nick=document.getElementById('v452LibraryNick');if(nick)nick.hidden=!feastDone;
+  const nick=document.getElementById('v452LibraryNick');if(nick)nick.hidden=!(feastDone&&ready&&status==='not-started');
   const patrick=document.getElementById('v452Patrick');if(patrick)patrick.hidden=!feastDone;
   const lock=document.getElementById('v452CryptLock');if(lock)lock.hidden=(ready&&status==='revealed');
  }
@@ -55,6 +55,8 @@
   }
  }
  if(isLibrary)document.getElementById('v452LibraryNick')?.addEventListener('click',libraryTalk);
+ if(isParty)document.getElementById('nickGhost')?.addEventListener('click',e=>{if(ready && (status==='asked'||status==='refused'||status==='revealed')){e.stopImmediatePropagation();libraryTalk()}},true);
+ if(isParty)document.getElementById('nickTalk')?.addEventListener('click',e=>{if(ready&&(status==='asked'||status==='refused'||status==='revealed')){e.stopImmediatePropagation();libraryTalk()}},true);
  if(isParty)document.getElementById('v452Patrick')?.addEventListener('click',patrickTalk);
  if(isHall)document.getElementById('v452Bust')?.addEventListener('click',bustTalk);
  init();

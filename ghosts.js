@@ -29,7 +29,8 @@
     const fromLeft = Math.random() > .5;
     const y = 8 + Math.random()*58;
     const isProtiva = g.key === 'P';
-    const w = isProtiva ? 180 + Math.random()*150 : 250 + Math.random()*190;
+    const eastCorridor = location.pathname.endsWith('/chodby-stara-galerie.html');
+    const w = eastCorridor ? (isProtiva ? 115 + Math.random()*65 : 155 + Math.random()*80) : (isProtiva ? 180 + Math.random()*150 : 250 + Math.random()*190);
     img.style.width = `${w}px`;
     img.style.top = `${y}vh`;
     layer.appendChild(img);

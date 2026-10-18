@@ -76,8 +76,8 @@
     if(!ready||!client||!form.reportValidity())return;
     const password=newPassword.value,confirmation=confirm.value;
     if(password!==confirmation){setText(feedback,'Hesla se neshodují.','error');confirm.focus();return}
-    if(password.length<12||!/[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/.test(password)||!/[a-záčďéěíňóřšťúůýž]/.test(password)||!/[0-9]/.test(password)||! /[^A-Za-z0-9ÁČĎÉĚÍŇÓŘŠŤÚŮÝŽáčďéěíňóřšťúůýž]/.test(password)){
-      setText(feedback,'Heslo musí mít alespoň 12 znaků, velké i malé písmeno, číslo a speciální znak.','error');newPassword.focus();return;
+    if(password.length<8){
+      setText(feedback,'Heslo musí mít minimálně 8 znaků.','error');newPassword.focus();return;
     }
     submit.disabled=true;submit.textContent='Ukládám nové heslo…';setText(feedback,'');
     try{

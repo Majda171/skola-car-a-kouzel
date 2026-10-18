@@ -21,8 +21,8 @@
  ];
  let step=0;
  function render(message,choices=[],note=''){
-  t.textContent=message;actions.replaceChildren();status.textContent=note;d.hidden=false;
-  choices.forEach(([label,cb])=>{const button=document.createElement('button');button.type='button';button.textContent=label;button.onclick=cb;actions.append(button)});
+  t.textContent=window.BradaviceOsloveni?.inflect(message)??message;actions.replaceChildren();status.textContent=note;d.hidden=false;
+  choices.forEach(([label,cb])=>{const button=document.createElement('button');button.type='button';button.textContent=window.BradaviceOsloveni?.inflect(label)??label;button.onclick=cb;actions.append(button)});
  }
  function talk(){
   if(d.hidden===false && actions.childElementCount)return;

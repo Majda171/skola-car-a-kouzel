@@ -1,0 +1,75 @@
+/* v453c: Plynulé hradní scény, bez jakékoli tmavé horní lišty. Navigační odkazy zůstávají. */
+body .place-top,body .scene-top,body .secret-top,body .v450-top,body .v452-top,body .t-top,body .chat-top,body .v453-game-header,
+body .house-top,body .house-topbar{
+  position:absolute!important;top:12px!important;left:3vw!important;right:3vw!important;width:auto!important;
+  background:transparent!important;background-image:none!important;border:0!important;border-bottom:0!important;
+  box-shadow:none!important;backdrop-filter:none!important;padding:0!important;margin:0!important;
+  min-height:0!important;height:auto!important;z-index:80!important;pointer-events:none!important;
+}
+body .place-top a,body .scene-top a,body .secret-top a,body .v450-top a,body .v452-top a,body .t-top a,body .chat-top a,body .v453-game-header a,
+body .house-top a{pointer-events:auto!important;text-shadow:0 2px 8px #000,0 1px 3px #000!important;}
+body .chat-shell,body .t-page{padding-top:90px!important;}
+/* Všechny hradní průzkumné body jsou neviditelné až do jemného světelného zvýraznění při zamíření. Žádné rámečky. */
+.corridor-stage a.v451-hotspot,.corridor-stage a.v450a-scene-hotspot,
+.corridor-stage .v451-hotspot:hover,.corridor-stage .v451-hotspot:focus-visible,
+.corridor-stage a.v450a-scene-hotspot:hover,.corridor-stage a.v450a-scene-hotspot:focus-visible{
+ border:0!important;outline:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;
+}
+.corridor-stage a.v451-hotspot:hover,.corridor-stage a.v450a-scene-hotspot:hover{
+ filter:drop-shadow(0 0 10px #d6a85a90)!important;
+}
+.corridor-stage a.v451-hotspot::before,.corridor-stage a.v450a-scene-hotspot::before{content:none!important;display:none!important;}
+/* Skutečná vzdálená brána v hlubokém sklepení; žádná průhledná plocha přes celou obrazovku. */
+.corridor-stage a.v450-nick-entrance.v450a-scene-hotspot{left:42%!important;top:24%!important;width:13%!important;height:28%!important;}
+@media(max-width:700px){.corridor-stage a.v450-nick-entrance.v450a-scene-hotspot{left:42%!important;top:27%!important;width:18%!important;height:25%!important;}}
+/* Aktivní mapa obrazu Godrika přímo na středovém portrétu ve scéně. */
+.hall-of-fame .founder-godric-hotspot{position:absolute;left:37.4%;top:24.5%;width:12.6%;height:34%;z-index:23;border:0;outline:0;padding:0;background:transparent;cursor:pointer;}
+.hall-of-fame .founder-godric-hotspot:hover,.hall-of-fame .founder-godric-hotspot:focus-visible{background:radial-gradient(ellipse,rgba(250,196,92,.10),transparent 72%);filter:drop-shadow(0 0 14px #c39f6d90);}
+/* Nenápadná busta na podstavci v zadní části Síně slávy. */
+.hall-of-fame .v452-hall-bust{right:18.6%!important;bottom:24.5%!important;width:clamp(65px,7vw,124px)!important;max-height:25vh!important;filter:brightness(.52) sepia(.28) saturate(.7) drop-shadow(1px 5px 5px #000b)!important;z-index:22!important;}
+.hall-of-fame .v452-hall-bust img{max-height:25vh!important;}
+.hall-of-fame .v452-hall-bust:hover{filter:brightness(.88) sepia(.2) drop-shadow(0 0 8px #ac874e88)!important;}
+/* Salazarův skutečný portrét na zadní stěně tajné místnosti. */
+.v452-crypt .v452-salazar{left:42%!important;top:15%!important;width:clamp(86px,11vw,174px)!important;z-index:16!important;filter:brightness(.67) sepia(.18)!important;transform:translateX(-50%) perspective(800px) rotateY(-4deg)!important;}
+.v452-crypt .v452-salazar img{max-height:38vh!important;}
+.v452-crypt .v452-salazar:hover{filter:brightness(1.05) sepia(.08) drop-shadow(0 0 10px #cba45f88)!important;}
+/* Sir Patrick stojí stranou od popisku a tlačítek v pravém dolním rohu. */
+.v450-nick-scene .v452-patrick{right:27%!important;bottom:10%!important;height:min(56vh,510px)!important;max-width:19vw!important;z-index:14!important;filter:brightness(.62) drop-shadow(0 6px 14px #000a)!important;}
+.v450-nick-scene .v452-patrick:hover{filter:brightness(.95) drop-shadow(0 0 10px #b1d5ff80)!important;}
+/* Fazolky patří na konferenční stolek, ne na křeslo. */
+.house-space .gryffindor-beans{left:48%!important;top:68%!important;width:clamp(66px,5.4vw,105px)!important;filter:brightness(.54) contrast(.83) saturate(.56) drop-shadow(0 4px 4px #000a)!important;opacity:.83!important;}
+/* Filch musí působit jako osoba v perspektivě, nikoli miniaturní figurka. */
+.corridor-stage .filch-wandering{height:min(69vh,690px)!important;width:clamp(152px,17vw,255px)!important;max-height:80%!important;bottom:2%!important;}
+@media(max-width:700px){.corridor-stage .filch-wandering{height:53vh!important;width:clamp(118px,28vw,184px)!important;}.v450-nick-scene .v452-patrick{right:27%!important;bottom:18%!important;height:35vh!important;max-width:26vw!important;}.hall-of-fame .v452-hall-bust{right:17%!important;bottom:27%!important;width:14vw!important;}.v452-crypt .v452-salazar{left:43%!important;top:23%!important;width:26vw!important;}}
+/* Přeměňování: pero se opírá o desku přední lavice, krysa stojí všemi tlapkami na lavici. */
+.v42-transfiguration .v42-feather:not(.is-flying){left:68.5%!important;bottom:20.4%!important;width:clamp(36px,4.1vw,61px)!important;height:clamp(44px,5vw,73px)!important;transform:rotate(71deg) scale(.85)!important;transform-origin:center bottom!important;}
+.v42-transfiguration .v4356-transfigure-object{right:13.6%!important;bottom:18%!important;width:clamp(75px,7vw,122px)!important;height:clamp(62px,7.6vw,112px)!important;}
+.v42-transfiguration .v4356-transfigure-object[data-form="goblet"]{right:14.5%!important;bottom:18%!important;}
+@media(max-width:700px){.v42-transfiguration .v42-feather:not(.is-flying){left:67%!important;bottom:23%!important;}.v42-transfiguration .v4356-transfigure-object{right:8%!important;bottom:20%!important;}}
+
+/* Autentické kolejní vlajky, ne miniatury erbů: průhledná samostatná silueta. */
+.v453-pennant{clip-path:none!important;background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;}
+.v453-pennant img{width:100%!important;max-width:100%!important;height:128px!important;object-fit:contain!important;mix-blend-mode:normal;}
+.v453-home-collection .v453-pennant img{height:55px!important;}
+.v453-flag-collection .v453-pennant img{height:116px!important;}
+@media(max-width:700px){.v453-pennant img{height:92px!important;}.v453-home-collection .v453-pennant img{height:41px!important;}}
+
+/* Síň slávy: původní scenérie bez vrostlého velkého portrétu vprostřed. */
+.hall-of-fame{background-image:linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.50)),url('img/hall-v25-gallery.webp')!important;background-position:center!important;background-size:cover!important;}
+/* Godrik se hledá na skutečném obraze na levé stěně, nikoli v prázdném středu. */
+.hall-of-fame .founder-godric-hotspot{left:21.6%!important;top:8.5%!important;width:9.0%!important;height:29.5%!important;}
+@media(max-width:700px){
+ /* Na úzkém mobilním výřezu je levá stěna mimo obraz. Tam ukážeme drobný nalezitelný portrét samostatně. */
+ .hall-of-fame .founder-godric-hotspot{left:11%!important;top:19%!important;width:70px!important;height:115px!important;
+  background:url('img/founder-godric-v432.webp') center/contain no-repeat!important;filter:brightness(.7)!important;}
+ .hall-of-fame .founder-godric-hotspot:hover{filter:brightness(1)!important;}
+}
+/* Hrabák na horním poschodí na zemi u stěny, nikoli uprostřed vzduchu. */
+.corridor-upper .niffler-upper,.corridor-stage .niffler-upper{right:5%!important;bottom:2%!important;width:clamp(54px,6vw,92px)!important;height:auto!important;max-height:120px!important;transform:rotate(-3deg) scale(.9)!important;filter:brightness(.62) saturate(.72) drop-shadow(0 3px 5px #000)!important;z-index:19!important;}
+.corridor-stage .niffler-upper img{display:block;width:100%;height:auto;object-fit:contain;object-position:bottom;}
+@media(max-width:700px){.corridor-stage .niffler-upper{right:3%!important;bottom:5%!important;width:54px!important;}}
+
+/* Godrikova skutečná kresba je stále klikací, i když se odstranil velký výjev z pozadí. */
+.hall-of-fame .founder-godric-v433{left:23%!important;top:11%!important;width:clamp(92px,9vw,154px)!important;height:clamp(140px,20vw,265px)!important;z-index:21!important;filter:brightness(.72) contrast(.91) drop-shadow(0 7px 12px #000)!important;}
+.hall-of-fame .founder-godric-v433:hover{filter:brightness(1.03) drop-shadow(0 8px 12px #000)!important;}
+@media(max-width:700px){.hall-of-fame .founder-godric-v433{left:13%!important;top:21%!important;width:80px!important;height:140px!important;}}

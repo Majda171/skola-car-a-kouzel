@@ -12,23 +12,47 @@
   };
   const readStudent=()=>{try{return JSON.parse(localStorage.getItem(STUDENT_KEY))}catch{return null}};
   async function ensureAccess(){
-    let student=readStudent();
-    if((!student || student.houseCode!==house) && window.BradaviceDB?.client){
-      try{student=await window.BradaviceDB.hydrateStudent()}catch{}
+    // Autorizace se NIKDY neodvozuje z localStorage, který lze ručně změnit.
+    // I hostovaný přístup ke vlajce musí potvrdit Supabase pro přihlášeného uživatele.
+    let ok=false,guest=false;
+    const db=window.BradaviceDB?.client;
+    if(db){
+      try{
+        const {data:authData,error:authError}=await db.auth.getUser();
+        if(authError)throw authError;
+        const uid=authData?.user?.id;
+        if(uid){
+          const {data:profile,error:profileError}=await db.from('profiles')
+            .select('house_code,banned_at').eq('id',uid).maybeSingle();
+          if(profileError)throw profileError;
+          if(profile&&!profile.banned_at){
+            if(profile.house_code===house)ok=true;
+            else if(type==='lounge'){
+              const {data:allowed,error:visitError}=await db.rpc('v453_flag_can_enter',{p_target_house:house});
+              if(!visitError&&allowed===true){ok=true;guest=true;}
+            }
+          }
+        }
+      }catch(err){console.warn('Kolejní vstup se nepodařilo ověřit.',err)}
     }
-    const ok=Boolean(student && student.houseCode===house);
     document.body.classList.remove('loading');
     document.body.classList.add('access-ready');
+    if(guest){
+      document.body.classList.add('house-guest');
+      const sw=document.getElementById('switchSpace');if(sw)sw.hidden=true;
+      document.querySelectorAll('.house-chat-door').forEach(el=>el.hidden=true);
+      const dashboard=document.getElementById('houseDashboard');if(dashboard)dashboard.href='vlajkova-vyprava.html';
+    }
     if(!ok){
       document.body.classList.add('house-locked');
-      const houseName=document.getElementById('lockedHouseName');
-      if(houseName) houseName.textContent=names[house]||'této koleje';
+      const name=document.getElementById('lockedHouseName');
+      if(name)name.textContent=names[house]||'této koleje';
     }
   }
   ensureAccess();
 
   const dashboard=document.getElementById('houseDashboard');
-  if(dashboard) dashboard.href=dashboards[house]||'koleje.html';
+  if(dashboard&&!document.body.classList.contains('house-guest')) dashboard.href=dashboards[house]||'koleje.html';
   const switchLink=document.getElementById('switchSpace');
   if(switchLink){
     const target=type==='lounge'?'bedroom':'lounge';

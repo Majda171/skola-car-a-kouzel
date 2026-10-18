@@ -1,7 +1,7 @@
 
 /* v451 – diskrétní klikací místa a žádné velké textové cedule */
-.corridor-stage .v451-hotspot{position:absolute!important;display:block!important;z-index:36!important;pointer-events:auto!important;background:transparent!important;border:1px solid transparent!important;box-shadow:none!important;color:transparent!important;font-size:0!important;padding:0!important;margin:0!important;text-decoration:none!important;border-radius:10px;transition:background .2s,box-shadow .2s,border-color .2s}
-.corridor-stage .v451-hotspot:hover,.corridor-stage .v451-hotspot:focus-visible{background:rgba(228,184,104,.08)!important;border-color:#e2bf797a!important;box-shadow:0 0 24px #e1bb6a4f!important;outline:2px solid transparent}
+.corridor-stage .v451-hotspot{position:absolute!important;display:block!important;z-index:36!important;pointer-events:auto!important;background:transparent!important;border:0!important;box-shadow:none!important;color:transparent!important;font-size:0!important;padding:0!important;margin:0!important;text-decoration:none!important;border-radius:10px;transition:none!important;outline:none!important}
+.corridor-stage .v451-hotspot:hover,.corridor-stage .v451-hotspot:focus-visible{background:transparent!important;border:0!important;box-shadow:none!important;outline:none!important}
 .corridor-stage .v451-hotspot::after{content:attr(data-hint);position:absolute;top:100%;left:0;z-index:37;padding:5px 9px;max-width:240px;white-space:nowrap;font:600 12px Georgia,serif;color:#fff2ce;background:#1c1612eb;border:1px solid #b59762;border-radius:5px;opacity:0;transition:opacity .2s;pointer-events:none}
 .corridor-stage .v451-hotspot:hover::after,.corridor-stage .v451-hotspot:focus-visible::after{opacity:1}
 .v451-mytrle{position:absolute;right:7%;bottom:7%;height:min(72vh,650px);width:auto;max-width:35%;z-index:15;border:0;padding:0;background:none;cursor:pointer;filter:brightness(.80) drop-shadow(0 7px 12px #090909a8);animation:v451-float 5s ease-in-out infinite}
@@ -27,3 +27,42 @@
 /* Při návratu na již rozběhnutou oslavu jsou hosté přítomní okamžitě. */
 .v451-party-ghost.v451-resident{opacity:.56;animation:v451-hover 6s ease-in-out infinite alternate!important}
 @media(prefers-reduced-motion:reduce){.v451-party-ghost.v451-resident{animation:none!important}}
+
+
+/* v451b — remove the dark strip above divination and deathday scenes. */
+body.v450-page .v450-top{
+ position:absolute;top:0;left:0;right:0;width:100%;z-index:70;
+ background:transparent;border:0;box-shadow:none;
+ padding:14px clamp(14px,3vw,35px);pointer-events:none;
+}
+body.v450-page .v450-top a{
+ pointer-events:auto;color:#f3dfbd;text-shadow:0 2px 7px #000,0 0 15px #000;
+ font-size:14px;line-height:1.4;
+}
+body.v450-page .v450-top a:hover,body.v450-page .v450-top a:focus-visible{color:#fff2d2;text-shadow:0 0 10px #ecc17c,0 1px 6px #000}
+body.v450-page .v450-place{height:100svh;min-height:550px;}
+
+/* Vstup do oslavy jsou obyčejné dveře, nikoliv tajný průchod. Malé, přesně zaměřené aktivní místo. */
+.corridor-stage a.v450-nick-entrance.v450a-scene-hotspot{
+ left:43%!important;top:33%!important;width:15%!important;height:28%!important;
+}
+/* Duchové oslavy jsou kolem tabule — ne postaveni na jídle nebo přímo na stole. */
+.v451-party-ghost{max-width:none;object-position:bottom;}
+.v451-party-ghost:nth-child(1){left:2%;right:auto;top:auto;bottom:7%;height:min(65vh,570px);max-width:28vw;}
+.v451-party-ghost:nth-child(2){left:auto;right:1%;top:auto;bottom:7%;height:min(63vh,550px);max-width:28vw;}
+.v451-party-ghost:nth-child(3){left:1%;right:auto;top:8%;bottom:auto;height:min(29vh,255px);max-width:16vw;}
+/* Protiva je drobnější a poletuje u horní části sálu. */
+.v451-party-ghost:nth-child(4){left:auto;right:10%;top:7%;bottom:auto;height:min(26vh,230px);max-width:15vw;}
+@media(max-width:700px){
+ body.v450-page .v450-top{padding:10px 12px;gap:8px}
+ body.v450-page .v450-top a{font-size:12px}
+ .corridor-stage a.v450-nick-entrance.v450a-scene-hotspot{left:40%!important;top:32%!important;width:22%!important;height:27%!important;}
+ .v451-party-ghost:nth-child(1){left:-2%;bottom:12%;top:auto;height:46vh!important;max-width:35vw;}
+ .v451-party-ghost:nth-child(2){right:-2%;bottom:12%;top:auto;height:43vh!important;max-width:35vw;}
+ .v451-party-ghost:nth-child(3){left:3%;top:14%;bottom:auto;height:23vh!important;max-width:24vw;}
+ .v451-party-ghost:nth-child(4){right:5%;top:13%;bottom:auto;height:18vh!important;max-width:20vw;}
+}
+
+/* v451b final: Ufňukaná Uršula přilétá pouze do slavnostní síně, mimo prostřený stůl. */
+.v450-nick-scene .v451-party-ghost:nth-child(5){left:16%;right:auto;top:12%;bottom:auto;height:min(43vh,360px);max-width:19vw;filter:brightness(.74) drop-shadow(0 3px 13px #91b4dc46)}
+@media(max-width:700px){.v450-nick-scene .v451-party-ghost:nth-child(5){left:12%;top:18%;bottom:auto;height:30vh!important;max-width:29vw}}

@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap');
 *{box-sizing:border-box}
 .v450-page{margin:0;background:#07080b;color:#f5e7cb;font-family:Georgia,serif;min-height:100vh}
-.v450-top{position:relative;z-index:70;display:flex;gap:20px;justify-content:space-between;flex-wrap:wrap;padding:12px clamp(15px,3vw,40px);background:#15110e;border-bottom:1px solid #8f724a8a;font:15px Georgia,serif}
-.v450-top a{color:#f1d7ab;text-decoration:none}.v450-top a:hover{text-decoration:underline}
+.v450-top{position:fixed;z-index:70;left:3.5vw;right:3.5vw;top:18px;display:flex;gap:20px;justify-content:space-between;flex-wrap:wrap;padding:0;background:transparent;border:0;box-shadow:none;font:15px Georgia,serif;pointer-events:none}
+.v450-top a{pointer-events:auto;color:#f1d7ab;text-decoration:none;text-shadow:0 2px 9px #000}.v450-top a:hover{color:#fff;text-decoration:none}
 .v450-place{position:relative;width:100%;height:clamp(550px,calc(100vh - 55px),950px);min-height:550px;overflow:hidden;isolation:isolate;background-position:center;background-size:cover;background-repeat:no-repeat}
 .v450-place::after{content:'';pointer-events:none;position:absolute;inset:0;z-index:2;background:linear-gradient(90deg,#03030660,transparent 36%,transparent 70%,#03030630),linear-gradient(0deg,#0101029f,transparent 43%)}
 .v450-divination{background-image:url('img/jasnovidectvi-v450.webp')}
@@ -56,28 +56,24 @@
 /* Transparent hotspot: outline and accessible hint only on hover/focus, subtle marker on touch */
 .corridor-stage a.v450a-scene-hotspot{
   position:absolute!important;display:block!important;
-  z-index:26!important;border:1px solid transparent!important;
+  z-index:26!important;border:0!important;
   background:transparent!important;color:transparent!important;
   font-size:0!important;letter-spacing:0!important;padding:0!important;
   max-width:none!important;margin:0!important;opacity:1!important;
   border-radius:9px!important;cursor:pointer!important;text-decoration:none!important;
   transform:none!important;box-shadow:none!important;
-  outline-offset:2px;transition:border-color .25s,box-shadow .25s,background .25s;
+  outline:none!important;transition:none!important;
 }
-.corridor-stage a.v450a-scene-hotspot::before{
-  content:'';position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse at center,rgba(245,205,130,.11),transparent 70%);
-  opacity:.18;transition:opacity .22s;
-}
+.corridor-stage a.v450a-scene-hotspot::before{display:none!important;content:none!important}
 .corridor-stage a.v450a-scene-hotspot:hover,
 .corridor-stage a.v450a-scene-hotspot:focus-visible {
-  border-color:rgba(237,202,131,.65)!important;
-  background:rgba(219,184,110,.08)!important;
-  box-shadow:0 0 24px 5px rgba(226,187,100,.26),inset 0 0 26px rgba(225,182,109,.13)!important;
-  outline:2px solid transparent;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  outline:none!important;
 }
 .corridor-stage a.v450a-scene-hotspot:hover::before,
-.corridor-stage a.v450a-scene-hotspot:focus-visible::before{opacity:1}
+.corridor-stage a.v450a-scene-hotspot:focus-visible::before{display:none!important;opacity:0!important}
 .corridor-stage a.v450a-scene-hotspot::after{
   content:attr(data-hint);position:absolute;left:50%;bottom:-34px;transform:translateX(-50%);
   white-space:nowrap;max-width:80vw;padding:6px 9px;border-radius:5px;
@@ -105,8 +101,8 @@
   .v450-caption{bottom:5%!important}
   .corridor-stage a.v450-corridor-divination.v450a-scene-hotspot{top:18%!important;left:63%!important;width:32%!important;height:44%!important}
   .corridor-stage a.v450-nick-entrance.v450a-scene-hotspot{left:33%!important;width:37%!important;top:23%!important;height:43%!important}
-  .corridor-stage a.v450a-scene-hotspot::before{opacity:.75;background:radial-gradient(circle at center,rgba(231,194,115,.16),transparent 65%)}
-  .corridor-stage a.v450a-scene-hotspot{border-color:rgba(224,190,120,.14)!important}
+  .corridor-stage a.v450a-scene-hotspot::before{display:none!important}
+  .corridor-stage a.v450a-scene-hotspot{border:0!important}
   .corridor-underground-1 .corridor-caption .corridor-discovery-link{font-size:.57rem;padding:8px 9px;line-height:1.4}
 }
 

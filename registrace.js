@@ -29,8 +29,8 @@ function validate(){
   if(firstName.length<2){setError('firstName','Zadejte jméno alespoň o 2 znacích.');valid=false;}
   if(lastName.length<2){setError('lastName','Zadejte příjmení alespoň o 2 znacích.');valid=false;}
   if(!fields.email.validity.valid||!email){setError('email','Zadejte platnou e-mailovou adresu.');valid=false;}
-  const strongPassword=password.length>=12 && /[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/.test(password) && /[a-záčďéěíňóřšťúůýž]/.test(password) && /\d/.test(password) && /[^A-Za-z0-9ÁČĎÉĚÍŇÓŘŠŤÚŮÝŽáčďéěíňóřšťúůýž]/.test(password);
-  if(!strongPassword){setError('password','Použij alespoň 12 znaků, malé i velké písmeno, číslo a speciální znak.');valid=false;}
+  const validPassword=password.length>=8;
+  if(!validPassword){setError('password','Heslo musí mít minimálně 8 znaků.');valid=false;}
   if(passwordConfirm!==password){setError('passwordConfirm','Hesla se neshodují.');valid=false;}
   if(!fields.consent.checked){setError('consent','Pro registraci je potřeba souhlas potvrdit.');valid=false;}
   return {valid,data:{salutation:salutation?.value||'',firstName,lastName,email,password}};

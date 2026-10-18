@@ -9,3 +9,7 @@
 
 /* v43.5.8 — tlačítko je uvnitř .scene-copy, která má pointer-events:none. */
 .potion-duel-launch{position:relative;z-index:82;pointer-events:auto!important}
+
+/* Recept si student memoruje v přesném pořadí: jedna přísada / úkon = jeden řádek. */
+#potionDuelRecipeSteps{display:flex!important;flex-direction:column!important;gap:6px!important;list-style-type:decimal!important;list-style-position:outside!important;padding-left:1.9em!important;max-height:51vh;overflow-y:auto;}
+#potionDuelRecipeSteps li{display:list-item!important;width:100%!important;padding:3px 0!important;break-inside:avoid!important;white-space:normal!important;}

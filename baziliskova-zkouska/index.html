@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#100e0b">
+  <meta name="description" content="Baziliškova zkouška – samostatná kouzelnická hra Had v Tajemné komnatě.">
+  <title>Baziliškova zkouška | Tajemná komnata</title>
+  <link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../supabase-config.js?v=443"></script><script src="../access-guard.js?v=448b"></script>
+  <script defer src="script.js?v=453c"></script>
+<link rel="stylesheet" href="../access-guard.css?v=448b"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<style>.castle-return{margin-bottom:18px}.castle-return a{color:#e6d09b;text-decoration:none;font:600 12px Cinzel,Georgia,serif}.castle-return a:hover{text-decoration:underline}</style></head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <div class="site-wrap">
+    <nav class="castle-return"><a href="../tajemna-komnata.html">← Zpět do Tajemné komnaty</a></nav>
+<header class="masthead">
+      <a class="crest" href="#hra" aria-label="Přejít ke hře"><span class="crest-crestline">✥ &nbsp; BRADAVICE &nbsp; ✥</span><img class="crest-emblem" src="assets/bazilisek.webp" alt=""/><span class="crest-foot">PEČEŤ KOMNATY</span></a>
+      <div class="masthead-copy">
+        <p class="eyebrow"><span class="eyebrow-line"></span> BRADAVICE · ŠKOLA ČAR A KOUZEL <span class="eyebrow-line"></span></p>
+        <h1>Baziliškova <em>zkouška</em></h1>
+        <p class="intro">V hlubinách hradu se probouzí skutečný bazilišek. Veď jej kamennou komnatou, sbírej runy a zapiš svůj výkon do školní kroniky.</p>
+      </div>
+      <button id="soundButton" class="icon-button sound-button" type="button" aria-label="Zapnout zvuky" aria-pressed="false" title="Zvuky">
+        <span id="soundGlyph" aria-hidden="true">♪</span><span id="soundLabel">ZVUK VYPNUT</span>
+      </button>
+    </header>
+
+    <main class="game-layout" id="hra">
+      <section class="arena-section" aria-labelledby="arenaTitle">
+        <div class="section-top">
+          <div class="section-name"><span class="diamond">✥</span><h2 id="arenaTitle">Podzemí Tajemné komnaty</h2></div>
+          <span class="mode-current" id="modeLabel">KLASICKÁ ZKOUŠKA</span>
+        </div>
+        <div class="arena-frame" id="arenaFrame">
+          <div class="frame-corner tl" aria-hidden="true">✥</div><div class="frame-corner tr" aria-hidden="true">✥</div>
+          <div class="frame-corner bl" aria-hidden="true">✥</div><div class="frame-corner br" aria-hidden="true">✥</div>
+          <canvas id="gameCanvas" width="630" height="630" role="img" aria-label="Herní pole: veď baziliška šipkami nebo klávesami W A S D."></canvas>
+          <div id="gameOverlay" class="game-overlay" aria-live="polite">
+            <div class="overlay-inner">
+              <div class="sigil" aria-hidden="true"><img src="assets/bazilisek.webp" alt=""></div>
+              <p class="overlay-overline" id="overlayOverline">TAJEMNÁ KOMNATA ČEKÁ</p>
+              <h3 id="overlayHeading">Probuď baziliška</h3>
+              <p id="overlayDescription">Skutečný strážce Tajemné komnaty se probouzí. Sbírej runy, prodlužuj jeho šupinaté tělo a vyhni se zdem.</p>
+              <button id="overlayButton" class="primary-button" type="button">Vstoupit do komnaty <span aria-hidden="true">↗</span></button>
+              <p class="overlay-hint" id="overlayHint">ENTER / MEZERNÍK • KLIKNI PRO START</p>
+            </div>
+          </div>
+          <div class="board-status" aria-hidden="true"><span class="pulse-dot"></span><span id="boardStatusText">STRÁŽCE SPÍ</span></div>
+        </div>
+        <div class="under-arena">
+          <div class="under-guide"><span class="guide-icon">✧</span> <span><strong>Zlatá runa</strong> +10 &nbsp;·&nbsp; <strong>Vzácný ametyst</strong> +35</span></div>
+          <div class="under-guide keyboard-guide">POHYB <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> / WASD &nbsp;·&nbsp; <kbd>MEZERA</kbd> PAUZA</div>
+        </div>
+        <div class="mobile-controls" aria-label="Dotykové ovládání">
+          <span class="mobile-title">OVLÁDÁNÍ POHYBU</span>
+          <div class="dpad">
+            <button class="dir-button up" data-dir="up" type="button" aria-label="Nahoru">↑</button>
+            <button class="dir-button left" data-dir="left" type="button" aria-label="Doleva">←</button>
+            <button class="dir-button down" data-dir="down" type="button" aria-label="Dolů">↓</button>
+            <button class="dir-button right" data-dir="right" type="button" aria-label="Doprava">→</button>
+          </div>
+          <button id="pauseMobile" class="pause-mobile" type="button">Ⅱ Pozastavit</button>
+          <p>Na herním poli můžeš také přejet prstem směrem pohybu.</p>
+        </div>
+      </section>
+
+      <aside class="sidebar" aria-label="Herní přehled">
+        <div class="sidebar-panel score-panel">
+          <div class="panel-overline"><span class="tiny-star">✦</span> ZÁPIS DO ŠKOLNÍ KRONIKY</div>
+          <div class="score-hero"><span>ZÍSKANÉ BODY</span><strong id="scoreValue" aria-live="polite">000</strong></div>
+          <div class="two-stats"><div><span>OSOBNÍ REKORD</span><strong id="bestValue">000</strong></div><div><span>REKORD KOMNATY</span><strong id="leaderValue">000</strong></div></div>
+          <div class="progress-head"><span>CESTA ZA REKORDEM</span><span id="progressValue">0 %</span></div>
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+          <p class="reward-note"><span>✧</span> <strong>+150 kolejních bodů</strong> za nový ověřený školní rekord.</p>
+        </div>
+
+        <div class="sidebar-panel compact-panel">
+          <div class="panel-heading"><h2>Vyber zkoušku</h2><span class="tiny-star">✧</span></div>
+          <div class="mode-switch" role="group" aria-label="Herní režim">
+            <button id="classicMode" type="button" class="mode-btn selected" data-mode="classic" aria-pressed="true"><span>♜</span><b>Volná síň</b><small>Bez překážek</small></button>
+            <button id="ruinsMode" type="button" class="mode-btn" data-mode="ruins" aria-pressed="false"><span>⛶</span><b>Kamenné ruiny</b><small>Překážky</small></button>
+          </div>
+          <div class="name-row"><label for="playerName">JMÉNO STUDENTA (lokální trénink)</label><input type="text" id="playerName" maxlength="18" autocomplete="off" placeholder="Neznámý student"></div>
+        </div>
+
+        <div class="sidebar-panel leaderboard-panel">
+          <div class="panel-heading"><h2>Síň slávy</h2><span class="tiny-star">✧</span></div>
+          <p class="panel-subtext">Tři nejlepší hráči ze všech kolejí v klasické zkoušce. Ruiny mají místní rekordy.</p>
+          <ol id="leaderboard" class="leaderboard-list" aria-live="polite"><li class="empty-record">Zatím žádný záznam. První místo čeká!</li></ol>
+          <p class="local-note">✧ Při přihlášení se rekordy ukládají do školní kroniky. Když Supabase není dostupná, hraješ jen trénink bez kolejních bodů.</p>
+        </div>
+        <div class="quick-actions"><button id="pauseButton" class="outline-button" type="button" disabled>Ⅱ &nbsp;Pauza</button><button id="restartButton" class="outline-button" type="button">↺ &nbsp;Nová hra</button></div>
+      </aside>
+    </main>
+    <footer class="page-footer"><span>✦ &nbsp; Vědomosti, odvaha a trocha štěstí &nbsp; ✦</span><span>BAZILIŠKOVA ZKOUŠKA · BRADAVICE</span></footer>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

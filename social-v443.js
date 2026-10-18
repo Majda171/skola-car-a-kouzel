@@ -3,6 +3,8 @@
   const $=id=>document.getElementById(id), DB=window.BradaviceDB?.client;
   const tabs=[...document.querySelectorAll('[data-tab]')];
   let me=null, friendships=[], people=[], activePeer='', loadedTab='', poll=null;
+  // Zachová rozbalené příspěvky i při automatickém obnovování feedu.
+  const expandedWallPosts=new Set();
   const notice=$('socialNotice');
   const show=(msg,isError=false)=>{notice.textContent=msg;notice.style.color=isError?'#f0a497':'#d2be85'};
   const clean=(parent)=>{while(parent.firstChild)parent.removeChild(parent.firstChild)};
@@ -33,7 +35,22 @@
       avatar.setAttribute('aria-hidden','true');
       const who=node('div','post-author-info');who.append(node('strong','',p.author_name||'Student'));
       const meta=node('div','post-meta');meta.append(node('span','house',p.house_name||'Bradavice'),node('span','post-separator',' · '),node('time','',fmt(p.created_at)));who.append(meta);
-      hdr.append(avatar,who);post.append(hdr,node('p','post-content',p.message));
+      hdr.append(avatar,who);post.append(hdr);
+      // Stejně jako na sociálních sítích ukazujeme nejdříve jen čtyři řádky.
+      // Vkládáme prostý text, nikoli HTML od ostatních studentů.
+      const postId=String(p.id),isExpanded=expandedWallPosts.has(postId);
+      const body=node('div','post-body'),content=node('p','post-content',p.message||'');
+      if(!isExpanded)content.classList.add('post-content-collapsed');
+      const toggle=node('button','post-expand',isExpanded?'Zobrazit méně':'Zobrazit více');
+      toggle.type='button';toggle.setAttribute('aria-expanded',String(isExpanded));
+      toggle.addEventListener('click',()=>{
+        const expand=content.classList.contains('post-content-collapsed');
+        content.classList.toggle('post-content-collapsed',!expand);
+        if(expand)expandedWallPosts.add(postId);else expandedWallPosts.delete(postId);
+        toggle.textContent=expand?'Zobrazit méně':'Zobrazit více';
+        toggle.setAttribute('aria-expanded',String(expand));
+      });
+      body.append(content,toggle);post.append(body);
       const safeLink=p.link_url&&urlFor(p.link_url);if(safeLink){const a=node('a','post-link','🔗 Otevřít přiložený odkaz');a.href=safeLink;a.target='_blank';a.rel='noopener noreferrer nofollow';post.append(a)}
       if(p.image_path){
         const {data:img,error:imgError}=await DB.storage.from('bradavice-wall').createSignedUrl(p.image_path,3600);
@@ -48,6 +65,11 @@
         await loadWall().catch(e=>show(e.message,true));
       };remove.className='post-delete';tools.append(remove)}
       post.append(tools);wrap.append(post);
+      // Vykreslená výška rozhodne, zda má příspěvek skutečně skrytý text.
+      // Krátké zprávy tak nemají zbytečné tlačítko „Zobrazit více“.
+      if(!isExpanded){
+        toggle.hidden=content.scrollHeight<=content.clientHeight+2;
+      }
     }
   }
   async function reportContent(kind,id){

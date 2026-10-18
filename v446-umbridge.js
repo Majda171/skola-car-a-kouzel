@@ -19,7 +19,7 @@
  kittenButton.addEventListener('click',()=>{audioUnlocked=true;meow()});stage.appendChild(kittenButton);
  const kittenTimer=setInterval(()=>{if(audioUnlocked&&!document.hidden&&kittenSound.paused&&Math.random()<.65)meow()},20000);
  window.addEventListener('pagehide',()=>{clearInterval(kittenTimer);kittenSound.pause()});const key='bradavice_umbridge_visit_v446';let userId='guest';
- function notice(message){const bar=document.createElement('p');bar.className='v446-office-notice';bar.textContent=message;stage.append(bar);setTimeout(()=>bar.remove(),8500)}
+ function notice(message){const bar=document.createElement('p');bar.className='v446-office-notice';bar.textContent=window.BradaviceOsloveni?.inflect(message)??message;stage.append(bar);setTimeout(()=>bar.remove(),8500)}
  const pop=(title,body)=>{const ov=document.createElement('div');ov.className='v446-note-overlay';ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');const pane=document.createElement('section');pane.className='v446-note';const h=document.createElement('h2');h.textContent=title;const p=document.createElement('p');p.textContent=body;const actions=document.createElement('div');actions.className='v446-note-actions';pane.append(h,p,actions);ov.append(pane);document.body.append(ov);return {ov,actions,p,close:()=>ov.remove(),btn(label,callback){const b=document.createElement('button');b.type='button';b.textContent=label;b.onclick=callback;actions.append(b);return b}}};
  function counter(name){try{return Number(localStorage.getItem(`${key}_${userId}_${name}`)||0)}catch{return 0}}
  function setCounter(name,n){try{localStorage.setItem(`${key}_${userId}_${name}`,String(n))}catch{}}
@@ -60,7 +60,7 @@
     : '„Rozhlédnout? Ehm, ehm! Zvědavost není v osnovách, pokud ji ministerstvo výslovně neschválí. Tvé nápady by zasloužily trochu usměrnění.“';
    const note=result==='deducted'?'Tvé koleji bylo odečteno 50 bodů.':result==='already'?'Trest za toto zadržení už byl zaúčtován.':result==='pending'?'Čeká se na potvrzení z databáze.':'Bodový trest se zatím nepodařilo zaúčtovat.';
    const next=()=>{
-    const severe=Math.random()<.3;
+    const severe=(visits%2===0)||Math.random()<.35;
     UI?.render(severe?'„A nyní trocha užitečné práce, drahoušku. Za domácí úkol to nepovažuj. To je milé drobné kázeňské opatření.“':'„A teď mi zmiz z očí. Nebo si snad přeješ, abychom v debatě pokračovali s panem Filchem?“',[[severe?'Přijmout školní trest':'Děkuji, paní profesorko.',()=>{UI?.close();if(severe)punishment(types[Math.floor(Math.random()*types.length)])}]], note);
    };
    UI?.render(answer+' „Tvoje kolej si musí vzít ponaučení.“',[["Rozumím, paní profesorko.",next]],note);
@@ -78,7 +78,7 @@
   }catch(e){result='failed';console.warn('Umbridge: trest od Filche:',e);notice('Odečet 50 bodů zatím není nastavený v Supabase; body se neodečetly.');}
   finally{
    working=false;
-   if(UI?.status&&!document.getElementById('umbridgeDialog')?.hidden)UI.status.textContent=result==='deducted'?'Záznam v Supabase potvrzen: −50 bodů.':result==='already'?'Trest za toto zadržení již byl zaúčtován.':result==='recent'?'Opakovaný trest byl z bezpečnostních důvodů pozastaven.':'50 bodů zatím odečteno nebylo.';
+   if(UI?.status&&!document.getElementById('umbridgeDialog')?.hidden)UI.status.textContent=result==='deducted'?'Tvé koleji bylo odečteno 50 bodů.':result==='already'?'Trest za toto zadržení již byl zaúčtován.':result==='recent'?'Opakovaný trest byl z bezpečnostních důvodů pozastaven.':'50 bodů zatím odečteno nebylo.';
   }
  }
  async function sabotage(){
