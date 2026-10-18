@@ -5,7 +5,11 @@
   const page=(location.pathname.split('/').pop()||'').toLowerCase();
   const thirdFloor=page==='chodby-horni.html';
   // Výskyt je náhodný při vstupu; na třetím poschodí je přísnější dohled.
-  if(Math.random() >= (thirdFloor ? 0.72 : 0.42))return;
+  const visitKey='bradavice_filch_last_visit_v452';
+  let lastVisit=0;try{lastVisit=Number(sessionStorage.getItem(visitKey)||0)}catch{}
+  if(Date.now()-lastVisit<25*60*1000)return;
+  if(Math.random() >= (thirdFloor ? 0.27 : 0.20))return;
+  try{sessionStorage.setItem(visitKey,String(Date.now()))}catch{}
   const positions={
     'chodby.html':'3%',
     'chodby-schody.html':'5%',

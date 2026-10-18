@@ -1,7 +1,7 @@
 /* v446: Slozeni tri utrzku Freda a George. Dulezita rozhodnuti overuje Supabase. */
 (()=>{'use strict';
  const page=decodeURIComponent(location.pathname.split('/').pop()||'');
- const fragments={'knihovna.html':{id:'knihovna',x:38,y:83},'velka-sin.html':{id:'velka-sin',x:43,y:85},'chodby-horni.html':{id:'treti-poschodi',x:85,y:69}};
+ const fragments={'knihovna.html':{id:'knihovna',x:38,y:83},'velka-sin.html':{id:'velka-sin',x:43,y:85},'chodby-horni.html':{id:'treti-poschodi',x:62,y:89}};
  const storage='bradavice_fred_george_v446_';
  let userId='guest',parts=new Set(),done=false;
  const DB=window.BradaviceDB?.client;

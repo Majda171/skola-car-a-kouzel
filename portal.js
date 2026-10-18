@@ -124,7 +124,41 @@
       const validBadgeIds=new Set(A.allBadges.filter(b=>b.img).map(b=>b.id));const hist=(st.history||[]).filter(h=>h.type==='points'||(h.type==='badge'&&validBadgeIds.has(h.id))).slice(0,8);document.getElementById('pointsHistory').innerHTML=hist.length?hist.map(h=>h.type==='points'?`<div class="history-row"><span>${h.reason}</span><span>${Number(h.amount)>0?'+':''}${h.amount}</span></div>`:`<div class="history-row"><span>Odznak · ${A.allBadges.find(x=>x.id===h.id)?.title||h.id}</span><span>✦</span></div>`).join(''):'<div class="history-row"><span>Zatím bez záznamu</span><span>—</span></div>';
     }
   }
-  if(document.body.classList.contains('profile-page')){(async()=>{if(DB?.client)await DB.hydrateAll();await A?.syncToDatabase?.();renderProfile()})();window.addEventListener('bradavice:progress-synced',renderProfile);window.addEventListener('bradavice:profile-updated',renderProfile);document.getElementById('logoutLink')?.addEventListener('click',async e=>{e.preventDefault();await DB?.signOut();location.href='index.html'})}
+  if(document.body.classList.contains('profile-page')){
+    const info=document.getElementById('profilePointsStatus');
+    let refreshing=false;
+    async function refreshPersonalPoints(){
+      if(refreshing)return;
+      refreshing=true;
+      if(info)info.textContent='Ověřuji osobní body v Supabase…';
+      try{
+        // Osobní body jsou výhradně ze serverového profilu; součet čtyř kolejí je jiný přehled.
+        if(!DB?.client)throw new Error('Databáze není dostupná.');
+        await DB.hydrateStudent();
+        renderProfile();
+        if(info)info.textContent='Osobní body ověřené v Supabase.';
+        try{await DB.hydrateProgress();renderProfile()}
+        catch(e){console.warn('Historie bodů není dostupná:',e);if(info)info.textContent='Osobní body jsou načtené, ale historie se nepodařila obnovit.'}
+      }catch(err){
+        console.warn('Načtení osobních bodů se nezdařilo:',err);
+        if(info)info.textContent='Osobní body se nepodařilo načíst. Zkus Obnovit body.';
+      }finally{refreshing=false}
+    }
+    const refreshButton=document.getElementById('refreshPersonalPoints');
+    refreshButton?.addEventListener('click',refreshPersonalPoints);
+    (async()=>{
+      try{if(DB?.client)await DB.hydrateAll()}
+      catch(err){console.warn('Synchronizace profilu selhala:',err)}
+      renderProfile();
+      try{await A?.syncToDatabase?.()}
+      catch(err){console.warn('Synchronizace odznaků selhala:',err)}
+      renderProfile();
+      await refreshPersonalPoints();
+    })();
+    window.addEventListener('bradavice:progress-synced',renderProfile);
+    window.addEventListener('bradavice:profile-updated',renderProfile);
+    document.getElementById('logoutLink')?.addEventListener('click',async e=>{e.preventDefault();await DB?.signOut();location.href='index.html'})
+  }
   document.querySelectorAll('.defense-hotspot').forEach(el=>el.addEventListener('click',()=>{el.classList.remove('activated');void el.offsetWidth;el.classList.add('activated');setTimeout(()=>el.classList.remove('activated'),780);if(el.dataset.defense==='sigil')A?.award('tajemstvi-hradu',{silent:true})}));
   document.querySelectorAll('.quidditch-player').forEach(p=>p.addEventListener('click',()=>{p.classList.remove('swoop');void p.offsetWidth;p.classList.add('swoop');setTimeout(()=>p.classList.remove('swoop'),800)}));
   const sceneToast=message=>{if(!message)return;let box=document.querySelector('.scene-toast');if(!box){box=document.createElement('div');box.className='scene-toast';document.body.appendChild(box)}box.textContent=message;box.classList.remove('show');void box.offsetWidth;box.classList.add('show');clearTimeout(sceneToast.timer);sceneToast.timer=setTimeout(()=>box.classList.remove('show'),2600)};
