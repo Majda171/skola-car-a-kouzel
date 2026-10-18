@@ -19,8 +19,8 @@
 .v450-dialog h2{font:600 clamp(1.6rem,4vw,2.1rem) 'Cormorant Garamond',Georgia,serif;color:#ead09b;margin:0 0 12px}.v450-dialog p{font:1rem/1.65 Georgia,serif;white-space:pre-line}.v450-dialog-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
 .v450-nick-entrance{position:absolute;z-index:25;bottom:22%;left:50%;transform:translateX(-50%);font:14px Georgia,serif;color:#f3ddb2;border:1px solid #9f8456;padding:10px 14px;background:#20160fcf;text-decoration:none;box-shadow:0 6px 24px #000b}.v450-nick-entrance:hover{background:#55402a}
 .v450-corridor-divination{position:absolute!important;z-index:20;top:21%;left:23%;max-width:290px;padding:8px;background:#20180fcc;color:#f9e3b1;border:1px solid #977348;font-size:14px}
-.v450-dobby{position:absolute;z-index:16;right:11%;bottom:8%;height:clamp(210px,52vh,490px);max-width:27%;padding:0;border:0;background:transparent;filter:brightness(.82) drop-shadow(0 9px 10px #000e);cursor:pointer}
-.v450-dobby img{display:block;height:100%;width:100%;object-fit:contain;object-position:bottom}.v450-dobby:hover{filter:brightness(1.05) drop-shadow(0 0 14px #f9dca36a)}.v450-dobby[hidden]{display:none!important}
+.v450-dobby{position:absolute;z-index:16;left:55%;right:auto;bottom:1%;height:clamp(200px,44vh,390px);max-width:27%;padding:0;border:0;background:transparent;transform:translateX(-50%);filter:brightness(.82) drop-shadow(0 4px 5px #000d);cursor:pointer}
+.v450-dobby img{display:block;height:100%;width:100%;object-fit:contain;object-position:bottom;position:relative;z-index:1}.v450-dobby::after{content:"";position:absolute;z-index:0;bottom:0;left:50%;transform:translateX(-50%);width:57%;height:5%;border-radius:50%;background:rgba(0,0,0,.65);filter:blur(8px);pointer-events:none}.v450-dobby:hover{filter:brightness(1.05) drop-shadow(0 0 14px #f9dca36a)}.v450-dobby[hidden]{display:none!important}
 /* Kitchen gallery: similar real frame sizes, no repeated art, no floating fragments. */
 .kitchen-v25 .kitchen-wall-gallery .kitchen-wall-painting{top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;width:clamp(68px,8.2vw,132px)!important;height:clamp(115px,20vh,172px)!important;object-fit:contain;opacity:.83!important;transform:none!important;filter:brightness(.72) sepia(.12) drop-shadow(0 7px 9px #000e)!important}
 .kitchen-v25 .kitchen-wall-gallery .kitchen-paint-a{left:4.5%!important;top:13%!important}
@@ -32,9 +32,85 @@
 /* social dropdown never obscures modal dialogs or the entire game on mobile */
 .v449-chat-bar{z-index:1250!important;right:12px!important;width:min(345px,calc(100vw - 24px))!important}.v449-chat-panel{max-height:min(56svh,410px);height:min(56svh,410px)}.v449-chat-toggle{padding:7px 12px!important}.v449-chat-heading{min-height:30px}
 .v450-stink{position:fixed;inset:0;pointer-events:none;z-index:18000;opacity:0;background:radial-gradient(ellipse at 60% 68%,#5e7b2cb8,transparent 55%),radial-gradient(ellipse at 23% 80%,#89a34c8c,transparent 50%);animation:v450-stink-animation 5s ease-in-out forwards;filter:blur(13px)}@keyframes v450-stink-animation{8%,55%{opacity:.65}100%{opacity:0}}
-@media(max-width:700px){.v450-place{height:calc(100svh - 65px);min-height:520px;background-position:52% center}.v450-trelawney{left:39%;height:62%;max-width:56%;bottom:18%}.v450-nick-character{width:115px;left:4%;bottom:29%}.v450-caption{bottom:12%;left:4%;right:4%;max-width:none;padding:12px}.v450-caption h1{font-size:1.75rem}.v450-dobby{right:4%;max-width:38%;height:37vh;bottom:10%}.v450-corridor-divination{top:16%;left:5%;font-size:12px;max-width:42%}.kitchen-v25 .kitchen-wall-gallery .kitchen-wall-painting{width:clamp(54px,12vw,85px)!important;height:clamp(75px,12vh,110px)!important}.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-a{left:1%!important;top:19%!important}.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-b{left:3%!important;top:46%!important}.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-c{right:2%!important;top:45%!important}.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-d{right:1%!important;top:18%!important}.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-e{left:5%!important;top:71%!important}}
+@media(max-width:700px){.v450-place{height:calc(100svh - 65px);min-height:520px;background-position:52% center}.v450-trelawney{left:39%;height:62%;max-width:56%;bottom:18%}.v450-nick-character{width:115px;left:4%;bottom:29%}.v450-caption{bottom:12%;left:4%;right:4%;max-width:none;padding:12px}.v450-caption h1{font-size:1.75rem}.v450-dobby{left:56%;right:auto;max-width:36%;height:clamp(170px,34vh,280px);bottom:1%}.v450-corridor-divination{top:16%;left:5%;font-size:12px;max-width:42%}.kitchen-v25 .kitchen-wall-gallery .kitchen-wall-painting{width:clamp(54px,12vw,85px)!important;height:clamp(75px,12vh,110px)!important}.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-a{left:1%!important;top:19%!important}.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-b{left:3%!important;top:46%!important}.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-c{right:2%!important;top:45%!important}.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-d{right:1%!important;top:18%!important}.kitchen-v25 .kitchen-wall-gallery .kitchen-paint-e{left:5%!important;top:71%!important}}
 @media(prefers-reduced-motion:reduce){.v450-stink{animation:none;opacity:.3}}
 .v450-food-preview{display:block;margin:6px auto 0;width:min(230px,70vw);height:115px;object-fit:contain;filter:brightness(.85)}
 .v450-quest-bag{border:1px solid #967c52;margin:10px 0;padding:11px;background:#211b16;border-radius:6px}.v450-quest-bag[hidden]{display:none!important}.v450-quest-bag h3{font:700 17px Georgia,serif;margin:0 0 9px}.v450-quest-food{display:flex;align-items:center;gap:12px}.v450-quest-food img{width:82px;height:65px;object-fit:contain}.v450-quest-food p{font:13px/1.45 Georgia,serif;color:#f0dfba;margin:0}
 
 .v450-stink-toast{position:fixed;z-index:19000;left:50%;bottom:60px;transform:translateX(-50%);width:min(500px,90vw);border:1px solid #ac925d;background:#201912ed;color:#efd5a4;text-align:center;padding:12px 16px;box-shadow:0 9px 26px #000b;border-radius:7px;font:14px Georgia,serif}
+
+/* v450a — opravene klikani, jedina navigace, neprerusovana scena */
+/* Parent of the three underground links has pointer-events:none in places.css; explicitly reactivate links. */
+.corridor-underground-1 .corridor-caption .corridor-discovery-link,
+.corridor-underground-2 .corridor-caption .corridor-discovery-link {
+  pointer-events:auto!important;position:relative;z-index:35;
+  cursor:pointer;display:flex;width:fit-content;max-width:min(410px,92vw);
+  margin-top:8px;line-height:1.35;
+}
+.corridor-underground-1 .corridor-caption .corridor-discovery-link:hover,
+.corridor-underground-1 .corridor-caption .corridor-discovery-link:focus-visible,
+.corridor-underground-2 .corridor-caption .corridor-discovery-link:hover,
+.corridor-underground-2 .corridor-caption .corridor-discovery-link:focus-visible {
+  border-color:#e9d191;box-shadow:0 0 15px #d5a75373;
+}
+/* Transparent hotspot: outline and accessible hint only on hover/focus, subtle marker on touch */
+.corridor-stage a.v450a-scene-hotspot{
+  position:absolute!important;display:block!important;
+  z-index:26!important;border:1px solid transparent!important;
+  background:transparent!important;color:transparent!important;
+  font-size:0!important;letter-spacing:0!important;padding:0!important;
+  max-width:none!important;margin:0!important;opacity:1!important;
+  border-radius:9px!important;cursor:pointer!important;text-decoration:none!important;
+  transform:none!important;box-shadow:none!important;
+  outline-offset:2px;transition:border-color .25s,box-shadow .25s,background .25s;
+}
+.corridor-stage a.v450a-scene-hotspot::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at center,rgba(245,205,130,.11),transparent 70%);
+  opacity:.18;transition:opacity .22s;
+}
+.corridor-stage a.v450a-scene-hotspot:hover,
+.corridor-stage a.v450a-scene-hotspot:focus-visible {
+  border-color:rgba(237,202,131,.65)!important;
+  background:rgba(219,184,110,.08)!important;
+  box-shadow:0 0 24px 5px rgba(226,187,100,.26),inset 0 0 26px rgba(225,182,109,.13)!important;
+  outline:2px solid transparent;
+}
+.corridor-stage a.v450a-scene-hotspot:hover::before,
+.corridor-stage a.v450a-scene-hotspot:focus-visible::before{opacity:1}
+.corridor-stage a.v450a-scene-hotspot::after{
+  content:attr(data-hint);position:absolute;left:50%;bottom:-34px;transform:translateX(-50%);
+  white-space:nowrap;max-width:80vw;padding:6px 9px;border-radius:5px;
+  border:1px solid #ba9864;background:rgba(20,17,13,.93);
+  color:#ffe9b7;font:600 12px Georgia,serif;letter-spacing:.01em;
+  opacity:0;pointer-events:none;transition:opacity .18s;
+}
+.corridor-stage a.v450a-scene-hotspot:hover::after,
+.corridor-stage a.v450a-scene-hotspot:focus-visible::after{opacity:1}
+/* Click on the actual staircase, not a textual banner over a portrait. */
+.corridor-stage a.v450-corridor-divination.v450a-scene-hotspot {
+  top:14%!important;left:65%!important;width:23%!important;height:61%!important;
+  right:auto!important;bottom:auto!important;
+}
+/* Click on the old doorway in deep cellars. */
+.corridor-stage a.v450-nick-entrance.v450a-scene-hotspot {
+  left:38%!important;top:19%!important;width:27%!important;height:52%!important;
+  right:auto!important;bottom:auto!important;
+}
+/* Ghost should read as a full-size figure, not a small decorative sticker. */
+.v450-nick-character{width:clamp(190px,22vw,355px)!important;max-height:80%!important;bottom:8%!important;left:5%!important}
+.v450-nick-character img{display:block;max-height:76vh;object-position:bottom}
+@media(max-width:700px){
+  .v450-nick-character{width:clamp(150px,38vw,210px)!important;bottom:24%!important;left:2%!important;max-height:58%!important}
+  .v450-caption{bottom:5%!important}
+  .corridor-stage a.v450-corridor-divination.v450a-scene-hotspot{top:18%!important;left:63%!important;width:32%!important;height:44%!important}
+  .corridor-stage a.v450-nick-entrance.v450a-scene-hotspot{left:33%!important;width:37%!important;top:23%!important;height:43%!important}
+  .corridor-stage a.v450a-scene-hotspot::before{opacity:.75;background:radial-gradient(circle at center,rgba(231,194,115,.16),transparent 65%)}
+  .corridor-stage a.v450a-scene-hotspot{border-color:rgba(224,190,120,.14)!important}
+  .corridor-underground-1 .corridor-caption .corridor-discovery-link{font-size:.57rem;padding:8px 9px;line-height:1.4}
+}
+
+/* v450b – tiché ovládání mňoukání v kabinetu, mimo chat a hudbu */
+.umbridge-office .v450b-kitten-button{position:absolute;z-index:90;right:18px;top:75px;border:1px solid #d3a5b5aa;border-radius:50%;width:38px;height:38px;background:#412332b8;color:#ffe8ef;font-size:20px;line-height:1;cursor:pointer;opacity:.67;transition:opacity .2s,filter .2s}
+.umbridge-office .v450b-kitten-button:hover,.umbridge-office .v450b-kitten-button:focus-visible{opacity:1;filter:drop-shadow(0 0 6px #e7bdcd)}
+@media(max-width:700px){.umbridge-office .v450b-kitten-button{top:58px;right:10px}}
