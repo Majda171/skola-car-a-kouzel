@@ -56,7 +56,7 @@
   // v443: kouzelny batoh jako spolecne vybaveni vsech prihlasenych studentu.
   if(!/^(index|registrace|prihlaseni-student|vylouceni|admin.*)\.html$/.test(location.pathname.split('/').pop()||'')){
     if(!document.querySelector('script[data-bradavice-bag]')){
-      const bag=document.createElement('script');bag.src='inventory-v445.js?v=450';bag.dataset.bradaviceBag='1';document.body.appendChild(bag);bag.addEventListener('load',()=>{const items=document.createElement('script');items.src='scene-items-v445.js?v=450';document.body.appendChild(items);const letters=document.createElement('script');letters.src='v449-letters.js?v=449';document.body.appendChild(letters)});
+      const bag=document.createElement('script');bag.src='inventory-v445.js?v=450';bag.dataset.bradaviceBag='1';document.body.appendChild(bag);bag.addEventListener('load',()=>{const items=document.createElement('script');items.src='scene-items-v445.js?v=457';document.body.appendChild(items);const letters=document.createElement('script');letters.src='v449-letters.js?v=449';document.body.appendChild(letters)});
     }
   }
 })();

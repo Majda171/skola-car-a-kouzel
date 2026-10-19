@@ -3,10 +3,10 @@
 (()=>{'use strict';
  const filename=decodeURIComponent(location.pathname.split('/').pop());
  const config={
-  'prihlaseniNeb.html':{house:'N',go:'nebelvir-spolecenska.html'},
-  'prihlaseniHavraspar.html':{house:'H',go:'havraspar-spolecenska.html'},
-  'prihlaseniMrzimor.html':{house:'M',go:'mrzimor-spolecenska.html'},
-  'prihlaseniZmijozel.html':{house:'Z',go:'zmijozel-spolecenska.html'}
+  'prihlaseniNeb.html':{house:'N',go:'Nebelvir.html'},
+  'prihlaseniHavraspar.html':{house:'H',go:'Havraspar.html'},
+  'prihlaseniMrzimor.html':{house:'M',go:'Mrzimor.html'},
+  'prihlaseniZmijozel.html':{house:'Z',go:'Zmijozel.html'}
  }[filename];if(!config)return;
  let visitor=false;let ready=null;let busy=false;
  const client=window.BradaviceDB?.client;
@@ -30,7 +30,7 @@
    if(!client)throw Error('Školní evidence není dostupná.');
    const {data,error}=await client.rpc('v453_flag_guess',{p_target_house:config.house,p_guess:answer});if(error)throw error;
    if(data?.ok){
-    if(msg)msg.textContent='Správně! Vstup do společenské místnosti je otevřen.';
+    if(msg)msg.textContent='Správně! Nejprve se otevře kolejní nástěnka.';
     if(config.house==='H')window.BradaviceAchievements?.award('orli-hadanka');
     if(config.house==='N')window.BradaviceAchievements?.award('dama-otevrela');
     if(config.house==='Z')window.BradaviceAchievements?.award('septane-heslo');

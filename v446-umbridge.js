@@ -93,8 +93,8 @@
    if(!DB){q.p.textContent='Úkol čeká na dokončení databázového nastavení.';activate.disabled=false;return}
    const {data,error}=await DB.rpc('v446_sabotage');
    if(error||data!=='success'){q.p.textContent=error?.message||'Úkol zatím nelze dokončit. Zkontroluj aktivní časové okno, pergamen a nastavení Supabase.';activate.disabled=false;return}
-   stage.classList.add('v446-stinky');meow();story.markDone();await window.BradaviceInventory?.reload?.();
-   q.p.textContent='Pod stolem se začíná šířit nevídaný zápach. Fred a George by na tebe byli pyšní. Teď rychle pryč!';q.actions.replaceChildren();q.btn('Utéct z kabinetu',()=>{q.close();location.href='chodby-horni.html'});
+   stage.classList.add('v446-stinky');window.BradaviceDungBombs?.blast({actor:'student',message:'💨 Bomby hnojůvky vybuchly pod stolem!'});if(character){stage.classList.remove('v446-empty');character.hidden=false;const portrait=character.querySelector('img');if(portrait)portrait.src='img/dolores-umbridge-smrad-v457.webp';}meow();story.markDone();await window.BradaviceInventory?.reload?.();
+   q.p.textContent='Bomby hnojůvky s rachotem vybuchly! Kabinet zaplnil zelený zápach a Umbridgeová se vrací v nejhorší náladě. Teď rychle pryč!';q.actions.replaceChildren();q.btn('Utéct z kabinetu',()=>{q.close();location.href='chodby-horni.html'});
   });
  }
  async function init(){

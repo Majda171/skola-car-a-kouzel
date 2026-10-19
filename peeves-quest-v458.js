@@ -1,0 +1,153 @@
+/* Bradavice v458 – druhý úkol Protivy s bezpečným serverovým zápisem bodů.
+   Stav a body potvrzuje výhradně Supabase RPC v458_peeves_baron_step.
+   Nic se nepřičítá v prohlížeči ani přes localStorage. */
+(() => {
+  'use strict';
+  const page = decodeURIComponent(location.pathname.split('/').pop() || '');
+  if (!['chodby.html', 'chodby-podzemni-2.html'].includes(page)) return;
+  const host = document.querySelector('main');
+  if (!host) return;
+  if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
+  const client = window.BradaviceDB?.client;
+  let stage = 'new';
+  let working = false;
+
+  function dialogue(title, body, buttons) {
+    document.querySelector('.v457-quest-dialog')?.remove();
+    const overlay = document.createElement('div');
+    overlay.className = 'v457-quest-dialog';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    const panel = document.createElement('section');
+    const h = document.createElement('h2');
+    const p = document.createElement('p');
+    const actions = document.createElement('div');
+    h.textContent = title;
+    p.textContent = body;
+    panel.append(h, p, actions);
+    overlay.append(panel);
+    document.body.append(overlay);
+    for (const [label, callback] of buttons) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = label;
+      button.addEventListener('click', () => {
+        if (working) return;
+        overlay.remove();
+        callback?.();
+      });
+      actions.append(button);
+    }
+    actions.querySelector('button')?.focus();
+  }
+
+  function errorBox(e, retry) {
+    console.warn('Protivovy nekalosti: nepodařilo se uložit krok', e);
+    dialogue('Školní evidence',
+      'Úkol se nepodařilo uložit do Supabase. Body se nepřipsaly. Zkontroluj připojení a instalaci SQL pro v458. ' + (e?.message || ''),
+      [['Zkusit znovu', retry], ['Zavřít', null]]);
+  }
+
+  async function advance(action, onSuccess) {
+    if (working) return;
+    if (!client) {
+      errorBox(new Error('Databáze není dostupná.'), () => advance(action, onSuccess));
+      return;
+    }
+    working = true;
+    try {
+      const { data, error } = await client.rpc('v458_peeves_baron_step', { p_action: action });
+      if (error) throw error;
+      if (!data || typeof data.stage !== 'string') throw new Error('Databáze nevrátila stav úkolu.');
+      stage = data.stage;
+      onSuccess?.(data);
+    } catch (e) {
+      errorBox(e, () => advance(action, onSuccess));
+    } finally {
+      working = false;
+    }
+  }
+
+  function encounter() {
+    advance('start', () => {
+      window.BradaviceDungBombs?.blast({ actor: 'protiva', message: '💥 Protiva právě odpálil bomby hnojůvky!' });
+      dialogue('Protivovy nekalosti',
+        'Z konce chodby se ozvalo ohlušující PRÁSK! Protiva se chechtá pod stropem a zelený oblak pohlcuje podlahu. „Filchík zuří, Filchík křičí, Protiva mu chodbu ničí!“',
+        [['Co se děje?', () => dialogue('Argus Filch',
+          '„Ten zatracený poltergeist! Všude ten příšerný zápach! Jestli ho ještě jednou nachytám…“ Filch málem klopýtne přes rozházené bomby hnojůvky.',
+          [['Promluvit s profesorkou', mcgonagall]])]]);
+    });
+  }
+
+  function mcgonagall() {
+    dialogue('Profesorka McGonagallová',
+      '„PROTIVO! Okamžitě toho nechte!“ Protiva jí vyplázne jazyk a zmizí za rohem. Profesorka se obrátí k tobě: „Tohohle ničemu umí zkrotit jedině Krvavý baron. Prosím, najdi ho ve sklepení a vyřiď mu, že jej žádám, aby Protivu opět usměrnil.“',
+      [['Vyrazit do sklepení', () => advance('seek_baron', () => { location.href = 'chodby-podzemni-2.html'; })]]);
+  }
+
+  function baron() {
+    dialogue('Krvavý baron',
+      '„Co ode mne žádáš, studente?“ Vyřídíš mu prosbu profesorky McGonagallové. Duch Zmijozelu přísně přikývne: „Zase Protiva. Zdá se, že zapomněl na náš poslední rozhovor. Velmi dobře. Postarám se o něj.“',
+      [['Poděkovat a vrátit se do chodby', () => advance('baron_found', () => { location.href = 'chodby.html'; })]]);
+  }
+
+  function complete() {
+    dialogue('Protivův strach',
+      'Krvavý baron zastoupí Protivovi cestu. „Vznešený barone! Vždyť to byla jen nevinná legrace!“ Baron klidně řekne: „Protivo.“ „Ano, pane! Už letím, pane! Hodný Protiva!“ Poltergeist s kvílením zmizí skrz strop.',
+      [['Promluvit s McGonagallovou', () => dialogue('Profesorka McGonagallová',
+        '„Výborně. Na hradě snad alespoň na nějaký čas zavládne klid. Děkuji za pomoc.“',
+        [['Dokončit úkol', () => advance('complete', async data => {
+          if (data.awarded) {
+            dialogue('Úkol splněn', 'Za pomoc při zkrocení Protivy získáváš 15 kolejních bodů! Body byly připsány do školní evidence.', [['Pokračovat', null]]);
+          } else {
+            dialogue('Úkol již splněn', 'Tento úkol už máš dokončený. Kolejní body se podruhé nepřipisují.', [['Pokračovat', null]]);
+          }
+          try {
+            await window.BradaviceDB?.hydrateAll?.();
+            window.dispatchEvent(new Event('bradavice:progress-synced'));
+          } catch (e) { console.warn('Synchronizace po odměně se nezdařila.', e); }
+        })]] )]]);
+  }
+
+  function addTrigger(label, className, handler) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = className;
+    button.textContent = label;
+    button.addEventListener('click', () => { button.remove(); handler(); });
+    host.append(button);
+  }
+
+  async function init() {
+    if (!client) return;
+    const { data: userResult, error: authError } = await client.auth.getUser();
+    if (authError || !userResult?.user?.id) return;
+    const { data, error } = await client.rpc('v458_peeves_baron_step', { p_action: 'status' });
+    if (error) throw error;
+    stage = data.stage;
+    if (page === 'chodby.html') {
+      if (stage === 'new' && Math.random() >= .35) return;
+      if (stage === 'new') addTrigger('Hluk na chodbě · zjistit, co se stalo', 'v457-quest-trigger', encounter);
+      else if (stage === 'filch') addTrigger('McGonagallová čeká na vysvětlení', 'v457-quest-trigger', mcgonagall);
+      else if (stage === 'return') addTrigger('Za McGonagallovou · dokončit úkol', 'v457-quest-trigger', complete);
+    }
+    if (page === 'chodby-podzemni-2.html' && stage === 'seek-baron') {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'v457-baron';
+      button.title = 'Krvavý baron';
+      const img = document.createElement('img');
+      img.src = 'img/ghost-krvavy-baron.webp';
+      img.alt = '';
+      const label = document.createElement('span');
+      label.textContent = 'Oslovit Krvavého barona';
+      button.append(img, label);
+      button.addEventListener('click', () => { button.remove(); baron(); });
+      host.append(button);
+    }
+  }
+  init().catch(e => {
+    console.warn('Protivův druhý úkol – načtení:', e);
+    // Nezobrazovat nepravdivý úspěch při chybě serveru.
+  });
+})();
