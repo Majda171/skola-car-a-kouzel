@@ -20,3 +20,22 @@
 .v453-house-flag{position:absolute;right:16%;bottom:28%;z-index:30;background:transparent;border:0;cursor:pointer;transition:filter .2s,transform .2s}.v453-house-flag .v453-pennant{width:clamp(80px,9vw,150px);min-height:160px}.v453-house-flag:hover{filter:brightness(1.3) drop-shadow(0 0 18px #ffd77b);transform:translateY(-3px)}.house-guest .house-chat-door,.house-guest #switchSpace{display:none!important}
 .v453-peeves-link{position:absolute;z-index:25;right:5%;top:20%;width:clamp(80px,9vw,140px);cursor:pointer;filter:drop-shadow(0 0 12px #68a7d066)}.v453-peeves-link img{width:100%;height:auto}.v453-peeves-link:hover{filter:brightness(1.2) drop-shadow(0 0 21px #b1edff)}
 @media(max-width:760px){.v453-flags-main{display:block;padding:12px}.v453-flag-houses{grid-template-columns:repeat(3,minmax(0,1fr))}.v453-flag-pick{min-height:140px}.v453-pennant{padding:7px 3px 17px}.v453-pennant img{height:48px}.v453-home-flags{right:2vw;bottom:12vh;max-width:220px}.v453-home-collection .v453-pennant{width:43px}.v453-home-collection .v453-pennant img{height:26px}.v453-home-collection .v453-pennant span{font-size:7px}.v453-peeves-link{top:14%;right:2%}}
+
+/* v453b: původní kolejní vlajky bez umělého rámečku, přirozeně v interiéru. */
+.v453-flags-main{grid-template-columns:1.1fr 1fr}
+.v453-flags-intro .v453-primary{background:#72522f;color:#ffedcd;border:1px solid #d5b577;border-radius:7px;padding:12px 18px;font:600 16px Georgia,serif;cursor:pointer}
+.v453-flags-intro .v453-primary:disabled{opacity:.5}
+.v453-peeves-speech{min-height:3rem;color:#e8c995;font-size:1.15rem}
+.v453-peeves-route{border-left:2px solid #bd9b60;padding:10px 14px;color:#f4dfb7;background:#191b16cc}
+.v453-journey-link{display:inline-block;margin:12px 0;color:#e9cc90;text-decoration:none;border-bottom:1px solid #ac8f59}
+.v453-pennant{display:flex;flex-direction:column;align-items:center;clip-path:none;background:none;border:0;box-shadow:none;padding:0;margin:0;width:min(100%,145px)}
+.v453-pennant img{width:100%;max-width:100%;height:auto;max-height:190px;object-fit:contain;filter:brightness(.9) drop-shadow(0 7px 8px #000)}
+.v453-pennant figcaption{font:600 12px Georgia,serif;text-align:center;color:#e8d4ab;margin-top:4px}
+.v453-flag-collection .v453-pennant{width:clamp(75px,10vw,122px);min-width:0}
+.v453-home-collection .v453-pennant{width:clamp(45px,6vw,76px);padding:0}
+.v453-home-collection .v453-pennant img{height:auto;max-height:90px}
+.v453-home-collection .v453-pennant figcaption{font-size:10px}
+.v453-house-flag{right:13%;bottom:22%;padding:0;background:transparent;border:0;width:clamp(85px,11vw,165px)}
+.v453-house-flag .v453-pennant{width:100%;min-height:0}
+.v453-house-flag .v453-pennant img{max-height:250px}
+@media(max-width:760px){.v453-flag-collection .v453-pennant{width:80px}.v453-house-flag{right:6%;bottom:25%;width:95px}}

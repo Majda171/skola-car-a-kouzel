@@ -1,0 +1,15 @@
+/* Vstup hosta k vlajce: žádná druhá navigace a žádný předčasný přístup. */
+.v453-visitor-password[hidden],.v453-peeves-prank[hidden]{display:none!important}
+.v453-visitor-lead{position:relative;z-index:16;width:min(420px,90vw);margin:16px auto 0;text-align:center;color:#eed9af;text-shadow:0 2px 8px #000;font:15px/1.5 Georgia,serif}
+.v453-visitor-password{position:relative;z-index:24;margin:14px auto;width:min(420px,92vw);padding:19px 24px;background:rgba(9,12,10,.94);border:1px solid #b89c66;border-radius:8px;box-shadow:0 22px 55px #000b;text-align:center;color:#eee0c4;font:16px Georgia,serif}
+.v453-visitor-password h2{font:600 22px Georgia,serif;margin:0 0 9px}.v453-visitor-password p{line-height:1.4}.v453-visitor-form{display:grid;gap:9px}.v453-visitor-form input{font-size:16px;padding:12px 14px;min-width:0;color:#fff1d8;background:#101514;border:1px solid #9b825a;border-radius:4px}.v453-visitor-form button,.v453-peeves-prank button{background:#795b36;color:#fff0d4;border:1px solid #d0ad65;padding:10px 15px;cursor:pointer}.v453-visitor-message{color:#e8c18d;min-height:1.4em}
+.v453-foreign-entry #loginPanel{display:none!important}
+.v453-peeves-prank{position:fixed;inset:0;z-index:16500;display:grid;place-items:center;padding:20px;background:#030607d6}
+.v453-peeves-prank section{display:grid;justify-items:center;gap:12px;width:min(480px,94vw);padding:26px;text-align:center;background:#11141a;border:1px solid #b09057;box-shadow:0 25px 90px #000;color:#f6e0b3;font:19px/1.5 Georgia,serif}
+.v453-peeves-prank img{width:min(145px,42vw);height:170px;object-fit:contain}
+.v453-peeves-prank p{margin:0 0 10px}
+@media(max-width:700px){.v453-visitor-password{padding:13px 17px}.v453-visitor-lead{font-size:13px}}
+/* Přirozené rozmístění nad scénou bez změny perspektivy dveří. */
+.entry-page .scene .v453-visitor-password{position:absolute;left:50%;bottom:3%;top:auto;transform:translateX(-50%);max-height:52vh;overflow:auto}
+.entry-page .scene .v453-visitor-lead{position:absolute;left:50%;top:6%;width:min(460px,88vw);transform:translateX(-50%);margin:0}
+@media(max-width:650px){.entry-page .scene .v453-visitor-password{bottom:5%;width:min(390px,92vw);max-height:55vh}.entry-page .scene .v453-visitor-lead{top:1%;width:94%;font-size:12px}}

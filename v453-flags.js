@@ -1,23 +1,64 @@
-/* Kolejni vlajky v453: zadne heslo ani odmena se nekontroluje pouze v prohlizeci. */
-(()=>{'use strict';const db=window.BradaviceDB?.client,houseNames={N:'Nebelvír',H:'Havraspár',M:'Mrzimor',Z:'Zmijozel'},
- erbs={N:'vlajka-n-v453.webp',H:'vlajka-h-v453.webp',M:'vlajka-m-v453.webp',Z:'vlajka-z-v453.webp'},
- pages={N:'nebelvir-spolecenska.html',H:'havraspar-spolecenska.html',M:'mrzimor-spolecenska.html',Z:'zmijozel-spolecenska.html'};
- let own=null,captured=[],chosen=null;
- const $=id=>document.getElementById(id),say=t=>{const p=$('v453FlagStatus');if(p)p.textContent=t};
- function pennant(code,ownFlag=false){const wrap=document.createElement('div');wrap.className='v453-pennant';wrap.dataset.house=code;const img=document.createElement('img');img.src='img/'+erbs[code];img.alt='Vlajka '+houseNames[code];wrap.append(img);const label=document.createElement('span');label.textContent=houseNames[code]+(ownFlag?' · tvoje':'');wrap.append(label);return wrap}
- function collection(root){if(!root)return;root.replaceChildren();if(!own)return;for(const code of ['N','H','M','Z'])if(code===own||captured.includes(code))root.append(pennant(code,code===own))}
- async function call(fn,args){if(!db)throw Error('Supabase se nenačetla');const {data,error}=await db.rpc(fn,args);if(error)throw error;return data}
- async function refresh(){if(!db){say('Databáze není dostupná. Nejdřív je třeba nastavit SQL v453.');return}try{const data=await call('v453_flag_status');own=data.house_code;captured=data.captured||[];const board=$('v453FlagHouses');board?.replaceChildren();if(board){for(const code of ['N','H','M','Z']){if(code===own)continue;const b=document.createElement('button');b.type='button';b.className='v453-flag-pick';b.append(pennant(code));const title=document.createElement('span');title.textContent=captured.includes(code)?'Vlajka získána':'Zkusit proniknout dovnitř';b.append(title);b.addEventListener('click',()=>select(code));board.append(b)}}collection($('v453Captured'));if(data.full_set)say('Získala jsi všechny čtyři vlajky! Odměna se připisuje jen jednou.');else say(`Nasbírané vlajky: ${captured.length+1} ze 4.`)}catch(e){say('Vlajková výprava potřebuje nastavit SQL v453: '+(e.message||''))}}
- function select(code){chosen=code;const panel=$('v453FlagAnswer');if(!panel)return;panel.hidden=false;$('v453TargetName').textContent=houseNames[code];$('v453PeevesText').textContent=captured.includes(code)?'Vlajku už máš. Do koleje můžeš znovu jen s platným oprávněním.':'Protiva se škodolibě usmívá. Opravdu mu chceš věřit?';$('v453Guess').value='';panel.scrollIntoView({behavior:'smooth',block:'nearest'})}
- async function getClue(){if(!chosen)return;const txt=$('v453PeevesText');txt.textContent='Protiva něco šeptá…';try{const guess=await call('v453_peeves_clue',{p_target_house:chosen});txt.textContent=`„Studentíku, tajtrlíku! Snad to bude: ${guess}. Ale já bych si tím tedy vůbec nebyl jistý!“`;}catch(e){txt.textContent='Protiva zavře ústa: '+(e.message||'chyba')}}
- async function tryDoor(e){e.preventDefault();if(!chosen)return;const txt=$('v453PeevesText');const guess=$('v453Guess').value.trim();if(!guess)return;try{const r=await call('v453_flag_guess',{p_target_house:chosen,p_guess:guess});if(r.ok){txt.textContent='Dveře se otevírají! Máš omezený čas najít kolejní vlajku.';setTimeout(()=>{location.href=pages[chosen]},750)}else txt.textContent=r.locked?'„CHÁ CHÁ! Na dnešek máš smůlu, potrhlý tajtrlíku!“ Další pokus zítra.':`„CHÁ CHÁ CHÁ! Nachytal jsem tě, ty potrhlý tajtrlíku!“ Zbývá pokusů: ${r.remaining}.`}catch(e){txt.textContent='Dveře se neotevřely: '+e.message}}
- const ask=$('v453AskPeeves'),form=$('v453FlagForm');if(ask)ask.addEventListener('click',getClue);if(form)form.addEventListener('submit',tryDoor);
- // Kolejní místnosti sdílí tento JS pro herní vlajku. Zobrazování čeká na schválení přístupu.
- async function installHouse(){const room=document.body?.dataset?.house;const space=document.body?.dataset?.space;if(!room||space!=='lounge')return;await new Promise(resolve=>{let n=0;const t=setInterval(()=>{if(document.body.classList.contains('access-ready')||++n>60){clearInterval(t);resolve()}},100)});if(document.body.classList.contains('house-locked'))return;
-  const isOwn=!document.body.classList.contains('house-guest');const stage=document.querySelector('.house-scene');if(!stage)return;
-  if(!isOwn){const flag=document.createElement('button');flag.type='button';flag.className='v453-house-flag';flag.setAttribute('aria-label','Vzít vlajku koleje '+houseNames[room]);flag.append(pennant(room));stage.append(flag);
-   flag.onclick=async()=>{flag.disabled=true;try{const data=await call('v453_flag_take',{p_target_house:room});window.alert(data.captured?`Vlajka ${houseNames[room]} je tvoje! +100 bodů pro tvou kolej.${data.completed?' A navíc +250 za celou sbírku!':''}`:'Tuto vlajku už máš.');flag.remove();window.BradaviceDB?.hydrateStudent?.().catch(()=>{})}catch(e){flag.disabled=false;window.alert('Vlajku nelze vzít: '+e.message)}};
-  }else{const rack=document.createElement('aside');rack.className='v453-home-flags';const h=document.createElement('strong');h.textContent='Moje kolejní vlajky';rack.append(h);const c=document.createElement('div');c.className='v453-home-collection';rack.append(c);stage.append(rack);try{const data=await call('v453_flag_status');own=data.house_code;captured=data.captured||[];collection(c)}catch{c.textContent='Sbírka se načte po nastavení Supabase.'}}
+/* Bradavice v453b – Protiva vybírá vždy jednu kolej. Vstup a body potvrzuje výhradně Supabase. */
+(()=>{'use strict';
+ const db=window.BradaviceDB?.client;
+ const houseNames={N:'Nebelvír',H:'Havraspár',M:'Mrzimor',Z:'Zmijozel'};
+ const images={N:'vlajka-n-v453.webp',H:'vlajka-h-v453.webp',M:'vlajka-m-v453.webp',Z:'vlajka-z-v453.webp'};
+ const entries={N:'prihlaseniNeb.html',H:'prihlaseniHavraspar.html',M:'prihlaseniMrzimor.html',Z:'prihlaseniZmijozel.html'};
+ const $=id=>document.getElementById(id);
+ let own=null,captured=[],target=null;
+ const msg=text=>{const p=$('v453FlagStatus');if(p)p.textContent=text;};
+ async function rpc(name,args){if(!db)throw Error('Připojení k Supabase není dostupné.');const {data,error}=await db.rpc(name,args);if(error)throw error;return data;}
+ function pennant(code,label){const wrapper=document.createElement('figure');wrapper.className='v453-pennant';wrapper.dataset.house=code;
+  const img=document.createElement('img');img.src='img/'+images[code];img.alt='Vlajka koleje '+houseNames[code];wrapper.append(img);
+  if(label){const caption=document.createElement('figcaption');caption.textContent=label;wrapper.append(caption);}return wrapper;}
+ function showCollection(root){if(!root)return;root.replaceChildren();if(!own)return;for(const c of ['N','H','M','Z'])if(c===own||captured.includes(c))root.append(pennant(c,houseNames[c]+(c===own?' · vlastní':'')));}
+ async function refresh(){if(!$('v453FlagStatus'))return;
+  try{
+   const data=await rpc('v453_flag_status');own=data.house_code;captured=Array.isArray(data.captured)?data.captured:[];
+   target=['N','H','M','Z'].find(code=>code!==own&&!captured.includes(code))||null;
+   showCollection($('v453Captured'));
+   const title=$('v453TargetName');if(title)title.textContent=target?`Protiva si vyhlédl ${houseNames[target]}`:'Všechny čtyři vlajky jsou doma!';
+   const targetText=$('v453TargetText');if(targetText)targetText.textContent=target?`Protiva ti může prozradit údajné heslo do koleje ${houseNames[target]}. Pak se vydej k jejímu skutečnému vchodu a tam heslo vyzkoušej.`:'Podařilo se ti získat všechny tři cizí vlajky. Tvoje sbírka je úplná.';
+   const button=$('v453AskPeeves');if(button){button.disabled=!target;button.textContent=target?'Promluvit s Protivou':'Sbírka dokončena';}
+   msg(data.full_set?'Všechny čtyři vlajky získány. Gratulujeme!':`Ve sbírce máš ${captured.length+1} ze 4 vlajek.`);
+  }catch(e){msg(`Vlajkový úkol se zatím nepodařilo načíst: ${e.message||'Neznámá chyba'}`)}
  }
- refresh();installHouse();
+ async function getClue(){if(!target)return;const talk=$('v453PeevesText');const btn=$('v453AskPeeves');if(btn)btn.disabled=true;
+  if(talk)talk.textContent='Protiva poletuje chodbou a cosi si mumlá…';
+  try{
+   const text=await rpc('v453_peeves_clue',{p_target_house:target});
+   if(talk)talk.textContent=`„Studentíku, tajtrlíku! Do ${houseNames[target]}? Heslo je prý ‚${text}‘! Cha chá, ale jestli se mnou naletíš, to ti předem nepovím!“`;
+   const route=$('v453ClueRoute');if(route){route.hidden=false;route.textContent=`Najdi vstup koleje ${houseNames[target]} na hradě a řekni tam: „${text}“.`}
+  }catch(e){if(talk)talk.textContent=`Protiva tentokrát mlčí. ${e.message||''}`;}
+  finally{if(btn)btn.disabled=false;}
+ }
+ if($('v453AskPeeves')){$('v453AskPeeves').addEventListener('click',getClue);refresh();}
+
+ // Přidání vlajky pouze uvnitř serverem povolené herní návštěvy.
+ async function showRoom(){const room=document.body?.dataset?.house;
+  if(!room||document.body.dataset.space!=='lounge')return;
+  if(!document.body.classList.contains('access-ready')){
+   await new Promise(resolve=>{const obs=new MutationObserver(()=>{if(document.body.classList.contains('access-ready')){obs.disconnect();resolve();}});obs.observe(document.body,{attributes:true,attributeFilter:['class']});});
+  }
+  if(document.body.classList.contains('house-locked'))return;
+  const scene=document.querySelector('.house-scene');if(!scene)return;
+  try{
+   const current=await rpc('v453_flag_status');own=current.house_code;captured=Array.isArray(current.captured)?current.captured:[];
+   if(document.body.classList.contains('house-guest')){
+    if(captured.includes(room))return;
+    const flag=document.createElement('button');flag.type='button';flag.className='v453-house-flag';flag.setAttribute('aria-label','Sebrat vlajku koleje '+houseNames[room]);flag.title='Sebrat kolejní vlajku';flag.append(pennant(room));scene.append(flag);
+    flag.addEventListener('click',async()=>{
+     flag.disabled=true;
+     try{const result=await rpc('v453_flag_take',{p_target_house:room});
+      alert(result.captured?`Získáváš vlajku ${houseNames[room]}! Tvoje kolej dostává 100 bodů.${result.completed?' Navíc dalších 250 za úplnou sbírku!':''}`:'Tuto vlajku už máš.');
+      flag.remove();window.BradaviceDB?.hydrateStudent?.().catch(()=>{});
+     }catch(e){flag.disabled=false;alert('Vlajku se nepodařilo získat: '+(e.message||'Neznámá chyba'));}
+    });
+   }else{
+    const rack=document.createElement('aside');rack.className='v453-home-flags';const name=document.createElement('strong');name.textContent='Získané kolejní vlajky';rack.append(name);
+    const collection=document.createElement('div');collection.className='v453-home-collection';rack.append(collection);scene.append(rack);showCollection(collection);
+   }
+  }catch(e){console.warn('Vlajky:',e.message);}
+ }
+ if(document.body?.dataset?.space==='lounge')showRoom();
 })();
