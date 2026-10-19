@@ -1,56 +1,60 @@
-/* Bradavice v453b — heslo od Protivy se zkouší až u SKUTEČNÉHO vstupu do koleje.
-   Cizí návštěva pouze do společenské místnosti; RPC ověřuje heslo a uděluje 20 minut přístupu. */
+/* v454 – kolejní vstupy: stejná hádanka/sudy/heslo pro vlastní i cizí studenty.
+   Odlišné je jen serverové povolení krátké návštěvy cizí společenské místnosti. */
 (()=>{'use strict';
- const file=decodeURIComponent(location.pathname.split('/').pop());
- const entrances={
-  'prihlaseniNeb.html':{house:'N',name:'Nebelvír',target:'#portraitTrigger',go:'nebelvir-spolecenska.html'},
-  'prihlaseniHavraspar.html':{house:'H',name:'Havraspár',target:'#eagleTrigger',go:'havraspar-spolecenska.html'},
-  'prihlaseniMrzimor.html':{house:'M',name:'Mrzimor',target:'.sud',go:'mrzimor-spolecenska.html'},
-  'prihlaseniZmijozel.html':{house:'Z',name:'Zmijozel',target:'#secretWall',go:'zmijozel-spolecenska.html'}
- };
- const info=entrances[file];if(!info)return;
+ const filename=decodeURIComponent(location.pathname.split('/').pop());
+ const config={
+  'prihlaseniNeb.html':{house:'N',go:'nebelvir-spolecenska.html'},
+  'prihlaseniHavraspar.html':{house:'H',go:'havraspar-spolecenska.html'},
+  'prihlaseniMrzimor.html':{house:'M',go:'mrzimor-spolecenska.html'},
+  'prihlaseniZmijozel.html':{house:'Z',go:'zmijozel-spolecenska.html'}
+ }[filename];if(!config)return;
+ let visitor=false;let ready=null;let busy=false;
  const client=window.BradaviceDB?.client;
- let visitor=false,checked=false,submitting=false;
- const scene=document.querySelector('.entry-page .scene');if(!scene)return;
- const panel=document.createElement('section');panel.className='v453-visitor-password';panel.hidden=true;
- panel.innerHTML='<h2>Vstup do koleje</h2><form class="v453-visitor-form"><label for="v453VisitorGuess">Vyslov heslo</label><input id="v453VisitorGuess" maxlength="80" autocomplete="off" required><button type="submit">Vyslovit heslo</button></form><p class="v453-visitor-message" aria-live="polite"></p>';
- scene.append(panel);
- const text=panel.querySelector('.v453-visitor-message');const input=panel.querySelector('input');const submit=panel.querySelector('button');
- function open(){panel.hidden=false;input.focus({preventScroll:true});}
- function showPeeves(message){document.querySelector('.v453-peeves-prank')?.remove();
-  const overlay=document.createElement('div');overlay.className='v453-peeves-prank';
-  const box=document.createElement('section');const pic=document.createElement('img');pic.src='img/ghost-protiva.webp';pic.alt='Protiva';
-  const p=document.createElement('p');p.textContent=message;
-  const close=document.createElement('button');close.type='button';close.textContent='Protiva se rozchechtá a zmizí';close.addEventListener('click',()=>{overlay.remove();input.focus();});
-  box.append(pic,p,close);overlay.append(box);document.body.append(overlay);close.focus();
+ async function who(){
+  if(!client)return false;
+  try{
+   const {data,error}=await client.auth.getUser();if(error||!data?.user?.id)return false;
+   const {data:profile,error:err}=await client.from('profiles').select('house_code,banned_at').eq('id',data.user.id).maybeSingle();
+   if(err||profile?.banned_at)return false;
+   visitor=Boolean(profile?.house_code&&profile.house_code!==config.house);
+   document.body.classList.toggle('v454-foreign-entry',visitor);
+   return visitor;
+  }catch(e){console.warn('Ověření koleje:',e);return false;}
  }
- panel.querySelector('form').addEventListener('submit',async e=>{
-  e.preventDefault();if(!visitor||submitting)return;submitting=true;submit.disabled=true;text.textContent='Strážce ověřuje heslo…';
+ ready=who();
+ async function guestCheck(answer,success){
+  if(busy)return;busy=true;
+  const msg=document.getElementById('errorMessage');
+  if(msg){msg.classList.add('show');msg.textContent='Vstupní kouzlo se ověřuje…';}
   try{
    if(!client)throw Error('Školní evidence není dostupná.');
-   const {data,error}=await client.rpc('v453_flag_guess',{p_target_house:info.house,p_guess:input.value.trim()});if(error)throw error;
-   if(data?.ok){text.textContent='Dveře se otevřely! Najdi vlajku dřív, než návštěva vyprší.';location.assign(info.go);return;}
-   text.textContent=data?.locked?'Dnes už další hesla zkoušet nemůžeš. Přijď zítra.':`Heslo není správné. Zbývá pokusů: ${data?.remaining??'?'}.`;
-   showPeeves(data?.locked?'„CHÁ CHÁ! Už žádné pokusy! Přijď zítra, ty potrhlý tajtrlíku!“':'„CHÁ CHÁ CHÁ! Nachytal jsem tě! Tys mi opravdu věřil? Ty potrhlý tajtrlíku!“');
-  }catch(err){text.textContent='Heslo nebylo ověřeno: '+(err.message||'neznámá chyba')}
-  finally{submitting=false;submit.disabled=false;}
- });
- // Vlastní studentský vstup necháváme zcela beze změny. Přes změnu lokálního profilu
- // nelze získat právo hosta – databáze ověřuje přihlášeného uživatele.
- const triggerNodes=()=>Array.from(document.querySelectorAll(info.target));
- const catchVisitor=e=>{if(!visitor)return;e.preventDefault();e.stopImmediatePropagation();if(!panel.hidden&&!e.target.closest(info.target))return;open();};
- triggerNodes().forEach(el=>el.addEventListener('click',catchVisitor,true));
- async function check(){try{
-   if(!client)throw Error('Supabase není dostupná.');
-   const {data,error}=await client.auth.getUser();if(error)throw error;const id=data?.user?.id;if(!id)throw Error('Student není přihlášen.');
-   const {data:profile,error:err}=await client.from('profiles').select('house_code,banned_at').eq('id',id).maybeSingle();if(err)throw err;
-   if(profile&&!profile.banned_at&&profile.house_code&&profile.house_code!==info.house){visitor=true;
-    document.body.classList.add('v453-foreign-entry');
-    // Jen ve vlastním pokoji funguje běžný kolejní mechanismus.
-    const nativeForm=document.getElementById('loginForm');if(nativeForm){nativeForm.addEventListener('submit',e=>{e.preventDefault();e.stopImmediatePropagation();open();},true);}
+   const {data,error}=await client.rpc('v453_flag_guess',{p_target_house:config.house,p_guess:answer});if(error)throw error;
+   if(data?.ok){
+    if(msg)msg.textContent='Správně! Vstup do společenské místnosti je otevřen.';
+    if(config.house==='H')window.BradaviceAchievements?.award('orli-hadanka');
+    if(config.house==='N')window.BradaviceAchievements?.award('dama-otevrela');
+    if(config.house==='Z')window.BradaviceAchievements?.award('septane-heslo');
+    if(success)success();
+    setTimeout(()=>location.assign(config.go),config.house==='M'?950:500);return;
    }
-  }catch(e){console.warn('Ověření cizího kolejního vstupu:',e.message)}
-  finally{checked=true;}
+   if(msg){msg.textContent=data?.locked?'Dnes už žádný další pokus.':`Nesprávné řešení. Zbývá pokusů: ${data?.remaining??'?'}.`;}
+  }catch(e){if(msg)msg.textContent='Přístup se nepodařilo ověřit: '+(e.message||'chyba');}
+  finally{busy=false;}
  }
- check();
+ window.BradaviceGuestEntry={
+  get isVisitor(){return visitor;},
+  async complete(answer,success){await ready;if(visitor)return guestCheck(answer,success);success?.();}
+ };
+ const form=document.getElementById('loginForm');
+ if(form){form.addEventListener('submit',async e=>{
+  await ready; if(!visitor)return;
+ },false);
+ // capture je nutný, protože původní setupPasswordForm má svou validaci.
+ form.addEventListener('submit',function(e){
+  if(!visitor)return;
+  e.preventDefault();e.stopImmediatePropagation();
+  const answer=document.getElementById('password')?.value?.trim()||'';
+  if(answer)guestCheck(answer);
+ },true);
+ }
 })();

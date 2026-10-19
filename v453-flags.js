@@ -26,7 +26,12 @@
   if(talk)talk.textContent='Protiva poletuje chodbou a cosi si mumlá…';
   try{
    const text=await rpc('v453_peeves_clue',{p_target_house:target});
-   if(talk)talk.textContent=`„Studentíku, tajtrlíku! Pro ${houseNames[target]} jsem zaslechl heslo: ‚${text}‘!“`;
+   if(talk){
+    const kind=target==='M'?'Pořadí sudů':target==='H'?'Odpověď na orlí hádanku':'Heslo';
+    talk.textContent=text
+     ?`„CHÁ CHÁ! ${kind} pro ${houseNames[target]}? No dobrá, něco jsem zaslechl: ‚${text}‘. Ale jestli mi věříš, jsi pěkný ťulpas!“`
+     :'„Dneska ti nic neřeknu, studentíku! A už vůbec ne zadarmo! CHÁ CHÁ!“';
+   }
   }catch(e){if(talk)talk.textContent=`Protiva tentokrát mlčí. ${e.message||''}`;}
   finally{if(btn)btn.disabled=false;}
  }

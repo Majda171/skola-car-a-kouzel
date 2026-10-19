@@ -1,0 +1,17 @@
+/* v454 – poslední vrstva vzhledu. Záměrně neničí interaktivní prvky scény. */
+/* Zvuk a batoh: žádné překrytí, ani na úzkých telefonech. */
+.bag-trigger{left:16px!important;bottom:16px!important;right:auto!important;max-width:62px!important;}
+.castle-music-toggle{left:96px!important;bottom:22px!important;right:auto!important;top:auto!important;z-index:12040!important;max-width:min(180px,calc(100vw - 106px))!important;}
+@media(max-width:620px){.bag-trigger{left:10px!important;bottom:10px!important;width:52px!important;height:52px!important;}.castle-music-toggle{left:76px!important;bottom:15px!important;}}
+/* Síň slávy – obraz centrálně ve výklenku, busta přímo pod ním, nikdy přes titulek. */
+.hall-of-fame .founder-godric-v433{position:absolute!important;left:50%!important;top:33.6%!important;width:clamp(72px,7.4vw,116px)!important;height:clamp(98px,10.0vw,155px)!important;transform:translateX(-50%)!important;background:transparent!important;border:0!important;padding:0!important;z-index:23!important;filter:brightness(.68) saturate(.70) contrast(.90) drop-shadow(0 5px 8px #000c)!important;}
+.hall-of-fame .founder-godric-v433 img{width:100%!important;height:100%!important;object-fit:contain!important;}
+.hall-of-fame .v452-hall-bust{position:absolute!important;left:50%!important;right:auto!important;top:51%!important;bottom:auto!important;width:clamp(62px,6.1vw,96px)!important;height:auto!important;max-height:23vh!important;transform:translateX(-50%)!important;z-index:24!important;background:transparent!important;border:0!important;padding:0!important;filter:brightness(.52) saturate(.48) contrast(.87) drop-shadow(0 7px 9px #000d)!important;}
+.hall-of-fame .v452-hall-bust img{display:block;width:100%!important;height:auto!important;max-height:23vh!important;object-fit:contain!important;}
+.hall-of-fame .founder-godric-v433:hover,.hall-of-fame .founder-godric-v433:focus-visible{filter:brightness(.96) drop-shadow(0 3px 10px #000c)!important;}
+.hall-of-fame .v452-hall-bust:hover,.hall-of-fame .v452-hall-bust:focus-visible{transform:translateX(-50%)!important;filter:brightness(.82) drop-shadow(0 5px 10px #000c)!important;}
+.hall-of-fame .place-copy{z-index:26!important;max-width:min(370px,58vw)!important;}
+.hall-of-fame .place-copy h1{font-size:clamp(1.55rem,2.9vw,2.8rem)!important;line-height:1.05!important;}
+@media(max-width:700px){.hall-of-fame .founder-godric-v433{top:34%!important;width:clamp(61px,17vw,93px)!important;height:clamp(82px,23vw,126px)!important;}.hall-of-fame .v452-hall-bust{top:51%!important;width:clamp(46px,13vw,73px)!important;max-height:20vh!important;}.hall-of-fame .v452-hall-bust img{max-height:20vh!important;}.hall-of-fame .place-copy{max-width:min(315px,88vw)!important;}.hall-of-fame .place-copy h1{font-size:clamp(1.4rem,5.5vw,2.1rem)!important;}}
+/* Jednotné šipky nad scénou, ale pod modálními dialogy. */
+.castle-side-nav{z-index:990!important;pointer-events:auto!important;}
