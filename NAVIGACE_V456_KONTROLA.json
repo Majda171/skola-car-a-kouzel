@@ -1,0 +1,127 @@
+{
+  "route_count": 28,
+  "route": [
+    [
+      "nadvori.html",
+      "Nádvoří"
+    ],
+    [
+      "velka-sin.html",
+      "Velká síň"
+    ],
+    [
+      "sin-slavy.html",
+      "Síň slávy"
+    ],
+    [
+      "chodby.html",
+      "Hradní chodby"
+    ],
+    [
+      "chodby-schody.html",
+      "Hlavní schodiště"
+    ],
+    [
+      "chodby-portretni-galerie.html",
+      "Severní chodba"
+    ],
+    [
+      "prihlaseniNeb.html",
+      "Vstup do Nebelvíru"
+    ],
+    [
+      "chodby-stara-galerie.html",
+      "Východní chodba"
+    ],
+    [
+      "chodby-podzemni-1.html",
+      "Podzemní chodba"
+    ],
+    [
+      "kuchyne.html",
+      "Kuchyně"
+    ],
+    [
+      "prihlaseniMrzimor.html",
+      "Vstup do Mrzimoru"
+    ],
+    [
+      "ucebna-lektvaru.html",
+      "Učebna lektvarů"
+    ],
+    [
+      "chodby-podzemni-2.html",
+      "Hluboké sklepení"
+    ],
+    [
+      "prihlaseniZmijozel.html",
+      "Vstup do Zmijozelu"
+    ],
+    [
+      "chodby-horni.html",
+      "Horní chodby"
+    ],
+    [
+      "prihlaseniHavraspar.html",
+      "Vstup do Havraspáru"
+    ],
+    [
+      "ucebna-jasnovidectvi.html",
+      "Jasnovidectví"
+    ],
+    [
+      "knihovna.html",
+      "Knihovna"
+    ],
+    [
+      "ucebna-obrany.html",
+      "Obrana proti černé magii"
+    ],
+    [
+      "ucebna-premenovani.html",
+      "Přeměňování"
+    ],
+    [
+      "astronomicka-vez.html",
+      "Astronomická věž"
+    ],
+    [
+      "pozemky.html",
+      "Školní pozemky"
+    ],
+    [
+      "skleniky.html",
+      "Skleníky"
+    ],
+    [
+      "jezero.html",
+      "Černé jezero"
+    ],
+    [
+      "hagriduv-dum.html",
+      "Hagridův dům"
+    ],
+    [
+      "vrba-mlaticka.html",
+      "Vrba mlátička"
+    ],
+    [
+      "zapovezeny-les.html",
+      "Zapovězený les"
+    ],
+    [
+      "famfrpal.html",
+      "Famfrpálové hřiště"
+    ]
+  ],
+  "excluded": [
+    "hry.html",
+    "turnaje.html",
+    "kamen-mudrcu-chloupek.html",
+    "hagriduv-dum-uvnitr.html",
+    "nickova-oslava.html",
+    "komnata-nejvyssi-potreby.html",
+    "divci-umyvarna.html",
+    "reditelna.html"
+  ]
+}

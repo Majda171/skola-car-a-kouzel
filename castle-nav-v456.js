@@ -1,0 +1,140 @@
+/* Bradavice v456 – boční šipky pouze mezi běžnými lokacemi.
+ * Tajné, herní, interiérové a úkolové místnosti jsou přístupné jedině
+ * skrz své skutečné klikatelné vchody. Není možné obejít kolejní zkoušky.
+ * Seřazení tras: vstupní patro → chodby → sklepení → vyšší patra → pozemky.
+ */
+(()=>{'use strict';
+ const route=[
+  [
+    "nadvori.html",
+    "Nádvoří"
+  ],
+  [
+    "velka-sin.html",
+    "Velká síň"
+  ],
+  [
+    "sin-slavy.html",
+    "Síň slávy"
+  ],
+  [
+    "chodby.html",
+    "Hradní chodby"
+  ],
+  [
+    "chodby-schody.html",
+    "Hlavní schodiště"
+  ],
+  [
+    "chodby-portretni-galerie.html",
+    "Severní chodba"
+  ],
+  [
+    "prihlaseniNeb.html",
+    "Vstup do Nebelvíru"
+  ],
+  [
+    "chodby-stara-galerie.html",
+    "Východní chodba"
+  ],
+  [
+    "chodby-podzemni-1.html",
+    "Podzemní chodba"
+  ],
+  [
+    "kuchyne.html",
+    "Kuchyně"
+  ],
+  [
+    "prihlaseniMrzimor.html",
+    "Vstup do Mrzimoru"
+  ],
+  [
+    "ucebna-lektvaru.html",
+    "Učebna lektvarů"
+  ],
+  [
+    "chodby-podzemni-2.html",
+    "Hluboké sklepení"
+  ],
+  [
+    "prihlaseniZmijozel.html",
+    "Vstup do Zmijozelu"
+  ],
+  [
+    "chodby-horni.html",
+    "Horní chodby"
+  ],
+  [
+    "prihlaseniHavraspar.html",
+    "Vstup do Havraspáru"
+  ],
+  [
+    "ucebna-jasnovidectvi.html",
+    "Jasnovidectví"
+  ],
+  [
+    "knihovna.html",
+    "Knihovna"
+  ],
+  [
+    "ucebna-obrany.html",
+    "Obrana proti černé magii"
+  ],
+  [
+    "ucebna-premenovani.html",
+    "Přeměňování"
+  ],
+  [
+    "astronomicka-vez.html",
+    "Astronomická věž"
+  ],
+  [
+    "pozemky.html",
+    "Školní pozemky"
+  ],
+  [
+    "skleniky.html",
+    "Skleníky"
+  ],
+  [
+    "jezero.html",
+    "Černé jezero"
+  ],
+  [
+    "hagriduv-dum.html",
+    "Hagridův dům"
+  ],
+  [
+    "vrba-mlaticka.html",
+    "Vrba mlátička"
+  ],
+  [
+    "zapovezeny-les.html",
+    "Zapovězený les"
+  ],
+  [
+    "famfrpal.html",
+    "Famfrpálové hřiště"
+  ]
+];
+ const page=decodeURIComponent(location.pathname.split('/').pop()||'');
+ // Staré šipky vždy odstranit, i na vyloučených stránkách.
+ document.querySelectorAll('.castle-side-nav').forEach(el=>el.remove());
+ const idx=route.findIndex(item=>item[0]===page);
+ if(idx<0)return;
+ function arrow(item,side){
+   const a=document.createElement('a');
+   a.className='castle-side-nav castle-side-'+side;
+   a.href=item[0];a.title=item[1];
+   a.setAttribute('aria-label',(side==='prev'?'Předchozí':'Další')+' lokace: '+item[1]);
+   const icon=document.createElement('span');icon.className='castle-side-arrow';icon.textContent=side==='prev'?'‹':'›';
+   const label=document.createElement('small');label.textContent=item[1];
+   a.append(icon,label);document.body.appendChild(a);
+ }
+ // Na konci žádný nelogický teleport na začátek, lze se vracet opačnou šipkou.
+ if(idx>0)arrow(route[idx-1],'prev');
+ if(idx+1<route.length)arrow(route[idx+1],'next');
+ // Neschovávat skutečné vchody do scén ani speciální hotspoty.
+ document.querySelectorAll('main a.corridor-way-prev,main a.corridor-way-next').forEach(a=>a.remove());
+})();

@@ -1,0 +1,6 @@
+/* v456 – změny pouze podle připomínek. */
+/* Busta si zachovává původní barevnost. Obraz je nad ní ve výklenku. */
+.hall-of-fame .v452-hall-bust {filter:brightness(.88) saturate(1.06) contrast(.94) drop-shadow(0 6px 8px rgba(0,0,0,.7))!important;}
+.hall-of-fame .v452-hall-bust:hover,.hall-of-fame .v452-hall-bust:focus-visible {filter:brightness(1.0) saturate(1.06) drop-shadow(0 6px 8px rgba(0,0,0,.7))!important;}
+/* Nepřidávat samostatný velký obraz přes průchod v Severní chodbě. */
+.corridor-gallery .gryffindor-entry-portrait {display:none!important;}
