@@ -13,7 +13,7 @@
  let visitor=false,checked=false,submitting=false;
  const scene=document.querySelector('.entry-page .scene');if(!scene)return;
  const panel=document.createElement('section');panel.className='v453-visitor-password';panel.hidden=true;
- panel.innerHTML='<h2>Heslo do cizí koleje</h2><p>Zkus heslo, které ti pošeptal Protiva. Ale dá se mu vůbec věřit?</p><form class="v453-visitor-form"><label for="v453VisitorGuess">Vyslov heslo</label><input id="v453VisitorGuess" maxlength="80" autocomplete="off" required><button type="submit">Vyslovit heslo</button></form><p class="v453-visitor-message" aria-live="polite"></p>';
+ panel.innerHTML='<h2>Vstup do koleje</h2><form class="v453-visitor-form"><label for="v453VisitorGuess">Vyslov heslo</label><input id="v453VisitorGuess" maxlength="80" autocomplete="off" required><button type="submit">Vyslovit heslo</button></form><p class="v453-visitor-message" aria-live="polite"></p>';
  scene.append(panel);
  const text=panel.querySelector('.v453-visitor-message');const input=panel.querySelector('input');const submit=panel.querySelector('button');
  function open(){panel.hidden=false;input.focus({preventScroll:true});}
@@ -46,8 +46,6 @@
    const {data:profile,error:err}=await client.from('profiles').select('house_code,banned_at').eq('id',id).maybeSingle();if(err)throw err;
    if(profile&&!profile.banned_at&&profile.house_code&&profile.house_code!==info.house){visitor=true;
     document.body.classList.add('v453-foreign-entry');
-    const lead=document.createElement('p');lead.className='v453-visitor-lead';lead.textContent=`Tvoje kolej je jiná. Vstoupit do ${info.name} můžeš na omezenou dobu, pokud znáš heslo od Protivy. Klepni na strážce vstupu.`;
-    scene.append(lead);
     // Jen ve vlastním pokoji funguje běžný kolejní mechanismus.
     const nativeForm=document.getElementById('loginForm');if(nativeForm){nativeForm.addEventListener('submit',e=>{e.preventDefault();e.stopImmediatePropagation();open();},true);}
    }

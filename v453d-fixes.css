@@ -1,0 +1,40 @@
+/* Bradavice v453d – sjednocení hradních interakcí, žádné rušivé rámečky. */
+/* Síň slávy: obraz Godrika je v hlubokém centrálním výklenku.
+   Busta stojí POD portrétem na kamenných stupních, nikoli na pravé straně. */
+.hall-of-fame .founder-godric-v433 {
+ position:absolute!important;left:50%!important;top:32.7%!important;
+ width:clamp(82px,8.4vw,136px)!important;height:clamp(110px,11.2vw,181px)!important;
+ transform:translateX(-50%)!important;z-index:23!important;
+ opacity:.95!important;filter:brightness(.72) contrast(.90) drop-shadow(0 5px 9px #000b)!important;
+ background:transparent!important;border:0!important;padding:0!important;
+}
+.hall-of-fame .founder-godric-v433 img {display:block;width:100%!important;height:100%!important;object-fit:contain!important;}
+.hall-of-fame .founder-godric-v433:hover,.hall-of-fame .founder-godric-v433:focus-visible {filter:brightness(.98) drop-shadow(0 6px 14px #c2a06a66)!important;}
+.hall-of-fame .v452-hall-bust {
+ position:absolute!important;left:50%!important;right:auto!important;top:53.7%!important;bottom:auto!important;
+ width:clamp(35px,3.25vw,52px)!important;height:auto!important;max-height:12vh!important;
+ transform:translateX(-50%)!important;z-index:25!important;border:0!important;background:none!important;
+ filter:brightness(.56) sepia(.13) saturate(.7) drop-shadow(0 4px 6px #000c)!important;
+}
+.hall-of-fame .v452-hall-bust img {width:100%!important;height:auto!important;max-height:12vh!important;object-fit:contain!important;}
+.hall-of-fame .v452-hall-bust:hover,.hall-of-fame .v452-hall-bust:focus-visible{
+ transform:translateX(-50%)!important;filter:brightness(.93) drop-shadow(0 0 11px #b9955575)!important;
+}
+/* Žádná stará oblast mimo obraz nesmí zabírat kliknutí. */
+.hall-of-fame .founder-godric-hotspot{display:none!important;pointer-events:none!important;}
+/* Boční průchod na schodišti a vstup s orlím klepadlem. Aktivní plocha je diskrétní. */
+.corridor-stage a.v453-gallery-arch,.corridor-stage a.v453-ravenclaw-door{position:absolute;display:block;z-index:28;border:0!important;outline:0;background:transparent;box-shadow:none;cursor:pointer;}
+.corridor-stairs a.v453-gallery-arch{left:67%;top:33%;width:9%;height:24%;}
+.corridor-upper a.v453-ravenclaw-door{right:11%;top:29%;width:9%;height:23%;}
+.corridor-stage a.v453-gallery-arch:focus-visible,.corridor-stage a.v453-ravenclaw-door:focus-visible{outline:2px dashed #e3c57d!important;outline-offset:1px;}
+@media(max-width:700px){
+ .hall-of-fame .founder-godric-v433{left:50%!important;top:32.5%!important;width:clamp(76px,19vw,112px)!important;height:auto!important;aspect-ratio:3/4!important;}
+ .hall-of-fame .v452-hall-bust{left:50%!important;top:51%!important;width:clamp(35px,9vw,47px)!important;max-height:11vh!important;}
+ .corridor-upper a.v453-ravenclaw-door{right:9%;top:27%;width:18%;height:22%;}
+ .corridor-stairs a.v453-gallery-arch{left:62%;top:30%;width:20%;height:28%;}
+}
+/* Žádné staré textové cedulky a obdélníky při najetí na průzkumná místa. */
+.corridor-stage a.v451-hotspot::after,
+.corridor-stage a.v450a-scene-hotspot:not(.v450-nick-entrance)::after {
+ content:none!important;display:none!important;
+}

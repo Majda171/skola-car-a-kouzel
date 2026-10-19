@@ -18,7 +18,6 @@
    target=['N','H','M','Z'].find(code=>code!==own&&!captured.includes(code))||null;
    showCollection($('v453Captured'));
    const title=$('v453TargetName');if(title)title.textContent=target?`Protiva si vyhlédl ${houseNames[target]}`:'Všechny čtyři vlajky jsou doma!';
-   const targetText=$('v453TargetText');if(targetText)targetText.textContent=target?`Protiva ti může prozradit údajné heslo do koleje ${houseNames[target]}. Pak se vydej k jejímu skutečnému vchodu a tam heslo vyzkoušej.`:'Podařilo se ti získat všechny tři cizí vlajky. Tvoje sbírka je úplná.';
    const button=$('v453AskPeeves');if(button){button.disabled=!target;button.textContent=target?'Promluvit s Protivou':'Sbírka dokončena';}
    msg(data.full_set?'Všechny čtyři vlajky získány. Gratulujeme!':`Ve sbírce máš ${captured.length+1} ze 4 vlajek.`);
   }catch(e){msg(`Vlajkový úkol se zatím nepodařilo načíst: ${e.message||'Neznámá chyba'}`)}
@@ -27,8 +26,7 @@
   if(talk)talk.textContent='Protiva poletuje chodbou a cosi si mumlá…';
   try{
    const text=await rpc('v453_peeves_clue',{p_target_house:target});
-   if(talk)talk.textContent=`„Studentíku, tajtrlíku! Do ${houseNames[target]}? Heslo je prý ‚${text}‘! Cha chá, ale jestli se mnou naletíš, to ti předem nepovím!“`;
-   const route=$('v453ClueRoute');if(route){route.hidden=false;route.textContent=`Najdi vstup koleje ${houseNames[target]} na hradě a řekni tam: „${text}“.`}
+   if(talk)talk.textContent=`„Studentíku, tajtrlíku! Pro ${houseNames[target]} jsem zaslechl heslo: ‚${text}‘!“`;
   }catch(e){if(talk)talk.textContent=`Protiva tentokrát mlčí. ${e.message||''}`;}
   finally{if(btn)btn.disabled=false;}
  }
