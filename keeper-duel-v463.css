@@ -22,3 +22,12 @@
 .kd-notice{margin:12px 0;color:#eed28f;font-size:19px;min-height:1.4em}
 .kd-info{font-size:13px;color:#c9bea4}
 @media(max-width:680px){.kd-panel{padding:15px}.kd-keeper{width:29%}.kd-score{font-size:11px;top:5px;left:5px;padding:5px}.kd-row{gap:6px}.kd-row input{width:120px}}
+
+/* v464: tlačítka v popisku musí být interaktivní. Nadřazená .scene-copy zakazuje pointer-events. */
+.quidditch-scene .quidditch-caption .keeper-launch,
+.quidditch-scene .quidditch-caption .kd-open {
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 31;
+  touch-action: manipulation;
+}
