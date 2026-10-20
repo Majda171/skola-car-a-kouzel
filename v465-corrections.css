@@ -1,0 +1,11 @@
+/* Skryté dveře do kabinetu, pouze v horní chodbě, nikoli jako lokace v navigaci. */
+.corridor-upper .v465-umbridge-door{position:absolute;z-index:36;right:13%;top:27%;width:12%;height:44%;cursor:pointer;border:0;background:transparent}
+.corridor-upper .v465-umbridge-door:hover,.corridor-upper .v465-umbridge-door:focus-visible{outline:2px solid rgba(218,180,103,.65);outline-offset:2px;background:rgba(232,192,115,.08)}
+@media(max-width:700px){.corridor-upper .v465-umbridge-door{right:10%;width:21%;top:29%;height:39%}}
+
+/* Hlavní tlačítka her hned pod titulkem lokace. */
+.v465-famfrpal-launches{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:12px 0}
+.v465-famfrpal-launches button{position:relative!important;pointer-events:auto!important;z-index:45!important;margin:0!important}
+
+/* V podzemní chodbě názvy skrytých vstupů nepřekrývají nadpis scény. */
+.corridor-underground-1 .v451-hotspot::after{display:none!important}

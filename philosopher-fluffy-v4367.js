@@ -20,7 +20,7 @@
     redirectTimer=setTimeout(()=>{location.href='hagriduv-dum.html?chloupek=utekl'},850);
   }
   function startEntryDanger(){
-    clearEntry();let left=8;paintEntry(left);
+    clearEntry();let left=5;paintEntry(left);
     if(msg)msg.textContent=(ownsHarp()||ownsFlute())?'Chloupek tě zpozoroval. Rychle zahraj na svůj hudební nástroj!':'Chloupek tě zpozoroval. Tady není nic, čím bys ho dokázal/a uklidnit.';
     entryTick=setInterval(()=>{left--;paintEntry(Math.max(0,left));if(left<=0)escapeToHagrid('Chloupek přestal čekat a vyrazil po tobě!')},1000);
   }
@@ -49,6 +49,6 @@
     passed=true;clearEntry();clearInterval(sleepTick);clearTimeout(redirectTimer);localStorage.setItem(STATE,'passed');audio.pause();
   });
   window.addEventListener('pagehide',()=>{clearEntry();clearInterval(sleepTick);clearTimeout(redirectTimer)});
-  // Při KAŽDÉM vstupu do místnosti běží osm sekund, než Chloupek zaútočí.
+  // Při KAŽDÉM vstupu do místnosti běží pět sekund, než Chloupek zaútočí.
   startEntryDanger();
 })();

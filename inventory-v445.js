@@ -46,7 +46,17 @@ function repaint(){
       remove.disabled=true;const result=await discard(id);if(!result.ok){remove.disabled=false;inform(result.message||'Předmět se nepodařilo odložit.')} });
    if(id==='hnojova-bomba'){
       const use=document.createElement('button');use.type='button';use.textContent='💨 Použít';use.className='bag-discard';use.setAttribute('aria-label','Použít bomby hnojůvky');
-      use.addEventListener('click',()=>{closeBag();window.dispatchEvent(new Event('bradavice:dungbomb-use'))});slot.append(use);
+      use.addEventListener('click',async()=>{
+        if(location.pathname.endsWith('/kabinet-umbridge.html')){
+          inform('V kabinetu se bomby používají v úkolu Freda a George.');return;
+        }
+        use.disabled=true;
+        closeBag();
+        // Nejdříve spustit výbuch, teprve potom odebrat použitou bombu.
+        window.dispatchEvent(new Event('bradavice:dungbomb-use'));
+        const result=await discard('hnojova-bomba');
+        if(!result.ok)console.warn('Použitá bomba nebyla odebrána z batohu:',result.message);
+      });slot.append(use);
    }
    slot.append(title,desc,remove);grid.append(slot);
  }

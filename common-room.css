@@ -181,3 +181,7 @@ button{color:inherit}
 .private-place-card.locked{opacity:.4;pointer-events:none;filter:grayscale(.25)}
 @media(max-width:700px){.private-places-head{grid-template-columns:1fr;gap:5px}.private-place-links{grid-template-columns:1fr}}
 
+
+/* v465: zvýraznit serverem povolený vstup hosta, ložnici nikdy neodemknout. */
+.private-place-card.guest-access{opacity:1!important;pointer-events:auto!important;filter:none!important;border-color:#c9a355!important;background:rgba(65,46,20,.76)!important}
+.private-place-card.guest-access strong{color:#fff1ca!important}

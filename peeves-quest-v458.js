@@ -144,8 +144,7 @@
     character.className='v463-mcgonagall-scene';
     character.setAttribute('aria-label','Promluvit s profesorkou McGonagallovou');
     const img=document.createElement('img');img.src='img/mcgonagall-v42.webp';img.alt='Profesorka McGonagallová';
-    const caption=document.createElement('span');caption.textContent=isReturn?'Oznámit úspěch':'Promluvit s profesorkou';
-    character.append(img,caption);
+    character.append(img);
     character.addEventListener('click',()=>{
       character.remove();
       if(isReturn) complete();else mcgonagall();
@@ -163,9 +162,7 @@
     const img = document.createElement('img');
     img.src = 'img/ghost-krvavy-baron.webp';
     img.alt = '';
-    const label = document.createElement('span');
-    label.textContent = 'Oslovit Krvavého barona';
-    button.append(img, label);
+    button.append(img);
     button.addEventListener('click', () => { button.remove(); baron(); });
     host.append(button);
   }
@@ -185,9 +182,7 @@
       else if (stage === 'return') showMcGonagallScene(true);
     }
 
-    if (page === 'chodby-podzemni-2.html' && stage === 'seek-baron') {
-      addTrigger('Síň oslavy úmrtí · hledat Krvavého barona', 'v457-quest-trigger', () => { location.href = 'nickova-oslava.html'; });
-    }
+    // Do Síně oslavy úmrtí vede pouze skutečný vchod v hlubokém sklepení.
 
     if (page === 'nickova-oslava.html' && stage === 'seek-baron') {
       addBaronGhost();

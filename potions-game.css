@@ -25,3 +25,8 @@
 .v42-cauldron-hotspot{position:absolute;z-index:16;right:26%;top:45%;width:14%;height:18%;border:0;background:transparent;cursor:pointer;border-radius:45%}.v42-cauldron-hotspot span{position:absolute;left:50%;bottom:-6px;transform:translate(-50%,100%);white-space:nowrap;padding:6px 9px;border:1px solid rgba(211,180,103,.28);background:rgba(6,7,6,.84);color:#d9bf79;font:600 .46rem 'Cinzel';letter-spacing:.08em;text-transform:uppercase;opacity:0;transition:.2s}.v42-cauldron-hotspot:hover span,.v42-cauldron-hotspot:focus-visible span{opacity:1}.v42-cauldron-hotspot:hover{box-shadow:0 0 44px rgba(220,176,83,.12)}
 .v42-potions .scene-copy{max-width:500px!important;left:2.5%!important;bottom:3%!important;background:linear-gradient(90deg,rgba(7,8,7,.76),rgba(7,8,7,.18) 78%,transparent)!important}
 @media(max-width:820px){.v42-snape-character{right:-9%;height:55vh;opacity:.9}.v42-cauldron-hotspot{right:19%;top:49%;width:22%;height:17%}.v42-potions .scene-copy{max-width:70vw!important}}
+
+/* v465: řazení receptu 1 vlevo, 2 vpravo, 3 vlevo další řádek. */
+.recipe-steps{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-auto-flow:row!important;gap:8px 16px!important}
+.recipe-steps>li{grid-column:auto!important;grid-row:auto!important;break-inside:avoid}
+@media(max-width:420px){.recipe-steps{gap:6px 10px!important;padding-left:20px!important}}

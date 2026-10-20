@@ -52,6 +52,6 @@
    alert('Sabotáž kabinetu patří do úkolu Freda a George; samotné použití bomby body nepřidává.');
    return;
   }
-  blast({actor:'student'}); // pouze vizuální žert bez neověřených bodů
+  blast({actor:'student',message:false}); // zvuk a kouř bez rušivého popisku
  });
 })();

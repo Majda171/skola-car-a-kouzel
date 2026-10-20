@@ -91,15 +91,40 @@
   $('#studentMeta').textContent = isMember ? `${student.year || 1}. ročník · ${config.name}` : 'Bez kolejního zápisu';
   $('#studentPoints').textContent = isMember ? (student.points || 0) : '—';
 
-  // Soukromé kolejní lokace — odkazy fungují pouze členům právě této koleje.
-  document.querySelectorAll('[data-private-house-link]').forEach(link=>{
-    if(!isMember){
-      link.classList.add('locked');
-      link.setAttribute('aria-disabled','true');
-      link.title='Tato místnost je přístupná pouze členům této koleje.';
-      link.addEventListener('click',e=>e.preventDefault());
-    }
+  // Vlastní kolej: oba vstupy. Cizí kolej: jen 20min návštěva společenské
+  // místnosti ověřená serverem (po heslu / hádance / sudech). Ložnice zůstává zamčená.
+  const privateLinks=[...document.querySelectorAll('[data-private-house-link]')];
+  const loungeLink=privateLinks.find(a=>a.getAttribute('href')?.includes('-spolecenska.html'));
+  const bedroomLink=privateLinks.find(a=>a.getAttribute('href')?.includes('-loznice.html'));
+  let guestCanVisit=false;
+  privateLinks.forEach(link=>{
+    if(isMember)return;
+    link.classList.add('locked');
+    link.setAttribute('aria-disabled','true');
+    link.title='Nejdříve projdi příslušným kolejním vstupem.';
+    link.addEventListener('click',e=>{if(!isMember && !(link===loungeLink&&guestCanVisit))e.preventDefault()});
   });
+  if(!isMember && loungeLink){
+    const verifyVisit=async()=>{
+      const client=window.BradaviceDB?.client;
+      if(!client)return;
+      try{
+        const {data:auth,error:authError}=await client.auth.getUser();
+        if(authError||!auth?.user?.id)return;
+        const {data:allowed,error}=await client.rpc('v453_flag_can_enter',{p_target_house:houseCode});
+        if(error||allowed!==true)return;
+        guestCanVisit=true;
+        loungeLink.classList.remove('locked');
+        loungeLink.classList.add('guest-access');
+        loungeLink.removeAttribute('aria-disabled');
+        loungeLink.title='Vstoupit pro kolejní vlajku';
+        loungeLink.querySelector('small')?.replaceChildren(document.createTextNode('Vstoupit pro kolejní vlajku · krátká návštěva'));
+        if(bedroomLink)bedroomLink.title='Ložnice patří jen členům této koleje.';
+        if(status)status.textContent='Host: můžeš navštívit společenskou místnost a najít vlajku. Ložnice zůstává zamčená.';
+      }catch(err){console.warn('Návštěva cizí koleje:',err)}
+    };
+    verifyVisit();
+  }
 
   // Message board
   const boardKey = `bradavice_board_v1_${houseCode}`;

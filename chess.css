@@ -53,3 +53,12 @@
 .chess-square .chess-piece.piece-bishop{height:73%!important;bottom:11%!important}
 .chess-square .chess-piece.piece-queen{height:76%!important;bottom:11%!important}
 .chess-square .chess-piece.piece-king{height:78%!important;bottom:10%!important}
+
+/* v465: stávající velikost šachovnice, figurky výrazné a ukotvené u spodní hrany jednotlivých polí. */
+.chess-square .chess-piece{top:auto!important;left:50%!important;right:auto!important;bottom:2%!important;width:94%!important;max-width:94%!important;height:94%!important;max-height:96%!important;transform:translateX(-50%)!important;object-fit:contain!important;object-position:center bottom!important}
+.chess-square .chess-piece.piece-pawn{height:80%!important;bottom:5%!important}
+.chess-square .chess-piece.piece-rook{height:87%!important;bottom:3%!important}
+.chess-square .chess-piece.piece-knight{height:90%!important;bottom:2%!important}
+.chess-square .chess-piece.piece-bishop{height:90%!important;bottom:2%!important}
+.chess-square .chess-piece.piece-queen{height:93%!important;bottom:2%!important}
+.chess-square .chess-piece.piece-king{height:93%!important;bottom:2%!important}

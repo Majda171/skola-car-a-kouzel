@@ -355,7 +355,6 @@
     const p=board[fr][fc];
     const target=board[tr][tc];
     let rookInfo=null;
-    playStoneMove();
     board[tr][tc]=p;
     board[fr][fc]=null;
     if(special==='castle-k'||special==='castle-q'){
