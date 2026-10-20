@@ -57,7 +57,7 @@
   function beginBrew(){if(brewing)return;brewing=true;clearInterval(timer);timer=null;memory.hidden=true;game.hidden=false;outcome.hidden=true;setControlsDisabled(false);snape.textContent='„Recept je pryč. Teď se ukáže, jestli jste četl/a, nebo jen zíral/a na pergamen.“'}
   function start(){clearInterval(timer);recipe=pickRecipe();index=0;history=[];failed=false;recipeName.textContent=recipe.name;seq.textContent='Zatím žádný krok.';stepCount.textContent=`0 / ${recipe.steps.length}`;status.textContent='';result.innerHTML='';buildShelf();showRecipe()}
   function pulse(){cauldron.classList.add('active');setTimeout(()=>cauldron.classList.remove('active'),650)}
-  function act(type,id=''){
+  function act(type,id=''){if(type==='i')window.BradavicePotionSound?.ingredient();else if(type==='h')window.BradavicePotionSound?.heat();
     if(!brewing||failed||index>=recipe.steps.length)return;const got=actionKey(type,id),expected=stepKey(recipe.steps[index]);history.push(type==='i'?ING[id][0]:labels[type]);seq.textContent=history.join(' → ');pulse();
     if(got!==expected){fail(recipe.steps[index],type,id);return}
     index++;stepCount.textContent=`${index} / ${recipe.steps.length}`;

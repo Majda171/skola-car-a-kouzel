@@ -52,9 +52,13 @@
    const end=e=>{if(!active)return;active=false;el.classList.remove('dragging');const ok=overlaps(el,target);el.style.translate='';if(ok)onDrop();else tell(el===sword?'Meč musí zasáhnout baziliška.':'Baziliščím zubem musíš probodnout deník.');try{el.releasePointerCapture?.(e.pointerId)}catch{}};
    el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
  }
+ const diarySound=new Audio('audio/raddle-diary-v463.mp3');
+ diarySound.volume=.55;diarySound.preload='none';
+ function startDiarySound(){try{diarySound.pause();diarySound.currentTime=0;diarySound.play().catch(()=>{});}catch{}}
+ window.addEventListener('pagehide',()=>diarySound.pause());
  diary.addEventListener('click',()=>{
-   if(stage===0){save(1);revealRaddle();playMonologue(()=>summon())}
-   else if(stage===1){revealRaddle();playMonologue(()=>summon())}
+   if(stage===0){save(1);startDiarySound();revealRaddle();playMonologue(()=>summon())}
+   else if(stage===1){startDiarySound();revealRaddle();playMonologue(()=>summon())}
    else if(stage===4)tell('Deník je zničený. Raddle už z něj nemůže promluvit.');
  });
  makeDrag(sword,basilisk,killBasilisk);makeDrag(fang,diary,destroyDiary);

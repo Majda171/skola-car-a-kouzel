@@ -25,7 +25,7 @@
  async function getClue(){if(!target)return;const talk=$('v453PeevesText');const btn=$('v453AskPeeves');if(btn)btn.disabled=true;
   if(talk)talk.textContent='Protiva poletuje chodbou a cosi si mumlá…';
   try{
-   const text=await rpc('v453_peeves_clue',{p_target_house:target});
+   const text=await rpc('v453_peeves_clue',{p_target_house:target});if(text){try{sessionStorage.setItem('bradavice_peeves_told_'+target,'1')}catch{}}
    if(talk){
     const kind=target==='M'?'Pořadí sudů':target==='H'?'Odpověď na orlí hádanku':'Heslo';
     talk.textContent=text

@@ -25,7 +25,7 @@
   const names={k:'král',q:'dáma',r:'věž',b:'střelec',n:'jezdec',p:'pěšec'};
   const values={p:100,n:320,b:330,r:500,q:900,k:20000};
   const pieceNames={k:'king',q:'queen',r:'rook',b:'bishop',n:'knight',p:'pawn'};
-  const file=(c,t)=>`img/chess/${c==='w'?'white':'black'}_${pieceNames[t]}.webp`;
+  const file=(c,t)=>`img/chess-v463/${c==='w'?'white':'black'}_${pieceNames[t]}.webp`;
   const quotes=['„Odvážné.“','„Pěkný tah. Teď sleduj odpověď.“','„Šachy trestají spěch.“','„Král není ozdoba. Hlídej si ho.“','„Hm. Tohle už začíná být zajímavé.“'];
 
   const freshCastling=()=>({w:{k:true,q:true},b:{k:true,q:true}});
@@ -355,6 +355,7 @@
     const p=board[fr][fc];
     const target=board[tr][tc];
     let rookInfo=null;
+    playStoneMove();
     board[tr][tc]=p;
     board[fr][fc]=null;
     if(special==='castle-k'||special==='castle-q'){
@@ -445,6 +446,12 @@
     if(col===7)castlingRights[color].k=false;
   }
 
+  const stoneMoveSound = new Audio('audio/chess-stone-move-v463.mp3');
+  stoneMoveSound.preload='auto';stoneMoveSound.volume=.64;
+  function playStoneMove(){
+    try{stoneMoveSound.pause();stoneMoveSound.currentTime=0;stoneMoveSound.play().catch(()=>{});}catch{}
+  }
+
   function move(fr,fc,tr,tc,fromAI=false){
     if(ended)return;
     const p=board[fr][fc],target=board[tr][tc];
@@ -459,6 +466,7 @@
     if(p.t==='k')castlingRights[p.c]={k:false,q:false};
     if(p.t==='r')disableRookRight(p.c,fr,fc);
 
+    playStoneMove();
     board[tr][tc]=p;
     board[fr][fc]=null;
 

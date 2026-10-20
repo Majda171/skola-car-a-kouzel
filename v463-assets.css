@@ -1,0 +1,6 @@
+/* v463: na všech hrách udržet chat nad modaly, bez úpravy velikosti šachovnice */
+.v449-chat-bar{z-index:40000!important}
+.v463-dungeon-sound{position:absolute;z-index:32;bottom:12px;right:12px;background:#1b1612dc;color:#e8d6af;border:1px solid #a98b52;border-radius:5px;padding:7px 11px;font:13px Georgia,serif;cursor:pointer}
+@media(max-width:650px){.v463-dungeon-sound{bottom:48px;right:8px}}
+.v463-game-chat-button{position:fixed;z-index:100;bottom:12px;left:12px;background:#30251b;color:#f7e5c0;border:1px solid #ba935a;padding:8px 11px;border-radius:6px;font:600 13px Georgia,serif;cursor:pointer;box-shadow:0 5px 22px #000a}
+.v463-game-chat-button:hover,.v463-game-chat-button:focus-visible{background:#5a4129}

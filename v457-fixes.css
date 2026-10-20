@@ -1,23 +1,76 @@
-
-/* v457: původní kabinet beze změny; postava přirozeně za pracovním stolem. */
+/* v459: jemnější usazení Umbridgeové, delší smrad a upravený druhý úkol Protivy. */
 @media (min-width:801px){
- .umbridge-office .umbridge-character{right:22%!important;bottom:0!important;top:auto!important;width:clamp(290px,31vw,425px)!important;height:min(77svh,730px)!important;overflow:hidden!important;}
- .umbridge-office .umbridge-character img{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center top!important;mask-image:linear-gradient(to bottom,#000 0%,#000 72%,transparent 91%)!important;}
- .umbridge-office .umbridge-desk-foreground{z-index:13!important;}
+ .umbridge-office .umbridge-character{
+  right:14%!important;
+  bottom:0!important;
+  top:auto!important;
+  width:clamp(270px,28vw,390px)!important;
+  height:min(72svh,680px)!important;
+  overflow:hidden!important;
+  z-index:12!important;
+ }
+ .umbridge-office .umbridge-character img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center top!important;
+  mask-image:linear-gradient(to bottom,#000 0%,#000 67%,transparent 86%)!important;
+ }
+ .umbridge-office .umbridge-desk-foreground{z-index:13!important;right:7%!important;bottom:0!important;max-width:min(42vw,650px)!important;}
 }
 @media (max-width:800px){
- .umbridge-office .umbridge-character{overflow:hidden!important;max-height:54svh!important;}
- .umbridge-office .umbridge-character img{mask-image:linear-gradient(to bottom,#000 0%,#000 71%,transparent 92%)!important;}
+ .umbridge-office .umbridge-character{
+  right:-2%!important;
+  bottom:0!important;
+  overflow:hidden!important;
+  max-height:49svh!important;
+  width:min(55vw,235px)!important;
+ }
+ .umbridge-office .umbridge-character img{mask-image:linear-gradient(to bottom,#000 0%,#000 66%,transparent 87%)!important;}
+ .umbridge-office .umbridge-desk-foreground{right:-8%!important;max-width:72vw!important;}
 }
 
-.v457-fog-image{position:fixed;left:50%;top:50%;width:min(83vw,900px);max-height:95vh;object-fit:contain;transform:translate(-50%,-42%);pointer-events:none;z-index:17999;opacity:0;animation:v457-fog 5.3s ease-out forwards;filter:drop-shadow(0 0 13px #7a8e4366)}
-@keyframes v457-fog{0%{opacity:0;transform:translate(-50%,-36%) scale(.55)}13%{opacity:.87;transform:translate(-50%,-43%) scale(.87)}58%{opacity:.78;transform:translate(-50%,-52%) scale(1.13)}100%{opacity:0;transform:translate(-50%,-67%) scale(1.4)}}
+.v457-fog-image{position:fixed;left:50%;top:50%;width:min(83vw,900px);max-height:95vh;object-fit:contain;transform:translate(-50%,-42%);pointer-events:none;z-index:17999;opacity:0;animation:v457-fog 8.8s ease-out forwards;filter:drop-shadow(0 0 13px #7a8e4366)}
+@keyframes v457-fog{0%{opacity:0;transform:translate(-50%,-36%) scale(.55)}10%{opacity:.87;transform:translate(-50%,-43%) scale(.87)}48%{opacity:.84;transform:translate(-50%,-49%) scale(1.02)}72%{opacity:.62;transform:translate(-50%,-57%) scale(1.15)}100%{opacity:0;transform:translate(-50%,-67%) scale(1.4)}}
+
 .v457-quest-trigger,.v457-baron{position:absolute;z-index:25;background:rgba(22,18,19,.9);color:#f5e5bd;border:1px solid #b49558;border-radius:8px;padding:10px 14px;cursor:pointer;font:16px/1.3 Georgia,serif;box-shadow:0 6px 20px #000b}
 .v457-quest-trigger{bottom:21%;left:50%;transform:translateX(-50%)}
 .v457-baron{right:14%;bottom:27%;display:flex;align-items:center;gap:7px;flex-direction:column;font-size:14px}
 .v457-baron img{width:110px;max-height:150px;object-fit:contain;filter:drop-shadow(0 9px 10px #000)}
+
+.v457-baron-ghost{position:absolute;right:18%;bottom:17%;z-index:25;display:flex;flex-direction:column;align-items:center;gap:8px;background:transparent;border:0;padding:0;cursor:pointer;color:#f3deb0;font:16px/1.2 Georgia,serif;text-shadow:0 2px 12px #000}
+.v457-baron-ghost img{width:130px;max-height:185px;object-fit:contain;filter:drop-shadow(0 10px 14px #000)}
+.v457-baron-ghost span{padding:8px 12px;border-radius:8px;background:rgba(25,20,21,.76);border:1px solid rgba(186,149,88,.85)}
+.v457-baron-ghost:hover img,.v457-baron-ghost:focus-visible img{filter:brightness(1.06) drop-shadow(0 0 15px rgba(234,223,195,.32)) drop-shadow(0 10px 14px #000)}
+
 .v457-quest-dialog{position:fixed;inset:0;z-index:18500;display:grid;place-items:center;padding:15px;background:#020307d9}
-.v457-quest-dialog section{position:relative;max-width:535px;width:100%;padding:24px;background:linear-gradient(155deg,#2a2525,#13171c);color:#f5e6c6;border:1px solid #ac8749;border-radius:9px;box-shadow:0 18px 80px #000}
-.v457-quest-dialog h2{font:26px Georgia,serif;margin:0 0 15px}.v457-quest-dialog p{font:17px/1.55 Georgia,serif}
+.v457-quest-dialog section{position:relative;max-width:720px;width:100%;padding:24px;background:linear-gradient(155deg,#2a2525,#13171c);color:#f5e6c6;border:1px solid #ac8749;border-radius:9px;box-shadow:0 18px 80px #000;display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr);gap:18px;align-items:center}
+.v457-quest-dialog section.v457-quest-dialog-compact{grid-template-columns:1fr}
+.v457-quest-copy{min-width:0}
+.v457-quest-dialog h2{font:26px Georgia,serif;margin:0 0 15px}
+.v457-quest-dialog p{font:17px/1.55 Georgia,serif;margin:0 0 6px}
 .v457-quest-dialog button{margin:8px 9px 0 0;padding:10px 15px;background:#74562e;border:1px solid #c5a56c;color:#fff3d4;border-radius:5px;cursor:pointer}
+.v457-quest-portrait{margin:0;display:grid;place-items:center}
+.v457-quest-portrait img{max-width:100%;max-height:240px;object-fit:contain;filter:drop-shadow(0 10px 22px rgba(0,0,0,.55))}
+.v457-quest-portrait.is-mcgonagall img{max-height:265px}
+
+@media(max-width:720px){
+ .v457-quest-dialog section{grid-template-columns:1fr;padding:18px}
+ .v457-quest-portrait img{max-height:190px}
+ .v457-baron-ghost{right:10%;bottom:15%}
+ .v457-baron-ghost img{width:110px;max-height:150px}
+ .v457-baron-ghost span{font-size:14px;padding:7px 10px}
+}
+
 @media(prefers-reduced-motion:reduce){.v457-fog-image{animation:none;opacity:.65}}
+
+/* v463: profesorka se fyzicky objeví v chodbě jako v učebně přeměňování. */
+.corridor-arcade .v463-mcgonagall-scene{position:absolute;z-index:48;right:15%;bottom:12%;width:clamp(135px,17vw,260px);height:min(55vh,500px);display:flex;align-items:center;flex-direction:column;justify-content:flex-end;border:0;background:transparent;color:#fff1cd;cursor:pointer;font:15px Georgia,serif;text-shadow:0 2px 9px #000;filter:drop-shadow(0 12px 15px #000c)}
+.corridor-arcade .v463-mcgonagall-scene img{height:90%;max-width:100%;object-fit:contain;object-position:center bottom;transition:filter .2s}
+.corridor-arcade .v463-mcgonagall-scene:hover img,.corridor-arcade .v463-mcgonagall-scene:focus-visible img{filter:brightness(1.13) drop-shadow(0 0 13px #d8d4beaa)}
+.corridor-arcade .v463-mcgonagall-scene span{padding:6px 8px;background:#211a13d4;border:1px solid #9d8047;border-radius:5px;white-space:nowrap}
+.v457-quest-dialog section{grid-template-columns:1fr!important;max-width:570px}
+.v457-quest-dialog section:has(.v457-quest-portrait){grid-template-columns:minmax(0,165px) minmax(0,1fr)!important;max-width:730px}
+body.v463-smoke-active .v457-quest-dialog{background:#02030773!important}
+body.v463-smoke-active .v457-quest-dialog section{background:linear-gradient(155deg,#2a2525e9,#13171ce9)}
+@media(max-width:750px){.corridor-arcade .v463-mcgonagall-scene{right:6%;width:29vw;height:42vh;bottom:14%}.corridor-arcade .v463-mcgonagall-scene span{font-size:11px}.v457-quest-dialog section:has(.v457-quest-portrait){grid-template-columns:1fr!important}}

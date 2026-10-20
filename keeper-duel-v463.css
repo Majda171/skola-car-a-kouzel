@@ -1,0 +1,24 @@
+/* v463 online famfrpálový duel - původní režim zkoušky zůstává nedotčen */
+.kd-open{display:block;margin-top:12px;border:1px solid #c4a256;background:#755526;color:#fff1d6;padding:11px 16px;font:700 13px Georgia,serif;cursor:pointer}
+.kd-modal[hidden],.kd-lobby[hidden],.kd-game[hidden],.kd-ball[hidden]{display:none!important}
+.kd-modal{position:fixed;inset:0;z-index:13000;display:grid;place-items:center;background:rgba(0,0,0,.88);padding:14px}
+.kd-panel{position:relative;width:min(1040px,98vw);max-height:94svh;overflow:auto;padding:22px;background:#10110f;color:#ebdbb9;border:1px solid #947c46;box-shadow:0 20px 100px #000}
+.kd-panel h2{margin:6px 0;font:700 clamp(22px,3vw,34px) Georgia,serif}
+.kd-panel p{line-height:1.5}
+.kd-close{position:absolute;right:10px;top:8px;cursor:pointer;font-size:27px;color:#f6dfab;border:0;background:transparent}
+.kd-row{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin:12px 0}
+.kd-row button,.kd-copy{padding:10px 14px;background:#836334;border:1px solid #bca06d;color:#fff1d8;cursor:pointer;font:600 14px Georgia,serif}
+.kd-row input{padding:11px;color:#fff;border:1px solid #ab8d52;background:#1a1b18;width:150px;text-transform:uppercase;letter-spacing:.16em;font-size:16px}
+.kd-room{color:#ecd092;font-size:20px;letter-spacing:.12em}
+.kd-arena{position:relative;aspect-ratio:16/9;overflow:hidden;background:linear-gradient(#02050329,#01010182),url('img/famfrpal-game-v41.webp') center/cover;border:1px solid #60543b}
+.kd-score{position:absolute;top:9px;left:10px;z-index:13;background:#11100cc9;color:#f6db9c;border:1px solid #9b7b42;padding:9px 12px;font:600 clamp(12px,1.2vw,16px) Georgia,serif}
+.kd-hoop{position:absolute;z-index:7;border:0;background:transparent;border-radius:50%;cursor:pointer}
+.kd-hoop.left{left:27.55%;top:26.25%;width:10.05%;aspect-ratio:1}
+.kd-hoop.center{left:43.40%;top:12.45%;width:12.05%;aspect-ratio:1}
+.kd-hoop.right{left:61.25%;top:31.65%;width:9.95%;aspect-ratio:1}
+.kd-hoop.selected,.kd-hoop:focus-visible{box-shadow:0 0 0 3px #ebd18e99,inset 0 0 25px #e3c56c66;outline:0}
+.kd-keeper{position:absolute;z-index:8;width:22%;left:50%;top:68%;transform:translate(-50%,-50%);transition:left .12s,top .12s;filter:drop-shadow(0 8px 8px #000)}
+.kd-ball{position:absolute;z-index:9;width:5%;left:50%;top:82%;transform:translate(-50%,-50%)}
+.kd-notice{margin:12px 0;color:#eed28f;font-size:19px;min-height:1.4em}
+.kd-info{font-size:13px;color:#c9bea4}
+@media(max-width:680px){.kd-panel{padding:15px}.kd-keeper{width:29%}.kd-score{font-size:11px;top:5px;left:5px;padding:5px}.kd-row{gap:6px}.kd-row input{width:120px}}

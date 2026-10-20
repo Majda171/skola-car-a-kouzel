@@ -39,3 +39,35 @@
 .v453-house-flag .v453-pennant{width:100%;min-height:0}
 .v453-house-flag .v453-pennant img{max-height:250px}
 @media(max-width:760px){.v453-flag-collection .v453-pennant{width:80px}.v453-house-flag{right:6%;bottom:25%;width:95px}}
+
+/* v459: Vlajková výprava na skutečné chodbě s Protivou, bez šedého plochého pozadí. */
+.v453-flags-page{
+ background:
+  linear-gradient(90deg,rgba(6,7,9,.82),rgba(10,10,12,.48) 42%,rgba(4,5,7,.78)),
+  linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.36)),
+  url('img/corridor-v32-clean.webp') center/cover no-repeat fixed!important;
+}
+.v453-game-header{padding-top:16px}
+.v453-flags-main{max-width:1250px;min-height:calc(100vh - 80px);align-items:start;padding-top:40px}
+.v453-flags-intro,.v453-flags-content{
+ background:rgba(9,10,12,.56);
+ border:1px solid rgba(171,136,75,.58);
+ border-radius:16px;
+ box-shadow:0 18px 60px rgba(0,0,0,.42);
+ backdrop-filter:blur(2px);
+}
+.v453-flags-intro{padding:24px 26px}
+.v453-flags-content{background:rgba(8,10,12,.66)}
+.v453-peeves{background:rgba(14,17,21,.58);border-color:rgba(171,136,75,.54)}
+.v453-journey-link{margin-top:18px}
+@media(max-width:760px){
+ .v453-flags-main{min-height:auto;padding-top:20px}
+ .v453-flags-intro{margin-bottom:15px}
+}
+
+/* v463: přímo viditelná chodba Protivy; zrušení šedých tmavých překryvů. */
+body.v453-flags-page{background:#100f0e url('img/corridor-v32-clean.webp') center center/cover no-repeat fixed!important}
+body.v453-flags-page .v453-flags-main{background:transparent!important}
+body.v453-flags-page .v453-flags-intro{background:rgba(10,10,11,.44)!important;backdrop-filter:none!important;border-color:rgba(202,174,104,.4)!important}
+body.v453-flags-page .v453-flags-content{background:rgba(6,9,11,.49)!important;backdrop-filter:none!important;border-color:rgba(202,174,104,.4)!important}
+body.v453-flags-page .v453-peeves{background:rgba(10,10,12,.36)!important}

@@ -1,6 +1,7 @@
 /* Bradavice v449: lišta dostupná během hry; pouze přátelé a RLS na serveru. */
 (()=>{'use strict';
  if(document.querySelector('#v449-chat-bar'))return;
+ const quickmailBase=document.currentScript?.src ? new URL('.',document.currentScript.src).href : new URL('.',location.href).href;
  const client=window.BradaviceDB?.client;
  if(!client)return;
  let me=null,peers=[],peer='',unread=new Set(),lastSeen=new Set(),started=false,busy=false;
@@ -12,12 +13,19 @@
  const heading=el('div','v449-chat-heading');const title=el('strong','','Soukromá soví pošta');const close=el('button','v449-x','×');close.setAttribute('aria-label','Sbalit soví poštu');heading.append(title,close);
  const select=el('select');select.setAttribute('aria-label','Vyber přítele');const messages=el('div','v449-messages');messages.setAttribute('aria-live','polite');
  const invite=el('button','v449-invite','⚔️ Vložit kód hry');invite.type='button';
- invite.onclick=()=>{const code=prompt('Zadej kód herní místnosti, který chceš poslat kamarádovi:');if(code===null)return;const safe=code.trim().slice(0,80);if(!safe)return;input.value='Připoj se ke mně do hry! Kód místnosti: '+safe;input.focus();};
+ invite.onclick=()=>{
+   const known=['kdRoomCode','potionDuelRoomCode','chessRoomCode','memoryRoomCode','tchorickyRoomCode']
+     .map(id=>document.getElementById(id)?.textContent?.trim())
+     .find(c=>c&&/^[A-F0-9]{6}$/.test(c));
+   const code=known||prompt('Zadej kód herní místnosti, který chceš poslat kamarádovi:');
+   if(code===null)return;const safe=code.trim().slice(0,80);if(!safe)return;
+   input.value='Připoj se ke mně do hry! Kód místnosti: '+safe;input.focus();
+  };
  const form=el('form','v449-send');const input=el('input');input.required=true;input.maxLength=1000;input.placeholder='Napiš zprávu nebo kód duelu…';input.setAttribute('aria-label','Zpráva');
  const send=el('button','','Odeslat');send.type='submit';form.append(input,send);
- const feedback=el('p','v449-feedback');feedback.setAttribute('role','status');const link=el('a','v449-all','Nástěnka · Přátelé · Všechny dopisy ↗');link.href='social.html?tab=messages';
+ const feedback=el('p','v449-feedback');feedback.setAttribute('role','status');const link=el('a','v449-all','Nástěnka · Přátelé · Všechny dopisy ↗');link.href=new URL('social.html?tab=messages',quickmailBase).href;
  panel.append(heading,select,invite,messages,form,feedback,link);bar.append(toggle,panel);document.body.append(bar);
- const css=document.createElement('link');css.rel='stylesheet';css.href='v449-quickmail.css?v=449';document.head.append(css);
+ const css=document.createElement('link');css.rel='stylesheet';css.href=new URL('v449-quickmail.css?v=463',quickmailBase).href;document.head.append(css);
  const open=async()=>{panel.hidden=false;toggle.setAttribute('aria-expanded','true');await ready();await loadFriends();await loadMessages();input.focus({preventScroll:true})};
  const shut=()=>{panel.hidden=true;toggle.setAttribute('aria-expanded','false')};
  toggle.onclick=()=>panel.hidden?open():shut();close.onclick=shut;

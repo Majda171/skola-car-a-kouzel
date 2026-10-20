@@ -37,6 +37,14 @@
     if(success)success();
     setTimeout(()=>location.assign(config.go),config.house==='M'?950:500);return;
    }
+   try{
+    const key='bradavice_peeves_told_'+config.house;
+    if(sessionStorage.getItem(key)==='1'){
+      sessionStorage.removeItem(key);
+      const laughter=new Audio('audio/peeves-laugh-v463.mp3');laughter.volume=.72;
+      laughter.play().catch(()=>{});
+    }
+   }catch{}
    if(msg){msg.textContent=data?.locked?'Dnes už žádný další pokus.':`Nesprávné řešení. Zbývá pokusů: ${data?.remaining??'?'}.`;}
   }catch(e){if(msg)msg.textContent='Přístup se nepodařilo ověřit: '+(e.message||'chyba');}
   finally{busy=false;}
