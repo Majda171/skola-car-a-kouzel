@@ -1,0 +1,113 @@
+/* Bradavice v462: hlavni duchove v popredi zustavaji VELCI.
+   Mensi duchove jsou vzadu a kazdy ma vlastni prostor. Meni se pouze rozmisteni. */
+
+/* Nick stoji vlevo v popredi, v puvodni vyrazne velikosti. */
+.v450-nick-scene .v450-nick-character {
+  left:2.5%!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:5%!important;
+  width:clamp(230px,25vw,405px)!important;
+  height:min(65vh,590px)!important;
+  max-height:72%!important;
+  z-index:15!important;
+  overflow:visible!important;
+}
+.v450-nick-scene .v450-nick-character img {
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+}
+
+/* Sir Patrick stoji vpravo v popredi, take velky; nechava misto textu. */
+.v450-nick-scene .v452-patrick {
+  left:auto!important;
+  right:16%!important;
+  top:auto!important;
+  bottom:6%!important;
+  width:clamp(220px,24vw,370px)!important;
+  height:min(60vh,550px)!important;
+  max-width:none!important;
+  z-index:15!important;
+  filter:brightness(.78) drop-shadow(0 6px 14px #000a)!important;
+}
+.v450-nick-scene .v452-patrick img {
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+}
+
+/* Ostatni duchove jsou vzadu, kazdy ve svem vlastnim sloupci. */
+.v450-nick-scene .v451-party-ghosts {
+  position:absolute;
+  inset:0;
+  z-index:9;
+  overflow:hidden;
+  pointer-events:none;
+}
+.v450-nick-scene .v451-party-ghost {
+  position:absolute!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  width:auto!important;
+  max-width:none!important;
+  height:min(21vh,175px)!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  filter:brightness(.67) drop-shadow(0 3px 9px #a3c9e633)!important;
+}
+/* Seda dama na leve strane zadnich arkad. */
+.v450-nick-scene .v451-party-ghost:nth-child(1) {
+  left:27%!important;top:23%!important;height:min(22vh,180px)!important;
+}
+/* Tlusty mnich vlevo od stredni arkady. */
+.v450-nick-scene .v451-party-ghost:nth-child(2) {
+  left:46%!important;top:27%!important;height:min(18vh,150px)!important;
+}
+/* Krvavy baron bliz ke stredu, nikoliv na siru Patrickovi. */
+.v450-nick-scene .v451-party-ghost:nth-child(3) {
+  left:56%!important;top:28%!important;height:min(17vh,140px)!important;
+}
+/* Protiva pod pravym obloukem – vysoko, ale cely v zaberu. */
+.v450-nick-scene .v451-party-ghost:nth-child(4) {
+  left:auto!important;right:5%!important;top:15%!important;height:min(17vh,145px)!important;
+}
+/* Ufnukana Ursula mezi Sedou damou a mnichem. */
+.v450-nick-scene .v451-party-ghost:nth-child(5) {
+  left:37%!important;top:29%!important;height:min(18vh,150px)!important;
+}
+
+.v450-nick-scene .v450-caption {z-index:35!important;}
+/* Pri questu je Krvavy baron na stejnem miste a obraz se nezdvojuje. */
+.v450-nick-scene:has(.v457-baron-ghost) .v451-party-ghost:nth-child(3){visibility:hidden!important;}
+.v450-nick-scene .v457-baron-ghost {z-index:26!important;right:42%!important;bottom:46%!important;}
+.v450-nick-scene .v457-baron-ghost img{width:clamp(125px,12vw,175px)!important;max-height:215px!important;}
+
+@media (min-width:701px) and (max-width:1200px) {
+  .v450-nick-scene .v450-nick-character{left:1.5%!important;width:26vw!important;height:60vh!important;}
+  .v450-nick-scene .v452-patrick{right:13%!important;width:25vw!important;height:57vh!important;}
+  .v450-nick-scene .v451-party-ghost:nth-child(1){left:29%!important;height:17vh!important;}
+  .v450-nick-scene .v451-party-ghost:nth-child(5){left:39%!important;height:15vh!important;}
+  .v450-nick-scene .v451-party-ghost:nth-child(2){left:49%!important;height:14vh!important;}
+  .v450-nick-scene .v451-party-ghost:nth-child(3){left:58%!important;height:13vh!important;}
+  .v450-nick-scene .v451-party-ghost:nth-child(4){right:3%!important;height:13vh!important;}
+}
+@media(max-width:700px){
+  .v450-nick-scene .v450-nick-character{
+    left:1%!important;bottom:24%!important;width:34vw!important;height:37vh!important;max-height:45%!important;
+  }
+  .v450-nick-scene .v452-patrick{
+    right:1%!important;bottom:25%!important;width:34vw!important;height:36vh!important;max-width:none!important;
+  }
+  .v450-nick-scene .v451-party-ghost:nth-child(1){left:6%!important;top:14%!important;height:11vh!important;}
+  .v450-nick-scene .v451-party-ghost:nth-child(5){left:25%!important;top:20%!important;height:10vh!important;}
+  .v450-nick-scene .v451-party-ghost:nth-child(2){left:44%!important;top:16%!important;height:10vh!important;}
+  .v450-nick-scene .v451-party-ghost:nth-child(3){left:63%!important;top:21%!important;height:9vh!important;}
+  .v450-nick-scene .v451-party-ghost:nth-child(4){left:auto!important;right:4%!important;top:12%!important;height:10vh!important;}
+  .v450-nick-scene .v457-baron-ghost {right:30%!important;bottom:62%!important;}
+  .v450-nick-scene .v457-baron-ghost img{width:clamp(85px,23vw,120px)!important;max-height:160px!important;}
+}
