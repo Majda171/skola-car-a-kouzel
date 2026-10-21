@@ -12,4 +12,4 @@ if(!standings)document.querySelector('.cup-note').textContent='Databáze neodpov
 document.getElementById('houseRanking').innerHTML=data.map((h,i)=>`<article class="house-column ${i===0&&h.points>0?'leader':''}" style="--fill:${Math.max(4,(h.points??0)/max*78)}%;--house:${h.color};--crest:url('${h.img}')"><span class="rank">${i+1}. místo</span><div class="house-fill"></div><img src="${h.img}" alt="Erb ${h.name}"><h2>${h.name}</h2><div class="house-points">${h.points===null?'—':h.points}</div><div class="house-label">bodů</div></article>`).join('');
 })();
 </script><script src="music-v42.js?v=435"></script><script src="ui-v435.js?v=465"></script>
-<script src="v449-quickmail.js?v=463" defer></script><script src="v450-dungbombs.js?v=465" defer></script><script src="v450-quest-bag.js?v=450" defer></script><script src="castle-nav-v456.js?v=456"></script></body></html>
+<script src="v449-quickmail.js?v=463" defer></script><script src="v450-dungbombs.js?v=465" defer></script><script src="v450-quest-bag.js?v=450" defer></script><script src="castle-nav-v456.js?v=468"></script></body></html>

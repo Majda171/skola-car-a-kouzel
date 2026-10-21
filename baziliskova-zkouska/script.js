@@ -98,7 +98,16 @@
       if (!state.snake.some(s => equal(s,p)) && !state.obstacles.some(o => equal(o,p))
           && !equal(state.food,p) && !equal(state.rare,p)) available.push(p);
     }
-    return available.length ? available[randomCellIndex(available.length)] : null;
+    if (!available.length) return null;
+    // Seeded random stays deterministic for the server-verified duel.
+    const n = randomCellIndex(available.length);
+    return available[Math.max(0,Math.min(available.length-1,n))];
+  }
+  function foodIsValid() {
+    const p=state.food;
+    return p && Number.isInteger(p.x) && Number.isInteger(p.y)
+      && p.x>=0 && p.y>=0 && p.x<GRID && p.y<GRID
+      && !state.obstacles.some(o=>equal(o,p)) && !state.snake.some(s=>equal(s,p));
   }
   function readyGame() {
     state.phase = 'ready';
@@ -189,6 +198,13 @@
       state.score += 35; addParticles(next,'#b18fea',35); playSound('rare');
       state.rare = null;
       showToast('Ametyst získán · +35 bodů!');
+    }
+    // If a marathon round loses its rune unexpectedly, recover a free cell.
+    // Never interrupt the round after 360+ points or award points for recovery.
+    if (!foodIsValid() && state.phase==='playing') {
+      state.food=null;
+      state.food=freePosition();
+      if (!state.food) {finish(true);return;}
     }
     if (growing) updateUI();
   }
@@ -380,9 +396,11 @@
       ctx.beginPath();ctx.moveTo(0,-tile*.41);ctx.lineTo(0,tile*.43);ctx.moveTo(-tile*.3,-tile*.07);ctx.lineTo(tile*.3,-tile*.09);ctx.lineTo(0,tile*.1);ctx.closePath();ctx.strokeStyle='#d1b4f6';ctx.lineWidth=1.3;ctx.stroke();
     } else {
       ctx.rotate(Math.PI/4);
-      ctx.fillStyle='#ca9950';ctx.strokeStyle='#ffe2a6';ctx.lineWidth=tile*.07;
+      ctx.shadowColor='#ffe397';ctx.shadowBlur=Math.max(6,tile*.75);
+      ctx.fillStyle='#e8b950';ctx.strokeStyle='#fff0bc';ctx.lineWidth=tile*.115;
       ctx.fillRect(-tile*.23,-tile*.23,tile*.46,tile*.46);
       ctx.strokeRect(-tile*.23,-tile*.23,tile*.46,tile*.46);
+      ctx.shadowBlur=0;
       ctx.rotate(-Math.PI/4);
       ctx.strokeStyle='#45391e';ctx.lineWidth=tile*.075;ctx.beginPath();
       ctx.moveTo(0,-tile*.2);ctx.lineTo(0,tile*.2);ctx.moveTo(-tile*.17,0);ctx.lineTo(tile*.17,0);ctx.stroke();

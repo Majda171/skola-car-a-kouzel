@@ -1,4 +1,4 @@
-/* Bradavice v456 – boční šipky pouze mezi běžnými lokacemi.
+/* Bradavice v468 – boční šipky pouze mezi běžnými lokacemi.
  * Tajné, herní, interiérové a úkolové místnosti jsou přístupné jedině
  * skrz své skutečné klikatelné vchody. Není možné obejít kolejní zkoušky.
  * Seřazení tras: vstupní patro → chodby → sklepení → vyšší patra → pozemky.
@@ -30,10 +30,6 @@
     "Severní chodba"
   ],
   [
-    "prihlaseniNeb.html",
-    "Vstup do Nebelvíru"
-  ],
-  [
     "chodby-stara-galerie.html",
     "Východní chodba"
   ],
@@ -46,10 +42,6 @@
     "Kuchyně"
   ],
   [
-    "prihlaseniMrzimor.html",
-    "Vstup do Mrzimoru"
-  ],
-  [
     "ucebna-lektvaru.html",
     "Učebna lektvarů"
   ],
@@ -58,16 +50,8 @@
     "Hluboké sklepení"
   ],
   [
-    "prihlaseniZmijozel.html",
-    "Vstup do Zmijozelu"
-  ],
-  [
     "chodby-horni.html",
     "Horní chodby"
-  ],
-  [
-    "prihlaseniHavraspar.html",
-    "Vstup do Havraspáru"
   ],
   [
     "ucebna-jasnovidectvi.html",
