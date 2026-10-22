@@ -78,7 +78,7 @@ async function collect(id){
  pending.add(id);
  try{
  if(serverAvailable){const {data,error}=await DB.client.rpc('v445_collect_item',{p_item_id:id});
-  if(error)return {ok:false,message:'Předmět se nepodařilo uložit do Supabase. Zkus to znovu.'};
+  if(error)return {ok:false,message:'Předmět se nepodařilo uložit. Zkus to znovu.'};
   if(data==='full'){await reloadFromServer();return {ok:false,full:true,message:'Batoh je na serveru plný. Nejprve odlož jiný předmět.'}};
   if(!['collected','already'].includes(data))return {ok:false,message:'Ukládání se nepodařilo.'};
  }

@@ -62,7 +62,7 @@ form.addEventListener('submit',async event=>{
     if(!window.BradaviceDB?.client) throw new Error('Supabase není dostupný');
     const data=await window.BradaviceDB.signUp(result.data);
     if(!data?.session){
-      throw new Error('Registrace vznikla, ale není aktivní relace. Zkontrolujte, že je v Supabase vypnuté Confirm email.');
+      throw new Error('Účet byl vytvořen, ale přihlášení zatím není dokončené. Zkus se přihlásit znovu.');
     }
     const student=await window.BradaviceDB.hydrateAll();
     if(!student) throw new Error('Profil studenta se nepodařilo načíst.');

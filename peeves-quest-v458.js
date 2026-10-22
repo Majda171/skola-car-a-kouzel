@@ -61,7 +61,7 @@
   function errorBox(e, retry) {
     console.warn('Protivovy nekalosti: nepodařilo se uložit krok', e);
     dialogue('Školní evidence',
-      'Úkol se nepodařilo uložit do Supabase. Body se nepřipsaly. Zkontroluj připojení a instalaci SQL pro v458. ' + (e?.message || ''),
+      'Úkol se teď nepodařilo uložit. Body se nepřipsaly. Zkus to později. ' + (e?.message || ''),
       [['Zkusit znovu', retry], ['Zavřít', null]]);
   }
 

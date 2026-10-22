@@ -19,7 +19,7 @@ let raf=0,poll=null,clock=null,flight=false,pending=false,closing=false,shot=nul
 let ended=false;
 const play=a=>{try{a.pause();a.currentTime=0;a.play().catch(()=>{})}catch{}};
 const call=async(action,params={})=>{
- if(!db)throw Error('Připojení k Supabase není dostupné.');
+ if(!db)throw Error('Připojení k duelu teď není dostupné.');
  const {data,error}=await db.rpc('v463_keeper_duel',{p_action:action,p_code:room||null,p_shot_index:null,p_lane:null,...params});
  if(error)throw error;
  if(!data||!data.code)throw Error('Databáze nevrátila stav duelu.');

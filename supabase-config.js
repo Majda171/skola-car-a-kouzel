@@ -150,7 +150,7 @@
     // hydrateStudent() znovu přečte profil a obnoví lokální cache.
     const updated=await hydrateStudent();
     if(!updated||updated.avatarKey!==key){
-      throw new Error('Změna portrétu se v databázi neprojevila. Zkus to znovu; pokud se chyba opakuje, zkontroluj funkci update_own_profile v Supabase.');
+      throw new Error('Změna portrétu se neuložila. Zkus to znovu později.');
     }
     window.dispatchEvent(new CustomEvent('bradavice:profile-updated'));return data;
   }

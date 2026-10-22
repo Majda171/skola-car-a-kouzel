@@ -58,14 +58,14 @@
    const answer=apologize
     ? '„Ach, omluva! Jak rozkošné. Bohužel, drahoušku, pravidla zůstávají pravidly, i když se omluvíš tím nejlíbeznějším hláskem.“'
     : '„Rozhlédnout? Ehm, ehm! Zvědavost není v osnovách, pokud ji ministerstvo výslovně neschválí. Tvé nápady by zasloužily trochu usměrnění.“';
-   const note=result==='deducted'?'Tvé koleji bylo odečteno 50 bodů.':result==='already'?'Trest za toto zadržení už byl zaúčtován.':result==='pending'?'Čeká se na potvrzení z databáze.':'Bodový trest se zatím nepodařilo zaúčtovat.';
+   const note=result==='deducted'?'Tvé koleji bylo odečteno 50 bodů.':result==='already'?'Trest za toto zadržení už byl zaúčtován.':result==='pending'?'Školní evidence potvrzuje trest…':'Bodový trest se zatím nepodařilo zaúčtovat.';
    const next=()=>{
     const severe=(visits%2===0)||Math.random()<.35;
     UI?.render(severe?'„A nyní trocha užitečné práce, drahoušku. Za domácí úkol to nepovažuj. To je milé drobné kázeňské opatření.“':'„A teď mi zmiz z očí. Nebo si snad přeješ, abychom v debatě pokračovali s panem Filchem?“',[[severe?'Přijmout školní trest':'Děkuji, paní profesorko.',()=>{UI?.close();if(severe)punishment(types[Math.floor(Math.random()*types.length)])}]], note);
    };
    UI?.render(answer+' „Tvoje kolej si musí vzít ponaučení.“',[["Rozumím, paní profesorko.",next]],note);
   }
-  if(!DB){result='failed';UI?.status&&(UI.status.textContent='Databáze není připojená. Body se neodečetly.');return}
+  if(!DB){result='failed';UI?.status&&(UI.status.textContent='Školní evidence teď neodpovídá. Body se neodečetly.');return}
   try{
    const response=await DB.rpc('v446_filch_penalty',{p_incident:incident});
    if(response.error){throw response.error}
@@ -73,9 +73,9 @@
    if(result==='deducted'||result==='already'){
     try{sessionStorage.removeItem('bradavice_filch_incident_v446');sessionStorage.removeItem('bradavice_filch_escorted_v442')}catch{}
     await syncPoints();
-    if(result==='deducted')notice('Umbridgeová ti právě odečetla 50 kolejních bodů.');
+    /* Výsledek stržení bodů se zobrazuje pouze jednou v dialogu. */
    }else{notice('Kázeňský trest se neodečetl: '+(result==='recent'?'jiný trest byl zaznamenán nedávno.':'databáze jej nepotvrdila.'))}
-  }catch(e){result='failed';console.warn('Umbridge: trest od Filche:',e);notice('Odečet 50 bodů zatím není nastavený v Supabase; body se neodečetly.');}
+  }catch(e){result='failed';console.warn('Umbridge: trest od Filche:',e);notice('Školní evidence teď neodpovídá. Body zůstaly beze změny.');}
   finally{
    working=false;
    if(UI?.status&&!document.getElementById('umbridgeDialog')?.hidden)UI.status.textContent=result==='deducted'?'Tvé koleji bylo odečteno 50 bodů.':result==='already'?'Trest za toto zadržení již byl zaúčtován.':result==='recent'?'Opakovaný trest byl z bezpečnostních důvodů pozastaven.':'50 bodů zatím odečteno nebylo.';
@@ -90,9 +90,9 @@
   q.btn('Raději odejít',q.close);
   const activate=q.btn('Schovat bomby hnojůvky',async()=>{
    activate.disabled=true;
-   if(!DB){q.p.textContent='Úkol čeká na dokončení databázového nastavení.';activate.disabled=false;return}
+   if(!DB){q.p.textContent='Úkol je dočasně nedostupný. Zkus to později.';activate.disabled=false;return}
    const {data,error}=await DB.rpc('v446_sabotage');
-   if(error||data!=='success'){q.p.textContent=error?.message||'Úkol zatím nelze dokončit. Zkontroluj aktivní časové okno, pergamen a nastavení Supabase.';activate.disabled=false;return}
+   if(error||data!=='success'){q.p.textContent='Úkol teď nelze dokončit. Zkus to později.';activate.disabled=false;return}
    stage.classList.add('v446-stinky');window.BradaviceDungBombs?.blast({actor:'student',message:'💨 Bomby hnojůvky vybuchly pod stolem!'});if(character){stage.classList.remove('v446-empty');character.hidden=false;const portrait=character.querySelector('img');if(portrait)portrait.src='img/dolores-umbridge-smrad-v457.webp';}meow();story.markDone();await window.BradaviceInventory?.reload?.();
    q.p.textContent='Bomby hnojůvky s rachotem vybuchly! Kabinet zaplnil zelený zápach a Umbridgeová se vrací v nejhorší náladě. Teď rychle pryč!';q.actions.replaceChildren();q.btn('Utéct z kabinetu',()=>{q.close();location.href='chodby-horni.html'});
   });

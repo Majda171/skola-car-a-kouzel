@@ -83,7 +83,7 @@
     const DB = window.BradaviceDB;
     const client = DB?.client;
     if (!client) {
-      if (current()) status('Připojení k Supabase se nepodařilo načíst. Zkus obnovit stránku nebo ověření zopakovat.',true);
+      if (current()) status('Připojení ke škole se nepodařilo navázat. Obnov stránku nebo se zkus přihlásit znovu.',true);
       return;
     }
     let sessionUser;
@@ -145,7 +145,7 @@
     if(panel)panel.hidden=true;
     // Pomalý server nesmí studenta po osmi sekundách automaticky vykopnout.
     const slowTimer=setTimeout(()=>{
-      if (!completed && id===attemptNo) status('Ověřuji studentský účet. Supabase odpovídá pomaleji, než je obvyklé…',false);
+      if (!completed && id===attemptNo) status('Ověřuji studentský účet. Chvíli to trvá…',false);
     },4500);
     const retryTimer=setTimeout(()=>{
       if (!completed && id===attemptNo) status('Ověření trvá příliš dlouho. Zkus jej znovu; rozehrané úkoly v databázi zůstanou zachované.',true);

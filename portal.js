@@ -69,7 +69,7 @@
         const message=String(err?.message||'Profil se nepodařilo uložit.');
         console.warn('Uložení studentského portrétu selhalo.',err);
         msg.textContent=(err?.code==='PGRST202'||/Could not find.*update_own_profile|function.*update_own_profile.*does not exist/i.test(message))
-          ?'V databázi chybí funkce update_own_profile. Změna nebyla uložena; je potřeba prověřit nastavení Supabase.'
+          ?'Změnu profilu se nepodařilo uložit. Zkus to znovu později.'
           :message;
       }finally{
         saving=false;
@@ -130,13 +130,13 @@
     async function refreshPersonalPoints(){
       if(refreshing)return;
       refreshing=true;
-      if(info)info.textContent='Ověřuji osobní body v Supabase…';
+      if(info)info.textContent='Ověřuji osobní body…';
       try{
         // Osobní body jsou výhradně ze serverového profilu; součet čtyř kolejí je jiný přehled.
         if(!DB?.client)throw new Error('Databáze není dostupná.');
         await DB.hydrateStudent();
         renderProfile();
-        if(info)info.textContent='Osobní body ověřené v Supabase.';
+        if(info)info.textContent='Osobní body jsou aktuální.';
         try{await DB.hydrateProgress();renderProfile()}
         catch(e){console.warn('Historie bodů není dostupná:',e);if(info)info.textContent='Osobní body jsou načtené, ale historie se nepodařila obnovit.'}
       }catch(err){

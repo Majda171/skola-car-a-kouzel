@@ -57,14 +57,14 @@
     let questions=makeSet(id),total=questions.length,index=0,score=0,selected=null,attemptId=null;
     const chosenAnswers=[];
     if(id==='divination'){
-      body.textContent='Profesorka připravuje otázky. Ověřuji přístup k Supabase…';
+      body.textContent='Profesorka připravuje otázky…';
       try{
         const client=window.BradaviceDB?.client;if(!client)throw Error('Supabase není dostupné.');
         const {data,error}=await client.rpc('v453_divination_start');if(error)throw error;
         if(!data?.attempt_id||!Array.isArray(data.questions)||data.questions.length!==10)throw Error('Neplatná sada otázek.');
         attemptId=data.attempt_id;
         questions=data.questions.map(r=>({q:r.q,answers:r.answers}));total=questions.length;
-      }catch(e){body.textContent='Test nelze spustit. Nejdřív je potřeba nastavit SQL v453 v Supabase. '+(e.message||'');return;}
+      }catch(e){body.textContent='Test teď nelze spustit. Zkus to znovu později.';return;}
     }
     const render=()=>{
       const q=questions[index],pct=Math.round(index/total*100),answers=shuffle(q.answers);
@@ -83,7 +83,7 @@
         }catch(e){body.textContent='Výsledek se nepodařilo uložit. Nebyly přiděleny žádné body. '+(e.message||'');return;}
       }
       const out=saveResult(id,score,total),best=out.result.bestScore,perfect=score===total;
-      body.innerHTML=`<div class="quiz-result"><div class="quiz-grade">${out.grade}</div><h3>${out.label}</h3><p class="quiz-score">${score} z ${total} správně</p><p class="${out.passed?'quiz-pass':'quiz-fail'}">${out.passed?'Zkouška je splněna.':'Zkouška zatím není splněna. Můžeš ji zopakovat.'}</p>${out.firstPass?`<p>${id==='year1'?'+25':'+10'} bodů za první úspěšné složení${id==='divination'?' (po potvrzení Supabase)':''}.</p>`:''}${perfect&&total===10?'<p>Bez jediné chyby — výborný výkon.</p>':''}<p class="quiz-best">Nejlepší výsledek: ${best} / ${total} · ${out.result.bestGrade}</p><div class="quiz-actions"><button class="quiz-btn" id="quizAgain" type="button">Zkusit znovu</button><button class="quiz-btn primary" id="quizDone" type="button">Hotovo</button></div>${id!=='year1'?'<a class="quiz-year-link" href="rocnikova-zkouska.html">Přejít na ročníkovou zkoušku</a>':''}</div>`;
+      body.innerHTML=`<div class="quiz-result"><div class="quiz-grade">${out.grade}</div><h3>${out.label}</h3><p class="quiz-score">${score} z ${total} správně</p><p class="${out.passed?'quiz-pass':'quiz-fail'}">${out.passed?'Zkouška je splněna.':'Zkouška zatím není splněna. Můžeš ji zopakovat.'}</p>${out.firstPass?`<p>${id==='year1'?'+25':'+10'} bodů za první úspěšné složení${id==='divination'?'':''}.</p>`:''}${perfect&&total===10?'<p>Bez jediné chyby — výborný výkon.</p>':''}<p class="quiz-best">Nejlepší výsledek: ${best} / ${total} · ${out.result.bestGrade}</p><div class="quiz-actions"><button class="quiz-btn" id="quizAgain" type="button">Zkusit znovu</button><button class="quiz-btn primary" id="quizDone" type="button">Hotovo</button></div>${id!=='year1'?'<a class="quiz-year-link" href="rocnikova-zkouska.html">Přejít na ročníkovou zkoušku</a>':''}</div>`;
       body.querySelector('#quizAgain').addEventListener('click',()=>start(id));body.querySelector('#quizDone').addEventListener('click',()=>modal.hidden=true);
     };
     modal.hidden=false;render();

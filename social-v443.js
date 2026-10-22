@@ -12,7 +12,7 @@
   const fmt=s=>{try{return new Intl.DateTimeFormat('cs-CZ',{dateStyle:'short',timeStyle:'short'}).format(new Date(s))}catch{return ''}};
   function urlFor(str){try{const u=new URL(str);return u.protocol==='https:'?u.href:null}catch{return null}}
   async function requireStudent(){
-    if(!DB)throw new Error('Supabase není dostupná.');
+    if(!DB)throw new Error('Školní pošta teď není dostupná.');
     const {data,error}=await DB.auth.getUser();if(error||!data?.user)throw new Error('Nejdřív se přihlas.');
     me=data.user;
   }

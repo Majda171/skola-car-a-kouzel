@@ -1,0 +1,56 @@
+/* Bradavice v469: cabinet uses the selected background with genuine walkable floor. */
+.umbridge-office{
+  background-image:url('img/umbridge-office-v469.webp') !important;
+  background-position:center center !important;
+  background-size:cover !important;
+  background-repeat:no-repeat !important;
+  min-height:max(760px, calc(100svh - 44px)) !important;
+}
+/* All furniture and decor are already baked into the new photo. */
+.umbridge-office::before,.umbridge-office::after,
+.umbridge-office > .pink-curtain,.umbridge-office > .cat-plates,
+.umbridge-office > .umbridge-desk,.umbridge-office > .umbridge-desk-foreground{display:none !important;content:none !important}
+/* Physical feet stand on the visible floor in front of the desk. No fade mask. */
+.umbridge-office .umbridge-character{
+ position:absolute !important;
+ top:auto !important;left:auto !important;
+ right:18% !important;bottom:7% !important;
+ width:clamp(230px,21vw,370px) !important;
+ height:clamp(400px,64svh,580px) !important;
+ overflow:visible !important;
+ padding:0 !important;margin:0 !important;
+ background:none !important;border:none !important;
+ z-index:12 !important;cursor:pointer;
+ transform:none !important;
+}
+.umbridge-office .umbridge-character img{
+ display:block !important;width:100% !important;height:100% !important;
+ object-fit:contain !important;object-position:center bottom !important;
+ mask-image:none !important;-webkit-mask-image:none !important;
+ opacity:1 !important;filter:drop-shadow(0 12px 12px rgba(0,0,0,.55)) !important;
+}
+.umbridge-office .umbridge-character:hover img{filter:brightness(1.04) drop-shadow(0 12px 16px rgba(0,0,0,.65)) !important}
+.umbridge-office .umbridge-copy{left:2% !important;bottom:3% !important;width:min(390px,35vw) !important;z-index:17 !important}
+.umbridge-office .umbridge-dialog{right:22% !important;bottom:24% !important;z-index:31 !important}
+/* Corridor: no drawn rectangle or text glued on a wall; route is in the location caption. */
+.corridor-upper a.v465-umbridge-door,.corridor-upper .v467-door-plaque{display:none !important}
+.corridor-upper .v469-office-link{
+ display:inline-block;position:relative;z-index:60;pointer-events:auto !important;
+ margin-top:10px;padding:7px 0;color:#ead2a4;
+ font:600 clamp(15px,1.4vw,19px)/1.4 Georgia,serif;
+ text-decoration:underline;text-decoration-color:rgba(220,174,96,.7);text-underline-offset:5px;
+ background:transparent;border:0;box-shadow:none;
+}
+.corridor-upper .v469-office-link:hover,.corridor-upper .v469-office-link:focus-visible{color:#fff0c5;text-decoration-color:#fff0c5;outline-offset:4px}
+@media(max-width:800px){
+ .umbridge-office{min-height:max(660px,100svh) !important;background-position:53% center !important;
+  display:block !important;padding:0 !important}
+ .umbridge-office .umbridge-character{
+  position:absolute !important;left:auto !important;top:auto !important;
+  right:5% !important;bottom:25% !important;
+  width:clamp(166px,48vw,250px) !important;height:clamp(300px,50svh,450px) !important;
+ }
+ .umbridge-office .umbridge-copy{position:absolute !important;left:3% !important;bottom:2% !important;
+  width:94% !important;max-width:none !important;padding:14px !important;z-index:20 !important}
+ .umbridge-office .umbridge-dialog{right:3% !important;left:3% !important;bottom:37% !important;width:auto !important;max-height:42svh !important}
+}

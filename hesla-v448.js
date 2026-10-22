@@ -13,7 +13,7 @@
       const email=$('resetEmail').value.trim().toLowerCase();
       button.disabled=true;button.textContent='Posílám zprávu…';setText(feedback,'');
       try{
-        if(!client)throw new Error('Supabase není dostupné');
+        if(!client)throw new Error('Připojení teď není dostupné');
         const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo:returnUrl()});
         if(error)throw error;
         setText(feedback,'Pokud tento e-mail patří studentskému účtu, přijde na něj odkaz pro nastavení nového hesla. Zkontroluj i Spam.','success');
@@ -37,7 +37,7 @@
     if(ready||checking)return;
     checking=true;
     try{
-      if(!client){setText(feedback,'Nepodařilo se připojit k Supabase. Zkontroluj připojení k internetu.','error');wait.hidden=true;return}
+      if(!client){setText(feedback,'Nepodařilo se spojit se školou. Zkontroluj připojení k internetu.','error');wait.hidden=true;return}
       if(!linkWasOpened()){showExpired();return}
       let params=new URLSearchParams(location.search);
       if(params.get('token_hash')&&params.get('type')==='recovery'){
