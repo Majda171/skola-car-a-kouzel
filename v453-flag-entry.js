@@ -30,12 +30,12 @@
    if(!client)throw Error('Školní evidence není dostupná.');
    const {data,error}=await client.rpc('v453_flag_guess',{p_target_house:config.house,p_guess:answer});if(error)throw error;
    if(data?.ok){
-    if(msg)msg.textContent='Správně! Nejprve se otevře kolejní nástěnka.';
+    if(msg)msg.textContent='Správně! Vstupuješ přímo do společenské místnosti pro vlajku.';
     if(config.house==='H')window.BradaviceAchievements?.award('orli-hadanka');
     if(config.house==='N')window.BradaviceAchievements?.award('dama-otevrela');
     if(config.house==='Z')window.BradaviceAchievements?.award('septane-heslo');
     if(success)success();
-    setTimeout(()=>location.assign(config.go),config.house==='M'?950:500);return;
+    setTimeout(()=>location.assign({N:'nebelvir-spolecenska.html',H:'havraspar-spolecenska.html',M:'mrzimor-spolecenska.html',Z:'zmijozel-spolecenska.html'}[config.house]),config.house==='M'?950:500);return;
    }
    try{
     const key='bradavice_peeves_told_'+config.house;

@@ -8,3 +8,7 @@
 @media(max-width:680px){.v449-chat-bar{right:0;width:100%}.v449-chat-panel{height:min(58svh,390px)}.v449-chat-toggle{border-radius:7px 7px 0 0}}
 
 .v449-invite{align-self:start;border:1px solid #9f8055;background:#302519;color:#e7cc99;padding:5px 8px;font:12px Georgia,serif;border-radius:5px;cursor:pointer}.v449-invite:hover{background:#53402d}
+
+/* v470 – počet online přátel v Soví poště */
+.v470-friends-online{font:500 .78rem/1.4 Georgia,serif;color:#b7daae;margin:3px 0 7px}
+.v470-friends-online:empty{display:none}

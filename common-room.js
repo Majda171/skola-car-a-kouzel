@@ -105,6 +105,7 @@
     link.addEventListener('click',e=>{if(!isMember && !(link===loungeLink&&guestCanVisit))e.preventDefault()});
   });
   if(!isMember && loungeLink){
+    if(status) status.textContent='Ověřuji oprávnění ke krátké návštěvě společenské místnosti…';
     const verifyVisit=async()=>{
       const client=window.BradaviceDB?.client;
       if(!client)return;
@@ -112,7 +113,7 @@
         const {data:auth,error:authError}=await client.auth.getUser();
         if(authError||!auth?.user?.id)return;
         const {data:allowed,error}=await client.rpc('v453_flag_can_enter',{p_target_house:houseCode});
-        if(error||allowed!==true)return;
+        if(error||allowed!==true){if(status)status.textContent='Pro vlajku je nutné projít správným vstupem. Nástěnka sama o sobě nestačí.';return;}
         guestCanVisit=true;
         loungeLink.classList.remove('locked');
         loungeLink.classList.add('guest-access');

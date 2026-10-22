@@ -1,0 +1,4 @@
+/* Puštík sedí na levé silné větvi; žádné umělé nasvícení. */
+.courtyard-photo .courtyard-owl-post{left:51%!important;top:23%!important;width:clamp(47px,5.3vw,85px)!important;filter:brightness(.57) saturate(.78) contrast(.94) drop-shadow(0 3px 3px rgba(0,0,0,.54))!important;transform:rotate(-7deg)!important;transform-origin:bottom center!important;z-index:29!important}
+.courtyard-photo .courtyard-owl-post:hover,.courtyard-photo .courtyard-owl-post:focus-visible{transform:rotate(-4deg) scale(1.035)!important;filter:brightness(.7) saturate(.8) drop-shadow(0 3px 3px #0009)!important}
+@media(max-width:700px){.courtyard-photo .courtyard-owl-post{left:47%!important;top:24%!important;width:clamp(36px,10vw,56px)!important}}

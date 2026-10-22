@@ -35,6 +35,7 @@
   const scopedProgressKey=(base,uid)=>`${base}_${String(uid||'guest').replace(/[^a-zA-Z0-9@._-]/g,'_')}`;
   let client = null;
   let presenceChannel = null;
+  let presenceSynced = false;
   try {
     if (window.supabase?.createClient) client = window.supabase.createClient(URL, KEY, {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
   } catch (e) { console.warn('Supabase client se nepodařilo vytvořit.', e); }
@@ -121,7 +122,7 @@
   async function signUp({email,password,firstName,lastName,salutation}){if(!client)throw new Error('Databázové připojení není dostupné.');if(!(await studentNameAvailable(firstName,lastName)))throw new Error('duplicate student name');const {data,error}=await client.auth.signUp({email,password,options:{data:{first_name:firstName,last_name:lastName,salutation}}});if(error)throw error;return data}
   async function signIn(email,password){if(!client)throw new Error('Databázové připojení není dostupné.');const {data,error}=await client.auth.signInWithPassword({email,password});if(error)throw error;return data}
   async function signOut(){
-    if(presenceChannel){try{await presenceChannel.untrack();await client?.removeChannel?.(presenceChannel)}catch{}presenceChannel=null}
+    if(presenceChannel){try{await presenceChannel.untrack();await client?.removeChannel?.(presenceChannel)}catch{}presenceChannel=null;presenceSynced=false}
     // Odhlášení musí zrušit skutečnou Supabase session. Kdyby síťový požadavek
     // selhal, scope:local a následný úklid odstraní token z tohoto prohlížeče.
     try{if(client)await client.auth.signOut({scope:'local'})}catch(e){console.warn('Odhlášení Supabase selhalo, čistím lokální session.',e)}
@@ -252,12 +253,15 @@
   }
 
   function presenceStateCount(){if(!presenceChannel)return 0;const st=presenceChannel.presenceState?.()||{};return Object.keys(st).length}
+  function getStudentPresence(){return {ready:presenceSynced,ids:Object.keys(presenceChannel?.presenceState?.()||{})}}
+  function emitStudentPresence(){const state=presenceChannel?.presenceState?.()||{};window.dispatchEvent(new CustomEvent('bradavice:presence',{detail:{count:Object.keys(state).length,state,ready:presenceSynced}}))}
   async function startPresence(){
     if(!client||presenceChannel||currentPage().startsWith('admin'))return presenceChannel;
     const user=await getUser();if(!user)return null;
     presenceChannel=client.channel('bradavice-online',{config:{presence:{key:user.id}}});
-    presenceChannel.on('presence',{event:'sync'},()=>window.dispatchEvent(new CustomEvent('bradavice:presence',{detail:{count:presenceStateCount(),state:presenceChannel.presenceState()}})));
-    presenceChannel.subscribe(async status=>{if(status==='SUBSCRIBED'){await presenceChannel.track({user_id:user.id,page:currentPage(),online_at:new Date().toISOString()});window.dispatchEvent(new CustomEvent('bradavice:presence',{detail:{count:presenceStateCount(),state:presenceChannel.presenceState()}}))}});
+    presenceChannel.on('presence',{event:'sync'},()=>{presenceSynced=true;emitStudentPresence()});
+    presenceChannel.subscribe(async status=>{if(status==='SUBSCRIBED'){try{await presenceChannel.track({user_id:user.id,page:currentPage(),online_at:new Date().toISOString()})}catch(e){console.warn('Přítomnost studenta:',e)}emitStudentPresence()}
+      else if(status==='CHANNEL_ERROR'||status==='TIMED_OUT'||status==='CLOSED'){presenceSynced=false;emitStudentPresence()}});
     return presenceChannel;
   }
   async function createAdminPresenceViewer(callback){
@@ -269,5 +273,5 @@
   function boot(){if(['zapomenute-heslo.html','obnoveni-hesla.html'].includes(currentPage()))return;updateStudentHud();startPresence().catch(()=>{});if(client)client.auth.onAuthStateChange((_e,session)=>{if(session?.user){setTimeout(()=>{hydrateStudent().catch(()=>{});startPresence().catch(()=>{})},0)}else updateStudentHud(null)})}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 
-  window.BradaviceDB={url:URL,client,houseNames,crestNames,avatarKeys,avatarKeysByHouse,defaultAvatarForHouse,pageToLocation,getUser,getProfile,hydrateStudent,hydrateProgress,hydrateAll,studentNameAvailable,signUp,signIn,signOut,setHouseOnce,unlockAchievement,completeQuest,visitLocationByPage,getHouseStandings,syncHouseStandingsLocal,claimDailyChallenge,updateOwnProfile,isAdmin,adminStats,adminSearchStudents,adminStudentDetail,getAccessState,adminSetBan,adminAdjustPoints,adminDeleteStudent,hagridStatus,hagridAccept,hagridFind,hagridReturn,postChatMessage,getChatMessages,claimV40Activity,snapePenalty,claimV42Activity,submitTournamentScore,getTournamentBoard,createChessRoom,joinChessRoom,getChessRoom,updateChessRoom,leaveChessRoom,createMemoryRoom,joinMemoryRoom,getMemoryRoom,updateMemoryRoom,leaveMemoryRoom,createPotionDuelRoom,joinPotionDuelRoom,getPotionDuelRoom,updatePotionDuelRoom,leavePotionDuelRoom,createTchorickyRoom,joinTchorickyRoom,getTchorickyRoom,updateTchorickyRoom,leaveTchorickyRoom,startPresence,createAdminPresenceViewer,updateStudentHud};
+  window.BradaviceDB={url:URL,client,houseNames,crestNames,avatarKeys,avatarKeysByHouse,defaultAvatarForHouse,pageToLocation,getUser,getProfile,hydrateStudent,hydrateProgress,hydrateAll,studentNameAvailable,signUp,signIn,signOut,setHouseOnce,unlockAchievement,completeQuest,visitLocationByPage,getHouseStandings,syncHouseStandingsLocal,claimDailyChallenge,updateOwnProfile,isAdmin,adminStats,adminSearchStudents,adminStudentDetail,getAccessState,adminSetBan,adminAdjustPoints,adminDeleteStudent,hagridStatus,hagridAccept,hagridFind,hagridReturn,postChatMessage,getChatMessages,claimV40Activity,snapePenalty,claimV42Activity,submitTournamentScore,getTournamentBoard,createChessRoom,joinChessRoom,getChessRoom,updateChessRoom,leaveChessRoom,createMemoryRoom,joinMemoryRoom,getMemoryRoom,updateMemoryRoom,leaveMemoryRoom,createPotionDuelRoom,joinPotionDuelRoom,getPotionDuelRoom,updatePotionDuelRoom,leavePotionDuelRoom,createTchorickyRoom,joinTchorickyRoom,getTchorickyRoom,updateTchorickyRoom,leaveTchorickyRoom,startPresence,getStudentPresence,createAdminPresenceViewer,updateStudentHud};
 })();

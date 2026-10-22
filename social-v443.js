@@ -3,6 +3,34 @@
   const $=id=>document.getElementById(id), DB=window.BradaviceDB?.client;
   const tabs=[...document.querySelectorAll('[data-tab]')];
   let me=null, friendships=[], people=[], activePeer='', loadedTab='', poll=null;
+  let presenceReady=false,onlineIds=new Set(),friendIds=new Set();
+  // Nikdy nezobrazujeme přítomnost nepotvrzeného či zablokovaného studenta.
+  const statusText=id=>!presenceReady?'Zjišťuji stav':onlineIds.has(id)?'Online':'Offline';
+  const presenceTag=id=>{const tag=node('span','friend-presence');tag.dataset.presenceId=id;tag.setAttribute('aria-label',statusText(id));return tag};
+  function refreshPresence(){
+    document.querySelectorAll('[data-presence-id]').forEach(el=>{
+      const id=el.dataset.presenceId;
+      if(!friendIds.has(id)){el.hidden=true;return}
+      el.hidden=false;const status=statusText(id);
+      el.textContent=status;el.classList.toggle('is-online',presenceReady&&onlineIds.has(id));
+      el.classList.toggle('is-unknown',!presenceReady);el.setAttribute('aria-label',status);
+    });
+    for(const option of $('messagePeer').options){const id=option.value;if(!id)continue;
+      option.textContent=`${presenceReady?(onlineIds.has(id)?'●':'○'):'·'} ${option.dataset.friendName||'Student'}${presenceReady?(onlineIds.has(id)?' · Online':' · Offline'):''}`;
+    }
+    const count=$('friendsOnlineCount');if(count){const online=[...friendIds].filter(id=>onlineIds.has(id)).length;
+      count.textContent=presenceReady?`${online} z ${friendIds.size} online`:'Zjišťuji stav přátel…';}
+  }
+  window.addEventListener('bradavice:presence',event=>{
+    if(event.detail?.ready===false){presenceReady=false;onlineIds=new Set()}
+    else if(event.detail?.ready===true){presenceReady=true;onlineIds=new Set(Object.keys(event.detail.state||{}))}
+    refreshPresence();
+  });
+  function fetchCurrentPresence(){const snapshot=window.BradaviceDB?.getStudentPresence?.();
+    if(!snapshot)return;
+    presenceReady=Boolean(snapshot.ready);onlineIds=new Set(snapshot.ids||[]);refreshPresence();
+  }
+  
   // Zachová rozbalené příspěvky i při automatickém obnovování feedu.
   const expandedWallPosts=new Set();
   const notice=$('socialNotice');
@@ -116,9 +144,20 @@
     if(fr.error)throw fr.error;if(users.error)throw users.error;if(blocks.error)throw blocks.error;
     friendships=fr.data||[];people=users.data||[];
     const blocked=new Set((blocks.data||[]).map(x=>x.blocked_id));
-    // Dalsi studenti muzou prijit mimo filtr vyhledavani; jmena neukladame do osobnich cache.
+    friendIds=new Set(friendships.filter(f=>f.status==='accepted'&&(f.requester_id===me.id||f.addressee_id===me.id))
+      .map(f=>f.requester_id===me.id?f.addressee_id:f.requester_id).filter(id=>!blocked.has(id)));
+    // Seznam potvrzených přátel je samostatný: funguje i při filtrování adresáře studentů.
     if(render){
-      const req=$('friendsRequests'),dir=$('friendsDirectory');clean(req);clean(dir);
+      const req=$('friendsRequests'),dir=$('friendsDirectory'),online=$('friendsOnline');clean(req);clean(dir);clean(online);
+      const h=node('h2','','Moji přátelé');h.className='friend-section-title';
+      const count=node('span','friend-online-count');count.id='friendsOnlineCount';h.append(count);online.append(h);
+      if(!friendIds.size)online.append(node('p','friend-empty','Zatím nemáš žádné potvrzené přátele.'));
+      for(const id of friendIds){const person=people.find(x=>x.id===id),row=node('article','student-row friend-row');
+        const info=node('div','friend-person');info.append(node('strong','',person?.display_name||'Spolužák'),presenceTag(id));
+        row.append(info);const write=node('button','','Napsat');write.type='button';write.onclick=async()=>{
+          activePeer=id;await switchTab('messages');$('messagePeer').value=id;await loadMessages();};
+        row.append(write);online.append(row);
+      }
       const incoming=friendships.filter(f=>f.status==='pending'&&f.addressee_id===me.id);
       if(incoming.length){req.append(node('h2','','Čekající žádosti o přátelství'))}
       const personById=id=>people.find(p=>p.id===id);
@@ -134,7 +173,7 @@
         const actions=node('div','student-actions'),f=relation(p.id);let button;
         if(blocked.has(p.id)){button=node('button','secondary','Odblokovat');button.onclick=()=>friendAction(p.id,'unblock')}
         else if(!f){button=node('button','','Přidat do přátel');button.onclick=()=>friendAction(p.id,'request')}
-        else if(f.status==='accepted'){button=node('button','secondary','Odebrat přítele');button.onclick=()=>friendAction(p.id,'remove');
+        else if(f.status==='accepted'){descr.append(presenceTag(p.id));button=node('button','secondary','Odebrat přítele');button.onclick=()=>friendAction(p.id,'remove');
           const write=node('button','','Napsat');write.onclick=async()=>{activePeer=p.id;await switchTab('messages');$('messagePeer').value=p.id;await loadMessages()};actions.append(write)
         } else if(f.requester_id===me.id){button=node('button','secondary','Zrušit žádost');button.onclick=()=>friendAction(p.id,'remove')}
         else {button=node('button','','Přijmout žádost');button.onclick=()=>friendAction(p.id,'accept')}
@@ -145,9 +184,11 @@
     }
     const peers=$('messagePeer');clean(peers);const opt=node('option','','Vyber přítele…');opt.value='';peers.append(opt);
     const list=friendships.filter(f=>f.status==='accepted').map(f=>f.requester_id===me.id?f.addressee_id:f.requester_id);
-    for(const id of list){if(blocked.has(id))continue;const person=people.find(p=>p.id===id);const o=node('option','',person?.display_name||`Student ${id.slice(0,8)}`);o.value=id;peers.append(o)}
-    if(list.includes(activePeer)&&!blocked.has(activePeer))peers.value=activePeer;
+    for(const id of list){if(blocked.has(id))continue;const person=people.find(p=>p.id===id);const name=person?.display_name||`Student ${id.slice(0,8)}`;
+      const o=node('option','',name);o.value=id;o.dataset.friendName=name;peers.append(o)}
+    if(friendIds.has(activePeer))peers.value=activePeer;
     else{activePeer='';peers.value=''}
+    fetchCurrentPresence();
   }
   async function friendAction(other,action){
     const {error}=await DB.rpc('v443_friend_action',{p_other:other,p_action:action});
@@ -177,7 +218,7 @@
     if(error){show(error.message,true);return} $('dmText').value='';await loadMessages();show('Sova doručila zprávu.');
   });
   tabs.forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab).catch(e=>show(e.message,true))));
-  async function init(){try{await requireStudent();await switchTab(new URLSearchParams(location.search).get('tab')||'wall');poll=setInterval(()=>{if(!document.hidden){if(loadedTab==='wall')loadWall().catch(()=>{});if(loadedTab==='messages'&&activePeer)loadMessages().catch(()=>{})}},16000)}catch(err){show('Studentská síť není připravená: '+(err.message||err),true)}}
+  async function init(){try{await requireStudent();fetchCurrentPresence();window.BradaviceDB?.startPresence?.().catch(()=>{});await switchTab(new URLSearchParams(location.search).get('tab')||'wall');poll=setInterval(()=>{if(!document.hidden){if(loadedTab==='wall')loadWall().catch(()=>{});if(loadedTab==='messages'&&activePeer)loadMessages().catch(()=>{})}},16000)}catch(err){show('Studentská síť není připravená: '+(err.message||err),true)}}
   window.addEventListener('pagehide',()=>{if(poll)clearInterval(poll)});
   init();
 })();

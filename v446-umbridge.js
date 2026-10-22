@@ -25,6 +25,7 @@
  function setCounter(name,n){try{localStorage.setItem(`${key}_${userId}_${name}`,String(n))}catch{}}
  const types=['opisovani','razitka','kotatka','dekrety'];
  function punishment(type){
+  if(window.BradaviceUmbridgePunishments?.open){window.BradaviceUmbridgePunishments.open(type);return}
   const title={opisovani:'Opisování školního řádu',razitka:'Ministerské formuláře',kotatka:'Leštění porcelánových koťátek',dekrety:'Řazení vzdělávacích dekretů'}[type];
   const q=pop(title,'„Ehm, ehm. Jak je milé, že se můžeš věnovat něčemu užitečnému. Třeba tě to odnaučí neposlušnosti, drahoušku.“');let count=0;
   const progress=document.createElement('strong');progress.className='v446-progress';progress.textContent='0 / 6';q.p.after(progress);

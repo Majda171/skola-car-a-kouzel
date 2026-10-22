@@ -9,3 +9,50 @@
 
 /* V podzemní chodbě názvy skrytých vstupů nepřekrývají nadpis scény. */
 .corridor-underground-1 .v451-hotspot::after{display:none!important}
+
+/* v467: skutečně VIDITELNÝ vstup do kabinetu Umbridgeové.
+   Dveře zůstávají součástí horní chodby, ne bočních šipek hradu. */
+.corridor-upper a.v465-umbridge-door{
+  display:flex!important;
+  justify-content:center;
+  align-items:flex-end;
+  overflow:visible;
+  text-decoration:none;
+  pointer-events:auto!important;
+  z-index:45!important;
+}
+.corridor-upper .v467-door-plaque{
+  display:block;
+  position:relative;
+  bottom:18%;
+  width:max-content;
+  max-width:min(260px,24vw);
+  min-width:max-content;
+  padding:10px 12px 9px;
+  background:rgba(17,13,12,.94);
+  border:1px solid rgba(214,166,103,.92);
+  border-radius:5px;
+  box-shadow:0 3px 18px rgba(0,0,0,.8);
+  color:#f0dfbe;
+  font:600 clamp(12px,1.13vw,17px)/1.2 Georgia,serif;
+  letter-spacing:.01em;
+  text-align:center;
+  text-shadow:0 2px 5px #000;
+  white-space:normal;
+}
+.corridor-upper .v467-door-plaque small{
+  display:block;
+  padding-top:6px;
+  font-size:.78em;
+  color:#dbbf8d;
+}
+.corridor-upper a.v465-umbridge-door:hover .v467-door-plaque,
+.corridor-upper a.v465-umbridge-door:focus-visible .v467-door-plaque{
+  background:rgba(52,32,30,.97);
+  border-color:#f2d097;
+  box-shadow:0 0 18px rgba(221,173,100,.42),0 3px 20px #000;
+}
+@media(max-width:700px){
+  .corridor-upper a.v465-umbridge-door{right:12%;top:24%;width:28%;height:50%}
+  .corridor-upper .v467-door-plaque{font-size:12px;min-width:0;width:150px;max-width:55vw;padding:9px 7px;bottom:12%}
+}

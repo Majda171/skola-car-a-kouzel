@@ -12,3 +12,10 @@
 .hut-scene>.game-callout{position:absolute!important;z-index:27!important;right:3.5%!important;left:auto!important;top:66%!important;bottom:auto!important;width:min(330px,37vw)!important;max-width:calc(100% - 30px);padding:12px 15px;background:rgba(7,12,8,.90)!important;border:1px solid rgba(212,183,113,.53);border-radius:7px;box-shadow:0 12px 35px #000b;pointer-events:none}
 .hut-scene>.game-callout *{position:static!important}
 @media(max-width:760px){.hut-scene>.game-callout{top:auto!important;right:12px!important;bottom:23%!important;width:min(300px,54vw)!important;padding:9px!important;font-size:.85rem}}
+
+
+/* v466 — zpřesnění umístění hrabáků */
+.niffler-gallery-full{left:10%;bottom:9%;width:clamp(72px,7vw,118px);transform:rotate(-5deg);z-index:22}
+.niffler-gallery-full img{display:block;width:100%;height:auto;object-fit:contain;filter:drop-shadow(0 6px 10px rgba(0,0,0,.62))}
+.niffler-greenhouse{left:20%;right:auto;bottom:18%;width:clamp(70px,6vw,104px);z-index:22}
+@media(max-width:700px){.niffler-gallery-full{left:12%;bottom:12%;width:74px}.niffler-greenhouse{left:14%;bottom:23%;width:72px}}

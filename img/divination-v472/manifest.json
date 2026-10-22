@@ -1,0 +1,470 @@
+[
+  {
+    "id": "velka-00_mlady_kouzelnik",
+    "image": "velka-00_mlady_kouzelnik.webp",
+    "name": "Mladý kouzelník",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-01_carodej",
+    "image": "velka-01_carodej.webp",
+    "name": "Čaroděj",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-02_vestkyne",
+    "image": "velka-02_vestkyne.webp",
+    "name": "Věštkyně",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-03_carodejka",
+    "image": "velka-03_carodejka.webp",
+    "name": "Čarodějka",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-04_arcimag",
+    "image": "velka-04_arcimag.webp",
+    "name": "Arcimág",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-05_reditel",
+    "image": "velka-05_reditel.webp",
+    "name": "Ředitel",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-06_spriznene_duse",
+    "image": "velka-06_spriznene_duse.webp",
+    "name": "Spřízněné duše",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-07_letajici_kocar",
+    "image": "velka-07_letajici_kocar.webp",
+    "name": "Létající kočár",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-08_krotitel_draku",
+    "image": "velka-08_krotitel_draku.webp",
+    "name": "Krotitel draků",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-09_moudry_poustevnik",
+    "image": "velka-09_moudry_poustevnik.webp",
+    "name": "Moudrý poustevník",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-10_kolo_osudu",
+    "image": "velka-10_kolo_osudu.webp",
+    "name": "Kolo osudu",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-11_kouzelnicky_soud",
+    "image": "velka-11_kouzelnicky_soud.webp",
+    "name": "Kouzelnický soud",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-12_zaklety",
+    "image": "velka-12_zaklety.webp",
+    "name": "Zakletý",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-13_smrtonos",
+    "image": "velka-13_smrtonos.webp",
+    "name": "Smrtonoš",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-14_alchymista",
+    "image": "velka-14_alchymista.webp",
+    "name": "Alchymista",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-15_cernokneznik",
+    "image": "velka-15_cernokneznik.webp",
+    "name": "Černokněžník",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-16_temna_vez",
+    "image": "velka-16_temna_vez.webp",
+    "name": "Temná věž",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-17_vecernice",
+    "image": "velka-17_vecernice.webp",
+    "name": "Večernice",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-18_mesicni_kouzlo",
+    "image": "velka-18_mesicni_kouzlo.webp",
+    "name": "Měsíční kouzlo",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-19_slunecni_kouzlo",
+    "image": "velka-19_slunecni_kouzlo.webp",
+    "name": "Sluneční kouzlo",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-20_posledni_zuctovani",
+    "image": "velka-20_posledni_zuctovani.webp",
+    "name": "Poslední zúčtování",
+    "suit": "velka"
+  },
+  {
+    "id": "velka-21_kouzelnicky_svet",
+    "image": "velka-21_kouzelnicky_svet.webp",
+    "name": "Kouzelnický svět",
+    "suit": "velka"
+  },
+  {
+    "id": "hole-01_eso_holi",
+    "image": "hole-01_eso_holi.webp",
+    "name": "Eso holí",
+    "suit": "hole"
+  },
+  {
+    "id": "hole-02_dvojka_holi",
+    "image": "hole-02_dvojka_holi.webp",
+    "name": "Dvojka holí",
+    "suit": "hole"
+  },
+  {
+    "id": "hole-03_trojka_holi",
+    "image": "hole-03_trojka_holi.webp",
+    "name": "Trojka holí",
+    "suit": "hole"
+  },
+  {
+    "id": "hole-04_ctyrka_holi",
+    "image": "hole-04_ctyrka_holi.webp",
+    "name": "Čtyřka holí",
+    "suit": "hole"
+  },
+  {
+    "id": "hole-05_petka_holi",
+    "image": "hole-05_petka_holi.webp",
+    "name": "Pětka holí",
+    "suit": "hole"
+  },
+  {
+    "id": "hole-06_sestka_holi",
+    "image": "hole-06_sestka_holi.webp",
+    "name": "Šestka holí",
+    "suit": "hole"
+  },
+  {
+    "id": "hole-07_sedmicka_holi",
+    "image": "hole-07_sedmicka_holi.webp",
+    "name": "Sedmička holí",
+    "suit": "hole"
+  },
+  {
+    "id": "hole-08_osmicka_holi",
+    "image": "hole-08_osmicka_holi.webp",
+    "name": "Osmička holí",
+    "suit": "hole"
+  },
+  {
+    "id": "hole-09_devitka_holi",
+    "image": "hole-09_devitka_holi.webp",
+    "name": "Devítka holí",
+    "suit": "hole"
+  },
+  {
+    "id": "hole-10_desitka_holi",
+    "image": "hole-10_desitka_holi.webp",
+    "name": "Desítka holí",
+    "suit": "hole"
+  },
+  {
+    "id": "hole-11_paze_holi",
+    "image": "hole-11_paze_holi.webp",
+    "name": "Páže holí",
+    "suit": "hole"
+  },
+  {
+    "id": "hole-12_rytir_holi",
+    "image": "hole-12_rytir_holi.webp",
+    "name": "Rytíř holí",
+    "suit": "hole"
+  },
+  {
+    "id": "hole-13_kralovna_holi",
+    "image": "hole-13_kralovna_holi.webp",
+    "name": "Královna holí",
+    "suit": "hole"
+  },
+  {
+    "id": "hole-14_kral_holi",
+    "image": "hole-14_kral_holi.webp",
+    "name": "Král holí",
+    "suit": "hole"
+  },
+  {
+    "id": "pohary-01_eso_poharu",
+    "image": "pohary-01_eso_poharu.webp",
+    "name": "Eso pohárů",
+    "suit": "pohary"
+  },
+  {
+    "id": "pohary-02_dvojka_poharu",
+    "image": "pohary-02_dvojka_poharu.webp",
+    "name": "Dvojka pohárů",
+    "suit": "pohary"
+  },
+  {
+    "id": "pohary-03_trojka_poharu",
+    "image": "pohary-03_trojka_poharu.webp",
+    "name": "Trojka pohárů",
+    "suit": "pohary"
+  },
+  {
+    "id": "pohary-04_ctyrka_poharu",
+    "image": "pohary-04_ctyrka_poharu.webp",
+    "name": "Čtyřka pohárů",
+    "suit": "pohary"
+  },
+  {
+    "id": "pohary-05_petka_poharu",
+    "image": "pohary-05_petka_poharu.webp",
+    "name": "Pětka pohárů",
+    "suit": "pohary"
+  },
+  {
+    "id": "pohary-06_sestka_poharu",
+    "image": "pohary-06_sestka_poharu.webp",
+    "name": "Šestka pohárů",
+    "suit": "pohary"
+  },
+  {
+    "id": "pohary-07_sedmicka_poharu",
+    "image": "pohary-07_sedmicka_poharu.webp",
+    "name": "Sedmička pohárů",
+    "suit": "pohary"
+  },
+  {
+    "id": "pohary-08_osmicka_poharu",
+    "image": "pohary-08_osmicka_poharu.webp",
+    "name": "Osmička pohárů",
+    "suit": "pohary"
+  },
+  {
+    "id": "pohary-09_devitka_poharu",
+    "image": "pohary-09_devitka_poharu.webp",
+    "name": "Devítka pohárů",
+    "suit": "pohary"
+  },
+  {
+    "id": "pohary-10_desitka_poharu",
+    "image": "pohary-10_desitka_poharu.webp",
+    "name": "Desítka pohárů",
+    "suit": "pohary"
+  },
+  {
+    "id": "pohary-11_paze_poharu",
+    "image": "pohary-11_paze_poharu.webp",
+    "name": "Páže pohárů",
+    "suit": "pohary"
+  },
+  {
+    "id": "pohary-12_rytir_poharu",
+    "image": "pohary-12_rytir_poharu.webp",
+    "name": "Rytíř pohárů",
+    "suit": "pohary"
+  },
+  {
+    "id": "pohary-13_kralovna_poharu",
+    "image": "pohary-13_kralovna_poharu.webp",
+    "name": "Královna pohárů",
+    "suit": "pohary"
+  },
+  {
+    "id": "pohary-14_kral_poharu",
+    "image": "pohary-14_kral_poharu.webp",
+    "name": "Král pohárů",
+    "suit": "pohary"
+  },
+  {
+    "id": "mece-01_eso_mecu",
+    "image": "mece-01_eso_mecu.webp",
+    "name": "Eso mečů",
+    "suit": "mece"
+  },
+  {
+    "id": "mece-02_dvojka_mecu",
+    "image": "mece-02_dvojka_mecu.webp",
+    "name": "Dvojka mečů",
+    "suit": "mece"
+  },
+  {
+    "id": "mece-03_trojka_mecu",
+    "image": "mece-03_trojka_mecu.webp",
+    "name": "Trojka mečů",
+    "suit": "mece"
+  },
+  {
+    "id": "mece-04_ctyrka_mecu",
+    "image": "mece-04_ctyrka_mecu.webp",
+    "name": "Čtyřka mečů",
+    "suit": "mece"
+  },
+  {
+    "id": "mece-05_petka_mecu",
+    "image": "mece-05_petka_mecu.webp",
+    "name": "Pětka mečů",
+    "suit": "mece"
+  },
+  {
+    "id": "mece-06_sestka_mecu",
+    "image": "mece-06_sestka_mecu.webp",
+    "name": "Šestka mečů",
+    "suit": "mece"
+  },
+  {
+    "id": "mece-07_sedmicka_mecu",
+    "image": "mece-07_sedmicka_mecu.webp",
+    "name": "Sedmička mečů",
+    "suit": "mece"
+  },
+  {
+    "id": "mece-08_osmicka_mecu",
+    "image": "mece-08_osmicka_mecu.webp",
+    "name": "Osmička mečů",
+    "suit": "mece"
+  },
+  {
+    "id": "mece-09_devitka_mecu",
+    "image": "mece-09_devitka_mecu.webp",
+    "name": "Devítka mečů",
+    "suit": "mece"
+  },
+  {
+    "id": "mece-10_desitka_mecu",
+    "image": "mece-10_desitka_mecu.webp",
+    "name": "Desítka mečů",
+    "suit": "mece"
+  },
+  {
+    "id": "mece-11_paze_mecu",
+    "image": "mece-11_paze_mecu.webp",
+    "name": "Páže mečů",
+    "suit": "mece"
+  },
+  {
+    "id": "mece-12_rytir_mecu",
+    "image": "mece-12_rytir_mecu.webp",
+    "name": "Rytíř mečů",
+    "suit": "mece"
+  },
+  {
+    "id": "mece-13_kralovna_mecu",
+    "image": "mece-13_kralovna_mecu.webp",
+    "name": "Královna mečů",
+    "suit": "mece"
+  },
+  {
+    "id": "mece-14_kral_mecu",
+    "image": "mece-14_kral_mecu.webp",
+    "name": "Král mečů",
+    "suit": "mece"
+  },
+  {
+    "id": "pentakly-01_eso_pentaklu",
+    "image": "pentakly-01_eso_pentaklu.webp",
+    "name": "Eso pentaklů",
+    "suit": "pentakly"
+  },
+  {
+    "id": "pentakly-02_dvojka_pentaklu",
+    "image": "pentakly-02_dvojka_pentaklu.webp",
+    "name": "Dvojka pentaklů",
+    "suit": "pentakly"
+  },
+  {
+    "id": "pentakly-03_trojka_pentaklu",
+    "image": "pentakly-03_trojka_pentaklu.webp",
+    "name": "Trojka pentaklů",
+    "suit": "pentakly"
+  },
+  {
+    "id": "pentakly-04_ctyrka_pentaklu",
+    "image": "pentakly-04_ctyrka_pentaklu.webp",
+    "name": "Čtyřka pentaklů",
+    "suit": "pentakly"
+  },
+  {
+    "id": "pentakly-05_petka_pentaklu",
+    "image": "pentakly-05_petka_pentaklu.webp",
+    "name": "Pětka pentaklů",
+    "suit": "pentakly"
+  },
+  {
+    "id": "pentakly-06_sestka_pentaklu",
+    "image": "pentakly-06_sestka_pentaklu.webp",
+    "name": "Šestka pentaklů",
+    "suit": "pentakly"
+  },
+  {
+    "id": "pentakly-07_sedmicka_pentaklu",
+    "image": "pentakly-07_sedmicka_pentaklu.webp",
+    "name": "Sedmička pentaklů",
+    "suit": "pentakly"
+  },
+  {
+    "id": "pentakly-08_osmicka_pentaklu",
+    "image": "pentakly-08_osmicka_pentaklu.webp",
+    "name": "Osmička pentaklů",
+    "suit": "pentakly"
+  },
+  {
+    "id": "pentakly-09_devitka_pentaklu",
+    "image": "pentakly-09_devitka_pentaklu.webp",
+    "name": "Devítka pentaklů",
+    "suit": "pentakly"
+  },
+  {
+    "id": "pentakly-10_desitka_pentaklu",
+    "image": "pentakly-10_desitka_pentaklu.webp",
+    "name": "Desítka pentaklů",
+    "suit": "pentakly"
+  },
+  {
+    "id": "pentakly-11_paze_pentaklu",
+    "image": "pentakly-11_paze_pentaklu.webp",
+    "name": "Páže pentaklů",
+    "suit": "pentakly"
+  },
+  {
+    "id": "pentakly-12_rytir_pentaklu",
+    "image": "pentakly-12_rytir_pentaklu.webp",
+    "name": "Rytíř pentaklů",
+    "suit": "pentakly"
+  },
+  {
+    "id": "pentakly-13_kralovna_pentaklu",
+    "image": "pentakly-13_kralovna_pentaklu.webp",
+    "name": "Královna pentaklů",
+    "suit": "pentakly"
+  },
+  {
+    "id": "pentakly-14_kral_pentaklu",
+    "image": "pentakly-14_kral_pentaklu.webp",
+    "name": "Král pentaklů",
+    "suit": "pentakly"
+  }
+]

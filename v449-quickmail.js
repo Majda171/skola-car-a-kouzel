@@ -5,13 +5,32 @@
  const client=window.BradaviceDB?.client;
  if(!client)return;
  let me=null,peers=[],peer='',unread=new Set(),lastSeen=new Set(),started=false,busy=false;
+ let presenceReady=false,onlineIds=new Set();
+ function refreshFriendStatus(){
+  for(const option of select.options){if(!option.value)continue;
+   const status=presenceReady?(onlineIds.has(option.value)?'● Online':'○ Offline'):'· Zjišťuji stav';
+   option.textContent=`${status} · ${option.dataset.friendName||'Student'}`;
+  }
+  const count=peers.filter(id=>onlineIds.has(id)).length;
+  liveInfo.textContent=!peers.length?'':presenceReady?`Přátelé online: ${count} z ${peers.length}`:'Zjišťuji, kdo je online…';
+ }
+ function syncPresence(snapshot){if(!snapshot)return;
+  presenceReady=Boolean(snapshot.ready);onlineIds=new Set(snapshot.ids||[]);refreshFriendStatus();
+ }
+ window.addEventListener('bradavice:presence',event=>{
+  if(event.detail?.ready===true)syncPresence({ready:true,ids:Object.keys(event.detail.state||{})});
+  else if(event.detail?.ready===false)syncPresence({ready:false,ids:[]});
+ });
+ 
  const el=(tag,cls='',txt='')=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt)e.textContent=txt;return e};
  const bar=el('aside','v449-chat-bar');bar.id='v449-chat-bar';bar.setAttribute('aria-label','Kouzelnická soví pošta');
  const toggle=el('button','v449-chat-toggle','🦉 Soví pošta');toggle.type='button';toggle.setAttribute('aria-expanded','false');
  const badge=el('span','v449-unread');badge.hidden=true;toggle.append(badge);
  const panel=el('section','v449-chat-panel');panel.hidden=true;
  const heading=el('div','v449-chat-heading');const title=el('strong','','Soukromá soví pošta');const close=el('button','v449-x','×');close.setAttribute('aria-label','Sbalit soví poštu');heading.append(title,close);
- const select=el('select');select.setAttribute('aria-label','Vyber přítele');const messages=el('div','v449-messages');messages.setAttribute('aria-live','polite');
+ const select=el('select');select.setAttribute('aria-label','Vyber přítele');
+ const liveInfo=el('p','v470-friends-online');liveInfo.setAttribute('aria-live','polite');
+ const messages=el('div','v449-messages');messages.setAttribute('aria-live','polite');
  const invite=el('button','v449-invite','⚔️ Vložit kód hry');invite.type='button';
  invite.onclick=()=>{
    const known=['kdRoomCode','potionDuelRoomCode','chessRoomCode','memoryRoomCode','tchorickyRoomCode']
@@ -24,8 +43,8 @@
  const form=el('form','v449-send');const input=el('input');input.required=true;input.maxLength=1000;input.placeholder='Napiš zprávu nebo kód duelu…';input.setAttribute('aria-label','Zpráva');
  const send=el('button','','Odeslat');send.type='submit';form.append(input,send);
  const feedback=el('p','v449-feedback');feedback.setAttribute('role','status');const link=el('a','v449-all','Nástěnka · Přátelé · Všechny dopisy ↗');link.href=new URL('social.html?tab=messages',quickmailBase).href;
- panel.append(heading,select,invite,messages,form,feedback,link);bar.append(toggle,panel);document.body.append(bar);
- const css=document.createElement('link');css.rel='stylesheet';css.href=new URL('v449-quickmail.css?v=463',quickmailBase).href;document.head.append(css);
+ panel.append(heading,liveInfo,select,invite,messages,form,feedback,link);bar.append(toggle,panel);document.body.append(bar);
+ const css=document.createElement('link');css.rel='stylesheet';css.href=new URL('v449-quickmail.css?v=470',quickmailBase).href;document.head.append(css);
  const open=async()=>{panel.hidden=false;toggle.setAttribute('aria-expanded','true');await ready();await loadFriends();await loadMessages();input.focus({preventScroll:true})};
  const shut=()=>{panel.hidden=true;toggle.setAttribute('aria-expanded','false')};
  toggle.onclick=()=>panel.hidden?open():shut();close.onclick=shut;
@@ -37,9 +56,11 @@
   peers=(data||[]).map(f=>f.requester_id===me.id?f.addressee_id:f.addressee_id===me.id?f.requester_id:null).filter(Boolean);
   select.replaceChildren();const first=el('option','','Vyber přítele…');first.value='';select.append(first);
   let names=[];try{const {data:directory}=await client.rpc('v443_student_directory',{p_search:'',p_limit:60});names=directory||[]}catch{}
-  for(const id of peers){const p=names.find(x=>x.id===id);const option=el('option','',p?.display_name||'Student '+id.slice(0,8));option.value=id;select.append(option)}
+  for(const id of peers){const p=names.find(x=>x.id===id),name=p?.display_name||'Student '+id.slice(0,8);
+   const option=el('option','',name);option.value=id;option.dataset.friendName=name;select.append(option)}
   if(peers.includes(peer))select.value=peer;else{peer=peers[0]||'';select.value=peer}
   if(!peers.length)setNotice('Nejdřív přijmi nebo pošli žádost o přátelství.');
+  syncPresence(window.BradaviceDB?.getStudentPresence?.());
  }
  async function loadMessages(){if(!me||!peer){messages.textContent='Vyber přítele.';return}
   const chosen=peer;const filter=`and(sender_id.eq.${me.id},recipient_id.eq.${chosen}),and(sender_id.eq.${chosen},recipient_id.eq.${me.id})`;
@@ -77,7 +98,7 @@
   }catch(e){setNotice(e?.message||'Odeslání selhalo.')}finally{send.disabled=false}
  };
  window.BradaviceQuickChat={open,close:shut};
- ready().then(ok=>{if(ok)checkUnread()});
+ ready().then(ok=>{if(ok){window.BradaviceDB?.startPresence?.().catch(()=>{});checkUnread()}});
  const timer=setInterval(async()=>{if(document.hidden)return;if(!me)await ready();await checkUnread();if(!panel.hidden&&peer)await loadMessages()},20000);
  window.addEventListener('pagehide',()=>clearInterval(timer));
 })();
