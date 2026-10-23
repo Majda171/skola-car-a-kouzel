@@ -53,5 +53,11 @@
    return;
   }
   blast({actor:'student',message:false}); // zvuk a kouř bez rušivého popisku
+  if(/^chodby(?:-[\w-]+)?\.html$/.test(path)){
+   const warning=document.createElement('p');warning.className='v450-stink-toast';warning.textContent='Filch zaslechl výbuch! Máš pár vteřin na útěk z chodby.';document.body.append(warning);
+   setTimeout(()=>warning.remove(),6500);
+   const alarm=setTimeout(()=>window.dispatchEvent(new Event('bradavice:dungbomb-alarm')),7000);
+   window.addEventListener('pagehide',()=>clearTimeout(alarm),{once:true});
+  }
  });
 })();

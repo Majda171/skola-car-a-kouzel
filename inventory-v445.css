@@ -12,5 +12,6 @@
 .scene-item[data-item-id="hypogryf"] img{max-height:15vh}
 .scene-item[data-item-id="tlustocervi"] img{max-height:11vh}
 .scene-item[data-item-id="sova-pustik"] img,.scene-item[data-item-id="sova-bila"] img{max-height:11vh}
+.scene-item[data-item-id="konvice-450"] img{opacity:1!important;filter:drop-shadow(0 5px 5px #000a)!important}
 .scene-item[data-item-id="flute"] img{max-height:8vh;transform:rotate(-24deg)}
 @media(max-width:620px){.scene-item img{max-height:13vh}.scene-item[data-item-id="karkulinky"] img{max-height:8vh}}

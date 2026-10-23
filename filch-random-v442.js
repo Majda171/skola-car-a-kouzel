@@ -7,9 +7,9 @@
   // Výskyt je náhodný při vstupu; na třetím poschodí je přísnější dohled.
   const visitKey='bradavice_filch_last_visit_v452';
   let lastVisit=0;try{lastVisit=Number(sessionStorage.getItem(visitKey)||0)}catch{}
-  if(Date.now()-lastVisit<25*60*1000)return;
-  if(Math.random() >= (thirdFloor ? 0.27 : 0.20))return;
-  try{sessionStorage.setItem(visitKey,String(Date.now()))}catch{}
+  const randomAppearance=Date.now()-lastVisit>=25*60*1000&&Math.random()<(thirdFloor ? 0.27 : 0.20);
+  if(randomAppearance)try{sessionStorage.setItem(visitKey,String(Date.now()))}catch{}
+  let bombIncident=false;
   const positions={
     'chodby.html':'3%',
     'chodby-schody.html':'5%',
@@ -26,6 +26,7 @@
   const portrait=document.createElement('img');
   portrait.src='img/filch-user-v439.webp';portrait.alt='Argus Filch';
   button.appendChild(portrait);scene.appendChild(button);
+  button.hidden=!randomAppearance;
   const dialog=document.createElement('div');dialog.className='filch-wandering-dialog';
   dialog.hidden=true;dialog.setAttribute('role','dialog');dialog.setAttribute('aria-modal','true');
   dialog.setAttribute('aria-label','Setkání s Argusem Filchem');
@@ -43,16 +44,17 @@
   ];
   const closeDialog=()=>{dialog.hidden=true;document.body.style.overflow='';button.focus()};
   const openDialog=(automatic=false)=>{
-    p.textContent=thirdFloor
+    p.textContent=bombIncident?'„TAK TADY JSI! Bomby hnojůvky! Okamžitě se mnou půjdeš k profesorce Umbridgeové!“':thirdFloor
       ? '„Tak tebe jsem tu chtěl načapat! Třetí poschodí není místo pro potulování. Půjdeš se mnou. Profesorka Umbridgeová si tě pěkně podá!“'
       : messages[Math.floor(Math.random()*messages.length)];
-    next.textContent=thirdFloor?'Jít s Filchem k Umbridgeové':'Rozumím, pane Filchi';
-    dialog.hidden=false;document.body.style.overflow='hidden';next.focus({preventScroll:true});if(automatic&&thirdFloor){next.textContent='Filch tě odvádí k Umbridgeové…';next.disabled=true;setTimeout(()=>{next.disabled=false;next.click()},1100)}
+    next.textContent=thirdFloor||bombIncident?'Jít s Filchem k Umbridgeové':'Rozumím, pane Filchi';
+    dialog.hidden=false;document.body.style.overflow='hidden';next.focus({preventScroll:true});if(automatic&&(thirdFloor||bombIncident)){next.textContent='Filch tě odvádí k Umbridgeové…';next.disabled=true;setTimeout(()=>{if(!dialog.hidden){next.disabled=false;next.click()}},1100)}
   };
-  button.addEventListener('click',()=>openDialog(false));if(thirdFloor)setTimeout(()=>openDialog(true),1300);
+  button.addEventListener('click',()=>openDialog(false));if(thirdFloor&&randomAppearance)setTimeout(()=>openDialog(true),1300);
+  window.addEventListener('bradavice:dungbomb-alarm',()=>{bombIncident=true;button.hidden=false;openDialog(true)});
   next.addEventListener('click',async()=>{
-    if(thirdFloor&&next.textContent==='Odejít')return;
-    if(thirdFloor){
+    if((thirdFloor||bombIncident)&&next.textContent==='Odejít')return;
+    if(thirdFloor||bombIncident){
       // Incident vydava Supabase; klient si nesmi vymyslet identifikator pro odpocet bodu.
       next.disabled=true;p.textContent='Pan Filch zapisuje zadržení do školní evidence…';
       try{

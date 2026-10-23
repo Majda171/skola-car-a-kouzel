@@ -100,21 +100,21 @@
     document.querySelector('.v463-mcgonagall-scene')?.remove();
     dialogue('Profesorka McGonagallová',
       '„PROTIVO! Okamžitě toho nechte!“ Protiva jí vyplázne jazyk a zmizí za rohem. Profesorka se obrátí k tobě: „Tohohle ničemu umí zkrotit jedině Krvavý baron. Najdi ho v Síni oslavy úmrtí ve sklepení a vyřiď mu, že jej žádám, aby Protivu opět usměrnil.“',
-      [['Vyrazit do sklepení', () => advance('seek_baron', () => { location.href = 'chodby-podzemni-2.html'; })]],
+      [['Rozumím, najdu Krvavého barona', () => advance('seek_baron', () => dialogue('Úkol zapsán', 'Krvavého barona musíš najít sám. Hledej cestu do Síně oslavy úmrtí v hlubokém sklepení.', [['Vydat se na cestu', null]]))]],
       { portrait: { src: 'img/mcgonagall-v42.webp', alt: 'Profesorka McGonagallová', className: 'is-mcgonagall' } });
   }
 
   function baron() {
     dialogue('Krvavý baron',
-      '„Co ode mne žádáš, studente?“ Vyřídíš mu prosbu profesorky McGonagallové. Baron nehybně ztichne a pak chladně pronese: „Protiva si opět dovoluje příliš. Vyřiď profesorce, že se o něj postarám. A ty se vrať do hlavní chodby.“',
-      [['Poděkovat a vrátit se do chodby', () => advance('baron_found', () => { location.href = 'chodby.html'; })]]);
+      '„Kdo ruší klid mrtvých?“ Baronův hlas se rozlehne síní. Vyřídíš mu vzkaz profesorky McGonagallové. „Protiva,“ zopakuje a na okamžik sklopí oči. „Ten duch nezná hranice. Už dávno zapomněl, že škola není jeho hřiště. Profesorce vyřiď, že její žádost jsem vyslechl. Nemusíš mít strach: až mě Protiva spatří, bude vědět, co má udělat.“ Jeho stříbřitá postava se nakloní blíž. „Ale pamatuj si, studente, že odvaha nespočívá v působení zmatku. Někdy je třeba učinit pořádek i tam, kde se všichni ostatní bojí.“',
+      [['Poděkovat baronovi', () => advance('baron_found', () => dialogue('Vzkaz pro profesorku', 'Najdi profesorku McGonagallovou na hlavní chodbě a osobně jí předej baronovu odpověď.', [['Rozumím', null]]))]]);
   }
 
   function complete() {
     dialogue('Protivův strach',
       'Krvavý baron zastoupí Protivovi cestu. „Vznešený barone! Vždyť to byla jen nevinná legrace!“ Baron klidně řekne: „Protivo.“ „Ano, pane! Už letím, pane! Hodný Protiva!“ Poltergeist s kvílením zmizí skrz strop.',
-      [['Promluvit s McGonagallovou', () => dialogue('Profesorka McGonagallová',
-        '„Výborně. Na hradě snad alespoň na nějaký čas zavládne klid. Děkuji za pomoc.“',
+      [['Odevzdat úkol profesorce', () => dialogue('Profesorka McGonagallová',
+        '„Takže Krvavý baron souhlasil? Výborně. Na hradě snad alespoň na nějaký čas zavládne klid. Za tvou pomoc při zkrocení Protivy připíšu tvé koleji patnáct bodů.“',
         [['Dokončit úkol', () => advance('complete', async data => {
           if (data.awarded) {
             dialogue('Úkol splněn', 'Za pomoc při zkrocení Protivy získáváš 15 kolejních bodů! Body byly připsány do školní evidence.', [['Pokračovat', null]]);

@@ -19,7 +19,7 @@ const catalogue={
   "obludne-obludarium": {label:"Obludné obludárium",description:"Kniha se podivně svíjí a možná i kouše.",image:"img/inventar/obludne-obludarium.webp"},
   "stary-pergamen": {label:"Starý pergamen",description:"Je na něm slabý otisk písma. Možná součást většího tajemství.",image:"img/inventar/stary-pergamen.webp"},
 };
-const owned=new Set(),pending=new Set();let me=null,dbWorking=false,serverAvailable=false,readyDone=false;
+const owned=new Set(),quantities=new Map(),pending=new Set();let me=null,dbWorking=false,serverAvailable=false,readyDone=false;
 let resolveReady;const ready=new Promise(r=>resolveReady=r);
 const storageKey=()=>`bradavice_inventory_v443_${me?.id||'guest'}`;
 const legacyKey=()=>`bradavice_inventory_harp_v4363_${String(me?.id||'guest').replace(/[^a-zA-Z0-9@._-]/g,'_')}`;
@@ -40,7 +40,7 @@ function repaint(){
  if(grid){grid.replaceChildren();for(const id of owned){const item=catalogue[id];if(!item)continue;
    const slot=document.createElement('div');slot.className='bag-item';const image=iconFor(id);
    if(image){const img=document.createElement('img');img.src=image;img.alt='';img.loading='lazy';slot.append(img)}else{const ico=document.createElement('span');ico.textContent='🧣';ico.className='bag-emoji';slot.append(ico)}
-   const title=document.createElement('strong');title.textContent=item.label;const desc=document.createElement('small');desc.textContent=item.description;
+   const title=document.createElement('strong');title.textContent=item.label+(id==='hnojova-bomba'?` × ${quantities.get(id)||1}`:'');const desc=document.createElement('small');desc.textContent=item.description;
    const remove=document.createElement('button');remove.type='button';remove.textContent='Odložit';remove.className='bag-discard';remove.setAttribute('aria-label',`Odložit: ${item.label}`);
    remove.addEventListener('click',async()=>{if(!confirm(`Odložit předmět „${item.label}“ z batohu? V hradě ho bude možné znovu najít.`))return;
       remove.disabled=true;const result=await discard(id);if(!result.ok){remove.disabled=false;inform(result.message||'Předmět se nepodařilo odložit.')} });
@@ -72,9 +72,9 @@ async function checkRpc(){if(!DB?.client||!me)return false;
  if(error)return false;return data==='ready';}catch{return false}}
 async function collect(id){
  if(!me||!catalogue[id])return {ok:false,message:'Nejdříve se přihlas jako student.'};
- if(owned.has(id))return {ok:true,already:true};
+ if(owned.has(id)&&id!=='hnojova-bomba')return {ok:true,already:true};
  if(pending.has(id))return {ok:false,message:'Předmět se právě ukládá.'};
- if(owned.size>=MAX)return {ok:false,full:true,message:'Kouzelný batoh je plný (8/8). Nejdříve některou věc odlož.'};
+ if(owned.size>=MAX&&!owned.has(id))return {ok:false,full:true,message:'Kouzelný batoh je plný (8/8). Nejdříve některou věc odlož.'};
  pending.add(id);
  try{
  if(serverAvailable){const {data,error}=await DB.client.rpc('v445_collect_item',{p_item_id:id});
@@ -82,15 +82,17 @@ async function collect(id){
   if(data==='full'){await reloadFromServer();return {ok:false,full:true,message:'Batoh je na serveru plný. Nejprve odlož jiný předmět.'}};
   if(!['collected','already'].includes(data))return {ok:false,message:'Ukládání se nepodařilo.'};
  }
- owned.add(id);persist();repaint();toast(`${catalogue[id].label} je v kouzelném batohu.`);return {ok:true};
+ owned.add(id);if(id==='hnojova-bomba')quantities.set(id,(quantities.get(id)||0)+1);persist();repaint();toast(`${catalogue[id].label} je v kouzelném batohu.`);return {ok:true};
  }finally{pending.delete(id)}
 }
 async function discard(id){if(!me||!owned.has(id))return {ok:false};if(pending.has(id))return {ok:false};pending.add(id);
  try{if(serverAvailable){const {data,error}=await DB.client.rpc('v445_discard_item',{p_item_id:id});if(error||data!==true)return {ok:false,message:'Odložení se nepodařilo uložit.'}}
- owned.delete(id);if(id==='harp'){try{localStorage.removeItem(legacyKey());const st=JSON.parse(localStorage.getItem('bradavice_student_v1')||'{}');for(const x of [st?.email,st?.supabaseUserId,me?.email].filter(Boolean))localStorage.removeItem(`bradavice_inventory_harp_v4363_${String(x).replace(/[^a-zA-Z0-9@._-]/g,'_')}`)}catch{}}
+ if(id==='hnojova-bomba'&&(quantities.get(id)||1)>1){quantities.set(id,quantities.get(id)-1)}
+ else{owned.delete(id);quantities.delete(id)}
+ if(id==='harp'){try{localStorage.removeItem(legacyKey());const st=JSON.parse(localStorage.getItem('bradavice_student_v1')||'{}');for(const x of [st?.email,st?.supabaseUserId,me?.email].filter(Boolean))localStorage.removeItem(`bradavice_inventory_harp_v4363_${String(x).replace(/[^a-zA-Z0-9@._-]/g,'_')}`)}catch{}}
  persist();repaint();return {ok:true};
  }finally{pending.delete(id)}}
-async function reloadFromServer(){if(!serverAvailable)return;const {data,error}=await DB.client.from('student_inventory').select('item_id').eq('student_id',me.id);if(error)return;owned.clear();for(const row of data||[])if(catalogue[row.item_id])owned.add(row.item_id);persist();repaint()}
+async function reloadFromServer(){if(!serverAvailable)return;const {data,error}=await DB.client.from('student_inventory').select('item_id,quantity').eq('student_id',me.id);if(error)return;owned.clear();quantities.clear();for(const row of data||[])if(catalogue[row.item_id]){owned.add(row.item_id);quantities.set(row.item_id,Math.max(1,Number(row.quantity)||1))}persist();repaint()}
 let overlay,closeBtn,trigger;
 function openBag(){if(!overlay)return;overlay.hidden=false;document.body.style.overflow='hidden';closeBtn.focus()}
 function closeBag(){if(!overlay)return;overlay.hidden=true;document.body.style.overflow='';trigger?.focus()}
@@ -119,9 +121,9 @@ async function init(){try{
  const extraLegacy=(()=>{try{const st=JSON.parse(localStorage.getItem('bradavice_student_v1')||'{}');return [st?.supabaseUserId,st?.email,me?.email]}catch{return [me?.email]}})();
  const legacyKeys=[legacyKey(),...extraLegacy.filter(Boolean).map(x=>`bradavice_inventory_harp_v4363_${String(x).replace(/[^a-zA-Z0-9@._-]/g,'_')}`)];
  if(legacyKeys.some(k=>localStorage.getItem(k)==='owned'))owned.add('harp');
- const {data:rows,error:invErr}=await DB.client.from('student_inventory').select('item_id').eq('student_id',me.id);
+ const {data:rows,error:invErr}=await DB.client.from('student_inventory').select('item_id,quantity').eq('student_id',me.id);
  dbWorking=!invErr;
- if(dbWorking){for(const row of rows||[])if(catalogue[row.item_id])owned.add(row.item_id)}
+ if(dbWorking){for(const row of rows||[])if(catalogue[row.item_id]){owned.add(row.item_id);quantities.set(row.item_id,Math.max(1,Number(row.quantity)||1))}}
  serverAvailable=dbWorking && await checkRpc();
  if(serverAvailable){
  // Import starého inventáře je omezen novým serverovým limitem, nemění existující položky.
@@ -132,6 +134,6 @@ async function init(){try{
  }
  persist();createPanel();repaint();
  }catch(e){console.warn('Kouzelný batoh:',e)}finally{readyDone=true;resolveReady()}}
-window.BradaviceInventory={ready,has,collect,discard,items,capacity:MAX,open:openBag,canCollect:()=>owned.size<MAX,reload:reloadFromServer,catalogue};
+ window.BradaviceInventory={ready,has,collect,discard,items,quantity:id=>quantities.get(id)||0,capacity:MAX,open:openBag,canCollect:()=>owned.size<MAX,reload:reloadFromServer,catalogue};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();

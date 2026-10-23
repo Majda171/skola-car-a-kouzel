@@ -94,7 +94,7 @@
    if(!DB){q.p.textContent='Úkol je dočasně nedostupný. Zkus to později.';activate.disabled=false;return}
    const {data,error}=await DB.rpc('v446_sabotage');
    if(error||data!=='success'){q.p.textContent='Úkol teď nelze dokončit. Zkus to později.';activate.disabled=false;return}
-   stage.classList.add('v446-stinky');window.BradaviceDungBombs?.blast({actor:'student',message:'💨 Bomby hnojůvky vybuchly pod stolem!'});if(character){stage.classList.remove('v446-empty');character.hidden=false;const portrait=character.querySelector('img');if(portrait)portrait.src='img/dolores-umbridge-smrad-v457.webp';}meow();story.markDone();await window.BradaviceInventory?.reload?.();
+   stage.classList.add('v446-stinky');window.BradaviceDungBombs?.blast({actor:'student',message:'💨 Bomby hnojůvky vybuchly pod stolem!'});if(character){stage.classList.remove('v446-empty');character.hidden=false;const portrait=character.querySelector('img');if(portrait)portrait.src='img/dolores-umbridge-smrad-v457.webp';}meow();story.markDone();await window.BradaviceInventory?.reload?.();window.dispatchEvent(new Event('bradavice:sabotage-complete'));
    q.p.textContent='Bomby hnojůvky s rachotem vybuchly! Kabinet zaplnil zelený zápach a Umbridgeová se vrací v nejhorší náladě. Teď rychle pryč!';q.actions.replaceChildren();q.btn('Utéct z kabinetu',()=>{q.close();location.href='chodby-horni.html'});
   });
  }

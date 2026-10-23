@@ -176,14 +176,14 @@
 
 })();
 
-// v39 — sedmé patro: dveře se objeví samy až po chvíli ticha.
+// Sedmé patro: zachované původní automatické objevení dveří po chvíli ticha.
 (()=>{
   const scene=document.getElementById('requirementScene'),door=document.getElementById('requireDoorLink'),whisper=document.getElementById('requireWhisper');
   if(!scene||!door)return;
   let revealed=false;
   const reveal=()=>{
     if(revealed)return; revealed=true;
-    scene.classList.add('ready'); door.setAttribute('aria-hidden','false');
+    scene.classList.add('ready'); door.setAttribute('aria-hidden','false');door.removeAttribute('tabindex');
     sessionStorage.setItem('bradavice_requirement_gate','open');
     if(whisper)whisper.textContent='Dveře se objevily. Komnata tě vyslyšela.';
     window.BradaviceAchievements?.award?.('mistnost-se-ukazala',{silent:true});

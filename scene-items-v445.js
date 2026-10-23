@@ -9,7 +9,7 @@ const extras={
  "chodby-horni.html":[{id:"hnojova-bomba",img:"img/predmety/hnojova-bomba.webp",x:70,y:81,w:37,opacity:.68,kind:"pickup"}],
  "chodby-portretni-galerie.html":[{id:"hnojova-bomba",img:"img/predmety/hnojova-bomba.webp",x:74,y:79,w:38,opacity:.58,kind:"pickup"}],
  "hagriduv-dum.html":[{id:"dyne-450",img:"img/dyne-v450.webp",x:74,y:79,w:200,opacity:1,kind:"encounter",title:"Obrovská dýně",description:"Vedle Hagridova domu vyrostla neuvěřitelně veliká dýně."}],
- "kuchyne.html":[{id:"konvice-450",img:"img/keramicka-konvice-v450.webp",x:77,y:74,w:60,opacity:.72,kind:"encounter",title:"Žlutá konvice",description:"Po kuchyni se line vůně čerstvého čaje."}],
+ "kuchyne.html":[{id:"konvice-450",img:"img/keramicka-konvice-v450.webp",x:55,y:51,w:60,opacity:1,kind:"encounter",title:"Žlutá konvice",description:"Po kuchyni se line vůně čerstvého čaje."}],
  "ucebna-lektvaru.html":[{id:"kotlik-450",img:"img/kotlik-v450.webp",x:26,y:75,w:75,opacity:.68,kind:"encounter",title:"Starý kotlík",description:"Zaschlé stopy na okraji jsou nejspíš pozůstatky minulého lektvaru."}],
  "astronomicka-vez.html":[{id:"svicen-450",img:"img/svicen-v450.webp",x:25,y:71,w:42,opacity:.58,kind:"encounter",title:"Starý svícen",description:"Světlo svíček zvýrazňuje hvězdné mapy."}]
 };

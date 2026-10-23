@@ -449,3 +449,12 @@
 .tchoricky-courtyard-link{position:absolute;z-index:24;right:3.5vw;bottom:4vh;display:flex;flex-direction:column;gap:2px;min-width:180px;padding:12px 15px;border:1px solid rgba(211,181,108,.5);background:rgba(5,8,6,.82);backdrop-filter:blur(5px);color:#eadfc6;text-decoration:none;box-shadow:0 14px 35px #0008}
 .tchoricky-courtyard-link strong{font:600 .92rem Cinzel,Georgia,serif;letter-spacing:.06em;color:#e7c979}.tchoricky-courtyard-link span{font-size:.78rem;color:#c5baa3}.tchoricky-courtyard-link:hover{background:rgba(16,18,12,.92);border-color:#d4b468}
 @media(max-width:720px){.tchoricky-courtyard-link{right:3vw;bottom:12vh;min-width:150px;padding:9px 11px}}
+
+/* v475: popisky v chodbách nesmějí překrýt samotnou herní scénu. */
+.v25-clean-scene.corridor-stage .corridor-caption h1{font-size:clamp(1.3rem,2.4vw,2.2rem)!important;line-height:1.08!important}
+.v25-clean-scene.corridor-stage .corridor-caption{max-width:min(370px,40vw)}
+@media(max-width:700px){.v25-clean-scene.corridor-stage .corridor-caption{max-width:75vw}.v25-clean-scene.corridor-stage .corridor-caption h1{font-size:clamp(1.15rem,5vw,1.7rem)!important}}
+
+/* Přístup na již existující sedmé poschodí z hlavního schodiště. */
+.corridor-stairs .v469-office-link{display:inline-block;margin-top:9px;padding:8px 12px;color:#ead5a2;background:rgba(15,12,8,.75);border:1px solid rgba(220,190,118,.48);font:600 .65rem Cinzel,Georgia,serif;text-decoration:none;letter-spacing:.04em}
+.corridor-stairs .v469-office-link:hover{background:rgba(75,55,26,.9)}

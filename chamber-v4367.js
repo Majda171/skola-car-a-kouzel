@@ -26,6 +26,19 @@
    };
    next();
  }
+ function runePuzzle(){
+   if(stage!==1||document.getElementById('chamberRuneChallenge'))return;
+   const overlay=document.createElement('div');overlay.id='chamberRuneChallenge';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','Zkouška hadích run');
+   overlay.style.cssText='position:fixed;inset:0;z-index:20000;background:#050b09eF;display:grid;place-items:center;padding:18px;color:#ecd9ac';
+   const card=document.createElement('section');card.style.cssText='width:min(540px,100%);padding:28px;text-align:center;background:linear-gradient(145deg,#23352e,#080f0d);border:2px solid #9d8c5e;border-radius:14px;box-shadow:0 20px 80px #000';
+   const heading=document.createElement('h2');heading.textContent='Pečeť Salazara Zmijozela';
+   const clue=document.createElement('p');clue.textContent='Čtyři znaky chrání komnatu. Otevři cestu v pořadí: světlo noci, hadí jazyk, oko strážce a poslední hvězda. Chybná runa pečeť znovu uzavře.';
+   const status=document.createElement('p');status.setAttribute('role','status');status.textContent='Rozluštěno 0 ze 4 znaků';
+   const symbols=[['☾','Měsíc'],['ᛋ','Had'],['◉','Oko'],['✶','Hvězda'],['◆','Kámen'],['♜','Věž']];const order=['Měsíc','Had','Oko','Hvězda'];let step=0;
+   const buttons=document.createElement('div');buttons.style.cssText='display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px';
+   for(const [glyph,name] of symbols){const b=document.createElement('button');b.type='button';b.textContent=glyph;b.setAttribute('aria-label',name);b.style.cssText='background:#304c40;color:#f1e0a7;border:1px solid #ad9462;border-radius:8px;padding:16px;font-size:30px;cursor:pointer';b.onclick=()=>{if(name===order[step]){step++;status.textContent=`Rozluštěno ${step} ze 4 znaků`;if(step===4){overlay.remove();summon();}}else{step=0;status.textContent='Pečeť se uzavřela. Začni od prvního znaku.';}};buttons.append(b)}
+   card.append(heading,clue,status,buttons);overlay.append(card);document.body.append(overlay);buttons.querySelector('button')?.focus();
+ }
  function summon(){
    if(stage<1||stage>=3)return;
    save(2);basilisk.hidden=false;basilisk.classList.add('appear');sword.hidden=false;
@@ -57,14 +70,14 @@
  function startDiarySound(){try{diarySound.pause();diarySound.currentTime=0;diarySound.play().catch(()=>{});}catch{}}
  window.addEventListener('pagehide',()=>diarySound.pause());
  diary.addEventListener('click',()=>{
-   if(stage===0){save(1);startDiarySound();revealRaddle();playMonologue(()=>summon())}
-   else if(stage===1){startDiarySound();revealRaddle();playMonologue(()=>summon())}
+   if(stage===0){save(1);startDiarySound();revealRaddle();playMonologue(()=>runePuzzle())}
+   else if(stage===1){startDiarySound();revealRaddle();playMonologue(()=>runePuzzle())}
    else if(stage===4)tell('Deník je zničený. Raddle už z něj nemůže promluvit.');
  });
  makeDrag(sword,basilisk,killBasilisk);makeDrag(fang,diary,destroyDiary);
  // Obnova přesně podle studenta.
  if(stage>=1)revealRaddle();
- if(stage===1)setTimeout(()=>playMonologue(()=>summon()),1400);
+ if(stage===1)setTimeout(()=>playMonologue(()=>runePuzzle()),1400);
  if(stage===2){basilisk.hidden=false;sword.hidden=false}
  if(stage===3){raddle.hidden=false;basilisk.hidden=true;sword.hidden=true;fang.hidden=false;tell('Bazilišek je pryč. Přetáhni jeho zub na deník.')}
  if(stage>=4){diary.classList.add('pierced');basilisk.hidden=true;sword.hidden=true;fang.hidden=true;raddle.hidden=true;if(intro)intro.textContent='Deník leží zničený na podlaze.';tell('Raddle zmizel. Tajemná komnata znovu ztichla.')}
