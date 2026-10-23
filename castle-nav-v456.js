@@ -1,4 +1,4 @@
-/* Bradavice v468 – boční šipky pouze mezi běžnými lokacemi.
+/* Bradavice v476 – obnovena boční navigace z uživatelkou dodané v456.
  * Tajné, herní, interiérové a úkolové místnosti jsou přístupné jedině
  * skrz své skutečné klikatelné vchody. Není možné obejít kolejní zkoušky.
  * Seřazení tras: vstupní patro → chodby → sklepení → vyšší patra → pozemky.
@@ -30,6 +30,10 @@
     "Severní chodba"
   ],
   [
+    "prihlaseniNeb.html",
+    "Vstup do Nebelvíru"
+  ],
+  [
     "chodby-stara-galerie.html",
     "Východní chodba"
   ],
@@ -42,6 +46,10 @@
     "Kuchyně"
   ],
   [
+    "prihlaseniMrzimor.html",
+    "Vstup do Mrzimoru"
+  ],
+  [
     "ucebna-lektvaru.html",
     "Učebna lektvarů"
   ],
@@ -50,8 +58,20 @@
     "Hluboké sklepení"
   ],
   [
+    "prihlaseniZmijozel.html",
+    "Vstup do Zmijozelu"
+  ],
+  [
     "chodby-horni.html",
-    "Horní chodby"
+    "Chodba třetího poschodí"
+  ],
+  [
+    "prihlaseniHavraspar.html",
+    "Vstup do Havraspáru"
+  ],
+  [
+    "kabinet-umbridge.html",
+    "Kabinet Umbridgeové"
   ],
   [
     "ucebna-jasnovidectvi.html",
@@ -60,6 +80,10 @@
   [
     "knihovna.html",
     "Knihovna"
+  ],
+  [
+    "divci-umyvarna.html",
+    "Dívčí umývárna"
   ],
   [
     "ucebna-obrany.html",
@@ -107,16 +131,6 @@
  document.querySelectorAll('.castle-side-nav').forEach(el=>el.remove());
  const idx=route.findIndex(item=>item[0]===page);
  if(idx<0)return;
- const scenePrev=document.querySelector('main a.corridor-way-prev[href]');
- const sceneNext=document.querySelector('main a.corridor-way-next[href]');
- const hasSceneDirections=Boolean(scenePrev||sceneNext);
- function destination(source,fallback){
-   if(!source)return fallback;
-   const href=source.getAttribute('href');
-   if(!href||href.startsWith('#')||/^(javascript:|https?:)/i.test(href))return null;
-   const name=source.textContent.trim()||route.find(item=>item[0]===href)?.[1]||'Další část hradu';
-   return [href,name];
- }
  function arrow(item,side){
    const a=document.createElement('a');
    a.className='castle-side-nav castle-side-'+side;
@@ -127,12 +141,9 @@
    a.append(icon,label);document.body.appendChild(a);
  }
  // Na konci žádný nelogický teleport na začátek, lze se vracet opačnou šipkou.
- const prev=destination(scenePrev,hasSceneDirections?null:idx>0?route[idx-1]:null);
- const next=destination(sceneNext,hasSceneDirections?null:idx+1<route.length?route[idx+1]:null);
- if(prev)arrow(prev,'prev');
- if(next)arrow(next,'next');
- // Nahrazujeme pouze dva skutečně vykreslené průchody, ostatní vstupy
- // (včetně mapy, kolejí a tajných úkolů) ponecháváme nedotčené.
- if(scenePrev&&prev)scenePrev.remove();
- if(sceneNext&&next)sceneNext.remove();
+ if(idx>0)arrow(route[idx-1],'prev');
+ if(idx+1<route.length)arrow(route[idx+1],'next');
+ // Původní princip v456: staré šipky chodeb nahradit jednotnými bočními šipkami.
+ // Vchody, obrazy, hesla, sudy, klepadla a tajné hotspoty ponechat.
+ document.querySelectorAll('main a.corridor-way-prev,main a.corridor-way-next').forEach(a=>a.remove());
 })();
