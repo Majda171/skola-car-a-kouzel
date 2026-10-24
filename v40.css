@@ -5,8 +5,8 @@
 .corridor-arcade{background-image:linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.23)),url('img/chodba-zapadni-v40.webp')!important;background-position:center!important;background-size:cover!important}
 .corridor-stairs{background-image:linear-gradient(180deg,rgba(0,0,0,.03),rgba(0,0,0,.20)),url('img/hlavni-schodiste-v40.webp')!important;background-position:center!important;background-size:cover!important}
 .corridor-gallery{background-image:linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.20)),url('img/corridor-v24-2.webp')!important;background-position:center!important;background-size:cover!important}
-.corridor-old-gallery{background-image:linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.23)),url('img/chodba-vychodni-v40.webp')!important;background-position:center!important;background-size:cover!important}
-.corridor-upper{background-image:linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.22)),url('img/chodba-horni-v40.webp')!important;background-position:center!important;background-size:cover!important}
+.corridor-old-gallery{background-image:linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.23)),url('img/chodba-horni-v40.webp')!important;background-position:center!important;background-size:cover!important}
+.corridor-upper{background-image:linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.22)),url('img/chodba-vychodni-v40.webp')!important;background-position:center!important;background-size:cover!important}
 .v40-character{position:absolute;z-index:15;object-fit:contain;filter:drop-shadow(0 24px 25px rgba(0,0,0,.75));pointer-events:auto}
 .prytova-character{right:2%;bottom:-2%;height:min(74vh,790px)}
 .lupin-character{right:2%;bottom:-3%;height:min(78vh,820px)}

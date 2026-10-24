@@ -9,17 +9,43 @@ const extras={
  "chodby-horni.html":[{id:"hnojova-bomba",img:"img/predmety/hnojova-bomba.webp",x:70,y:81,w:37,opacity:.68,kind:"pickup"}],
  "chodby-portretni-galerie.html":[{id:"hnojova-bomba",img:"img/predmety/hnojova-bomba.webp",x:74,y:79,w:38,opacity:.58,kind:"pickup"}],
  "hagriduv-dum.html":[{id:"dyne-450",img:"img/dyne-v450.webp",x:74,y:79,w:200,opacity:1,kind:"encounter",title:"Obrovská dýně",description:"Vedle Hagridova domu vyrostla neuvěřitelně veliká dýně."}],
- "kuchyne.html":[{id:"konvice-450",img:"img/keramicka-konvice-v450.webp",x:55,y:51,w:60,opacity:1,kind:"encounter",title:"Žlutá konvice",description:"Po kuchyni se line vůně čerstvého čaje."}],
+ "kuchyne.html":[{id:"konvice-450",img:"img/keramicka-konvice-v450.webp",x:61,y:64,w:52,opacity:1,kind:"encounter",title:"Žlutá konvice",description:"Po kuchyni se line vůně čerstvého čaje."}],
  "ucebna-lektvaru.html":[{id:"kotlik-450",img:"img/kotlik-v450.webp",x:26,y:75,w:75,opacity:.68,kind:"encounter",title:"Starý kotlík",description:"Zaschlé stopy na okraji jsou nejspíš pozůstatky minulého lektvaru."}],
  "astronomicka-vez.html":[{id:"svicen-450",img:"img/svicen-v450.webp",x:25,y:71,w:42,opacity:.58,kind:"encounter",title:"Starý svícen",description:"Světlo svíček zvýrazňuje hvězdné mapy."}]
 };
 for(const [key,added] of Object.entries(extras))scenes[key]=(scenes[key]||[]).concat(added);
+// Roztrousene nalezy bomb v chodbach, kolejich a pokojich.
+const bombPlaces={
+ "chodby.html":[[22,82]],"chodby-stara-galerie.html":[[39,83]],
+ "velka-sin.html":[[84,85]],"knihovna.html":[[88,84]],
+ "nebelvir-spolecenska.html":[[24,83]],"nebelvir-loznice.html":[[82,86]],
+ "mrzimor-spolecenska.html":[[21,85]],"mrzimor-loznice.html":[[79,84]],
+ "havraspar-spolecenska.html":[[80,83]],"havraspar-loznice.html":[[22,85]],
+ "zmijozel-spolecenska.html":[[27,84]],"zmijozel-loznice.html":[[80,86]]
+};
+for(const [key,spots] of Object.entries(bombPlaces))
+ scenes[key]=(scenes[key]||[]).concat(spots.map(([x,y])=>({
+  id:'hnojova-bomba',img:'img/predmety/hnojova-bomba.webp',x,y,w:34,opacity:.71,kind:'pickup'
+ })));
 const page=decodeURIComponent(location.pathname.split('/').pop()||'');const placement=scenes[page];if(!placement)return;
 const inv=window.BradaviceInventory;if(!inv)return;
 const host=document.querySelector('main.place-scene,main.scene,main[class*="scene"],main');if(!host)return;
 if(getComputedStyle(host).position==='static')host.style.position='relative';
 const catalogue=inv.catalogue;
 let dialog=null,lastFocus=null;
+let bombStoreKey=null;const foundBombs=new Set();
+function saveBombs(){if(!bombStoreKey)return;try{localStorage.setItem(bombStoreKey,JSON.stringify([...foundBombs]))}catch{}}
+async function loadBombs(){
+ try{
+  await inv.ready;
+  const {data}=await window.BradaviceDB?.client?.auth.getUser();
+  if(!data?.user?.id)return;
+  bombStoreKey='bradavice_bomb_nalezy_v481_'+data.user.id;
+  for(const id of JSON.parse(localStorage.getItem(bombStoreKey)||'[]'))foundBombs.add(id);
+  window.dispatchEvent(new Event('bradavice:bomb-nalezy-loaded'));
+ }catch{}
+}
+loadBombs();
 function close(){if(dialog){dialog.remove();dialog=null}lastFocus?.focus()}
 function openDialog(item,button){lastFocus=button;close();lastFocus=button;
  const entry=catalogue[item.id];const collectible=item.kind==='pickup';
@@ -30,7 +56,7 @@ function openDialog(item,button){lastFocus=button;close();lastFocus=button;
  const status=document.createElement('p');status.className='scene-item-status';status.setAttribute('aria-live','polite');
  const actions=document.createElement('div');actions.className='scene-item-actions';
  if(collectible){const take=document.createElement('button');take.type='button';take.textContent='Vzít do batohu';take.addEventListener('click',async()=>{
-   take.disabled=true;const result=await inv.collect(item.id);if(result.ok){button.classList.add('scene-collected');close();setTimeout(()=>button.hidden=true,500)}else{
+   take.disabled=true;const result=await inv.collect(item.id);if(result.ok){if(item.id==='hnojova-bomba'){foundBombs.add(button.dataset.sceneKey);saveBombs()};button.classList.add('scene-collected');close();setTimeout(()=>button.hidden=true,500)}else{
     status.textContent=result.message||'Předmět se nepodařilo sebrat.';take.disabled=false;
     if(result.full){const bag=document.createElement('button');bag.type='button';bag.textContent='Otevřít batoh';bag.addEventListener('click',()=>{close();inv.open()});actions.append(bag);}}
  });actions.append(take)}
@@ -44,12 +70,13 @@ function openDialog(item,button){lastFocus=button;close();lastFocus=button;
  const leave=document.createElement('button');leave.type='button';leave.textContent=collectible?'Nechat být':'Zavřít';leave.addEventListener('click',close);actions.append(leave);
  card.append(exit,img,heading,desc,status,actions);dialog.append(card);document.body.append(dialog);exit.focus();dialog.addEventListener('click',e=>{if(e.target===dialog)close()});
 }
-for(const spot of placement){const button=document.createElement('button');button.type='button';button.className='scene-item';button.title=spot.kind==='pickup'?`Prozkoumat: ${catalogue[spot.id]?.label}`:'Prozkoumat zajímavost';button.setAttribute('aria-label',button.title);
+for(const [index,spot] of placement.entries()){const button=document.createElement('button');button.type='button';button.className='scene-item';button.title=spot.kind==='pickup'?`Prozkoumat: ${catalogue[spot.id]?.label}`:'Prozkoumat zajímavost';button.setAttribute('aria-label',button.title);
  button.style.left=`${spot.x}%`;button.style.top=`${spot.y}%`;button.style.width=`clamp(27px, ${spot.w/12}vw, ${spot.w}px)`;button.style.setProperty('--scene-opacity',spot.opacity);button.dataset.itemId=spot.id;
+ if(spot.id==='hnojova-bomba')button.dataset.sceneKey=page+':'+index;
  const img=document.createElement('img');img.src=spot.img;img.alt='';img.loading='lazy';button.append(img);button.hidden=true;host.append(button);
  button.addEventListener('click',e=>{e.stopPropagation();openDialog(spot,button)});
- function update(){button.hidden=(spot.kind==='pickup'&&inv.has(spot.id))||(page==='kuchyne.html'&&!host.classList.contains('open'))};
- inv.ready.then(update);window.addEventListener('bradavice:inventory-updated',update);if(page==='kuchyne.html'){new MutationObserver(update).observe(host,{attributes:true,attributeFilter:['class']})}
+ function update(){const picked=spot.id==='hnojova-bomba'?foundBombs.has(button.dataset.sceneKey):(spot.kind==='pickup'&&inv.has(spot.id));button.hidden=picked||(page==='kuchyne.html'&&!host.classList.contains('open'))};
+ inv.ready.then(update);window.addEventListener('bradavice:inventory-updated',update);window.addEventListener('bradavice:bomb-nalezy-loaded',update);if(page==='kuchyne.html'){new MutationObserver(update).observe(host,{attributes:true,attributeFilter:['class']})}
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&dialog)close()});
 })();

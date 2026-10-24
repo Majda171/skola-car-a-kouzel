@@ -30,6 +30,18 @@
 .fluffy-inventory-action{margin-top:10px;border:1px solid #d1ad60;background:#8b6730;color:#160f08;padding:11px 15px;font:700 .56rem Cinzel,Georgia,serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}.fluffy-inventory-action[hidden]{display:none}.fluffy-inventory-action.playing{filter:brightness(1.15)}
 @media(max-width:800px){.corridor-real-door-hotspot,.corridor-stone-door.corridor-real-door-hotspot{right:0!important;top:2%!important;width:39%!important;height:82%!important}.secret-passage-hotspot-v4363{left:54%;top:18%;width:27%;height:40%}}
 
+/* Třetí poschodí: tajný vstup je pouze ve skutečných dveřích vpravo,
+   nikoli na obrazu vedle nich ani přes celou pravou stranu scény. */
+.corridor-upper a.corridor-real-door-hotspot{
+  left:auto!important;right:10.7%!important;top:10%!important;
+  width:10.3%!important;height:61%!important;z-index:32!important;
+}
+@media(max-width:800px){
+  .corridor-upper a.corridor-real-door-hotspot{
+    right:5%!important;top:13%!important;width:15%!important;height:53%!important;
+  }
+}
+
 /* v43.6.7 — zrcadlo stojí velké přímo na kruhovém podstavci v pozadí. */
 .final-hall .mirror-stage{display:block;width:100%;max-width:none;min-height:calc(100vh - 74px);position:relative}
 .final-hall .mirror-object{position:absolute;z-index:11;left:50%;bottom:35.5%;transform:translateX(-50%);width:min(500px,32vw);text-align:center;transform-origin:50% 100%}
@@ -52,6 +64,6 @@
 .final-hall .mirror-object::after{content:"";position:absolute;left:19%;right:19%;bottom:-.6%;height:3.5%;border-radius:50%;background:rgba(0,0,0,.46);filter:blur(8px);z-index:-1;pointer-events:none}
 @media(max-width:900px){.final-hall .mirror-object{bottom:31.5%!important;width:min(430px,58vw)!important}.final-hall .mirror-object img{max-height:58vh!important}}
 
-/* v452 - zrcadlo níže, pata opřena o skutečný podstavec */
-.final-hall .mirror-object{bottom:25.5%!important}
-@media(max-width:900px){.final-hall .mirror-object{bottom:24%!important}}
+/* Zrcadlo stojí na horní ploše kruhového podstavce, nikoli před jeho schody. */
+.final-hall .mirror-object{bottom:35.5%!important}
+@media(max-width:900px){.final-hall .mirror-object{bottom:34.5%!important}}
