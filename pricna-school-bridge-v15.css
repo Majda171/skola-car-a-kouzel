@@ -3,3 +3,6 @@
 #diagonSchoolProfile .history-row strong{font-weight:600;text-align:right}
 #diagonSchoolProfile .diagon-profile-link{display:inline-block;padding:11px 16px;border-radius:6px;border:1px solid #a88d56;color:#e9cc92;text-decoration:none}
 #diagonSchoolProfile .diagon-profile-link:hover{background:#a88d5629;color:#ffe1a4}
+#diagonSchoolProfile .diagon-pet-card{display:flex;align-items:center;gap:16px;margin:14px 0 4px;padding:11px 15px;border:1px solid #ad9a7540;border-radius:10px;background:#10100e40}
+#diagonSchoolProfile .diagon-pet-card img{width:115px;height:115px;object-fit:contain;filter:drop-shadow(0 5px 10px #0005)}
+#diagonSchoolProfile .diagon-pet-card figcaption{font-family:Georgia,serif;font-size:17px;color:#e9cc92}

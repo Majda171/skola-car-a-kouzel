@@ -55,11 +55,15 @@
   }
   // v443: kouzelny batoh jako spolecne vybaveni vsech prihlasenych studentu.
   if(!document.querySelector('script[data-pricna-bridge]')){
-    const bridge=document.createElement('script');bridge.src='pricna-school-bridge-v15.js?v=16';bridge.dataset.pricnaBridge='1';document.body.appendChild(bridge);
+    const bridge=document.createElement('script');bridge.src='pricna-school-bridge-v15.js?v=17';bridge.dataset.pricnaBridge='1';document.body.appendChild(bridge);
   }
   if(!/^(index|registrace|prihlaseni-student|vylouceni|admin.*)\.html$/.test(location.pathname.split('/').pop()||'')){
     if(!document.querySelector('script[data-bradavice-bag]')){
-      const bag=document.createElement('script');bag.src='inventory-v445.js?v=465';bag.dataset.bradaviceBag='1';document.body.appendChild(bag);bag.addEventListener('load',()=>{const items=document.createElement('script');items.src='scene-items-v445.js?v=481';document.body.appendChild(items);const letters=document.createElement('script');letters.src='v449-letters.js?v=449';document.body.appendChild(letters)});
+      const bag=document.createElement('script');bag.src='inventory-v445.js?v=17';bag.dataset.bradaviceBag='1';document.body.appendChild(bag);bag.addEventListener('load',()=>{const items=document.createElement('script');items.src='scene-items-v445.js?v=17';document.body.appendChild(items);const letters=document.createElement('script');letters.src='v449-letters.js?v=17';document.body.appendChild(letters)});
     }
+  }
+  // Tajné nálezy: lokace nejsou vyznačené na mapě a odměnu uděluje Supabase.
+  if(['tajemna-komnata.html','tajemna-cesta.html','chodby-stara-galerie.html'].includes(location.pathname.split('/').pop())){
+    const treasures=document.createElement('script');treasures.src='v17-treasures.js?v=17';document.body.append(treasures);
   }
 })();

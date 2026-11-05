@@ -88,45 +88,59 @@
   function encounter() {
     advance('start', () => {
       window.BradaviceDungBombs?.blast({ actor: 'protiva', duration: 10200, message: '💥 Protiva právě odpálil bomby hnojůvky!' });
-      setTimeout(()=>dialogue('Protivovy nekalosti',
-        'Z konce chodby se ozvalo ohlušující PRÁSK! Protiva se chechtá pod stropem a zelený oblak pohlcuje podlahu. „Filchík zuří, Filchík křičí, Protiva mu chodbu ničí!“',
-        [['Co se děje?', () => dialogue('Argus Filch',
-          '„Ten zatracený poltergeist! Všude ten příšerný zápach! Jestli ho ještě jednou nachytám…“ Filch málem klopýtne přes rozházené bomby hnojůvky.',
-          [['Vyjít na chodbu', () => showMcGonagallScene(false)]])]]),1900);
+      // Filch je skutečně na scéně. Promluví sám; nepřekrýváme chodbu velkým dialogem.
+      setTimeout(showFilchEncounter, 1750);
     });
+  }
+
+  function showFilchEncounter() {
+    document.querySelector('.v17-filch-quest')?.remove();
+    const filch=document.createElement('div');filch.className='v17-filch-quest';
+    const image=document.createElement('img');image.src='img/filch-user-v439.webp';image.alt='Argus Filch';
+    const speech=document.createElement('p');speech.className='v17-filch-speech';
+    speech.textContent='„Ten zatracený poltergeist! Všude ten příšerný zápach! Jestli ho ještě jednou nachytám…“';
+    filch.append(image,speech);host.append(filch);
+    // Po spatření Filche zazní jeho výstup automaticky (když prohlížeč nabízí český hlas).
+    try {
+      if('speechSynthesis' in window && 'SpeechSynthesisUtterance' in window){
+        const voice=new SpeechSynthesisUtterance(speech.textContent.replace(/[„“]/g,''));
+        voice.lang='cs-CZ';voice.rate=.86;voice.pitch=.74;voice.volume=.78;
+        window.speechSynthesis.speak(voice);
+      }
+    } catch(e) { console.debug('Filchův hlas není dostupný:',e); }
+    setTimeout(()=>{
+      filch.remove();
+      showMcGonagallScene(false);
+      // Její promluva se spustí bez dalšího mezikroku.
+      setTimeout(()=>{if(stage==='filch')mcgonagall()},950);
+    },8500);
   }
 
   function mcgonagall() {
     document.querySelector('.v463-mcgonagall-scene')?.remove();
     dialogue('Profesorka McGonagallová',
-      '„PROTIVO! Okamžitě toho nechte!“ Protiva jí vyplázne jazyk a zmizí za rohem. Profesorka se obrátí k tobě: „Tohohle ničemu umí zkrotit jedině Krvavý baron. Najdi ho v Síni oslavy úmrtí ve sklepení a vyřiď mu, že jej žádám, aby Protivu opět usměrnil.“',
-      [['Rozumím, najdu Krvavého barona', () => advance('seek_baron', () => dialogue('Úkol zapsán', 'Krvavého barona musíš najít sám. Hledej cestu do Síně oslavy úmrtí v hlubokém sklepení.', [['Vydat se na cestu', null]]))]],
+      '„PROTIVO! Okamžitě toho nechte!“ Protiva jí vyplázne jazyk a zmizí za rohem. Profesorka se obrátí k tobě: „Tohohle ničemu umí zkrotit jedině Krvavý baron. Najdi ho a vyřiď mu, že jej žádám, aby Protivu opět usměrnil.“',
+      [['Rozumím, najdu Krvavého barona', () => advance('seek_baron', () => {})]],
       { portrait: { src: 'img/mcgonagall-v42.webp', alt: 'Profesorka McGonagallová', className: 'is-mcgonagall' } });
   }
 
   function baron() {
     dialogue('Krvavý baron',
-      '„Kdo ruší klid mrtvých?“ Baronův hlas se rozlehne síní. Vyřídíš mu vzkaz profesorky McGonagallové. „Protiva,“ zopakuje a na okamžik sklopí oči. „Ten duch nezná hranice. Už dávno zapomněl, že škola není jeho hřiště. Profesorce vyřiď, že její žádost jsem vyslechl. Nemusíš mít strach: až mě Protiva spatří, bude vědět, co má udělat.“ Jeho stříbřitá postava se nakloní blíž. „Ale pamatuj si, studente, že odvaha nespočívá v působení zmatku. Někdy je třeba učinit pořádek i tam, kde se všichni ostatní bojí.“',
-      [['Poděkovat baronovi', () => advance('baron_found', () => dialogue('Vzkaz pro profesorku', 'Najdi profesorku McGonagallovou na hlavní chodbě a osobně jí předej baronovu odpověď.', [['Rozumím', null]]))]]);
+      '„Kdo ruší klid mrtvých?“ Baronův hlas se rozlehne síní. Vyřídíš mu vzkaz profesorky McGonagallové. „Protiva,“ zopakuje a na okamžik sklopí oči. „Ten poltergeist nezná hranice. Už dávno zapomněl, že škola není jeho hřiště. Vyřiď profesorce, že se o to postarám. Až mě Protiva spatří, bude vědět, co má udělat.“ Jeho stříbřitá postava se nakloní blíž. „Ale pamatuj si, studente, že odvaha nespočívá v působení zmatku.“',
+      [['Poděkovat baronovi', () => advance('baron_found', () => {})]]);
   }
 
   function complete() {
-    dialogue('Protivův strach',
-      'Krvavý baron zastoupí Protivovi cestu. „Vznešený barone! Vždyť to byla jen nevinná legrace!“ Baron klidně řekne: „Protivo.“ „Ano, pane! Už letím, pane! Hodný Protiva!“ Poltergeist s kvílením zmizí skrz strop.',
-      [['Odevzdat úkol profesorce', () => dialogue('Profesorka McGonagallová',
-        '„Takže Krvavý baron souhlasil? Výborně. Na hradě snad alespoň na nějaký čas zavládne klid. Za tvou pomoc při zkrocení Protivy připíšu tvé koleji patnáct bodů.“',
-        [['Dokončit úkol', () => advance('complete', async data => {
-          if (data.awarded) {
-            dialogue('Úkol splněn', 'Za pomoc při zkrocení Protivy získáváš 15 kolejních bodů! Body byly připsány do školní evidence.', [['Pokračovat', null]]);
-          } else {
-            dialogue('Úkol již splněn', 'Tento úkol už máš dokončený. Kolejní body se podruhé nepřipisují.', [['Pokračovat', null]]);
-          }
+    dialogue('Profesorka McGonagallová',
+      '„Profesorko, Krvavý baron mi řekl, že se o Protivu postará.“ McGonagallová přikývne. „Výborně. Děkuji ti za pomoc. Tvé koleji připíšu patnáct bodů.“',
+        [['Převzít 15 kolejních bodů', () => advance('complete', async data => {
+          // Odměnu potvrzuje školní evidence; další zbytečná obrazovka už nenásleduje.
           try {
             await window.BradaviceDB?.hydrateAll?.();
             window.dispatchEvent(new Event('bradavice:progress-synced'));
           } catch (e) { console.warn('Synchronizace po odměně se nezdařila.', e); }
         })]],
-        { portrait: { src: 'img/mcgonagall-v42.webp', alt: 'Profesorka McGonagallová', className: 'is-mcgonagall' } })]]);
+        { portrait: { src: 'img/mcgonagall-v42.webp', alt: 'Profesorka McGonagallová', className: 'is-mcgonagall' } });
   }
 
   function addTrigger(label, className, handler) {

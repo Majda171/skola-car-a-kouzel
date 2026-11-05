@@ -1,0 +1,6 @@
+.v17-find{position:absolute;z-index:21;transform:translate(-50%,-50%);padding:0;border:0;background:transparent;cursor:pointer;filter:drop-shadow(0 8px 9px #000a);transition:filter .2s,transform .2s}
+.v17-find img{display:block;width:100%;height:auto;pointer-events:none}
+.v17-find:hover,.v17-find:focus-visible{filter:brightness(1.12) drop-shadow(0 0 11px #bfa67766);transform:translate(-50%,-50%) scale(1.05)}
+.v17-find[hidden]{display:none!important}.v17-find:disabled{cursor:wait}
+.v17-find-notice{position:fixed;bottom:24px;left:50%;z-index:25000;transform:translateX(-50%);width:max-content;max-width:92vw;padding:13px 42px 13px 18px;border:1px solid #ceb178;background:#1b1813f0;color:#f0dba9;box-shadow:0 15px 48px #000c;font:15px/1.4 Georgia,serif}
+.v17-find-notice button{position:absolute;top:4px;right:7px;border:0;background:transparent;color:#e5c694;font-size:23px;cursor:pointer}

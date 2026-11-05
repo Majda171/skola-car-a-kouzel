@@ -15,6 +15,7 @@ form.addEventListener('submit',async e=>{
     if(access?.banned){window.location.href='vylouceni.html';return;}
     const next=new URLSearchParams(location.search).get('next');
     const DIAGON='https://majda171.github.io/bradadavice_pricna_ulice/';
+    const STATION=DIAGON+'kings-cross.html';
     // Starší přihlašovací návrat z Příčné ulice může ještě obsahovat původní návrhovou URL.
     const returnToDiagon=next===DIAGON || next==='https://majda171.github.io/pricna-ulice/' || next==='pricna-ulice/index.html';
     if(student.sortingCompleted){window.location.href=returnToDiagon?DIAGON:(next||'hrad.html');return}
@@ -23,7 +24,11 @@ form.addEventListener('submit',async e=>{
       const {data:shop,error:shopError}=await window.BradaviceDB.client.rpc('v16_shop_state');
       if(shopError)throw shopError;
       const shoppingStarted=shop?.grantClaimed || Object.keys(shop?.purchases||{}).length>0;
-      window.location.href=shop?.schoolReady?'rozrazeni.html':(shoppingStarted?DIAGON:'prijeti.html');
+      if(shop?.schoolReady){
+        const {data:station,error:stationError}=await window.BradaviceDB.client.rpc('v17_station_status');
+        if(stationError)throw stationError;
+        window.location.href=station?.stationCompleted?'rozrazeni.html':STATION;
+      }else window.location.href=shoppingStarted?DIAGON:'prijeti.html';
     }catch(error){console.warn('Školní nákupy se nepodařilo ověřit',error);window.location.href='prijeti.html'}
   }catch(error){
     console.error(error);

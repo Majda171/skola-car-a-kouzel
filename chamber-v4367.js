@@ -12,24 +12,21 @@
    if(intro)intro.textContent='Z deníku se vynořila průsvitná postava mladého studenta.';
    tell('„Nejsem člověk. Jsem vzpomínka — otisk Toma Raddla, který v tomto deníku zůstal.“');
  }
- const MONO=['„Tak přece jen někdo deník otevřel.“','„Jméno je Tom Raddle. To, co vidíš, je vzpomínka uchovaná mezi těmito stránkami.“','„Tahle komnata čekala velmi dlouho na někoho, kdo se odváží vstoupit.“','„Mnozí slyšeli jen šeptat její jméno. Jen málokdo ale spatřil, co se skrývá uvnitř.“','„A teď ti ukážu, proč se jí ostatní tolik báli.“'];
  const raddleVoice=new Audio('audio/raddle-monolog-v15.mp3');
- raddleVoice.preload='metadata';raddleVoice.volume=.85;
+ raddleVoice.preload='metadata';raddleVoice.volume=.56;
  let monologuePlaying=false;
  function playMonologue(done){
    if(monologuePlaying)return;
    monologuePlaying=true;
-   if(mono)mono.hidden=false;
-   let i=0,timer=null,completed=false;
-   const next=()=>{if(completed)return;if(monoText)monoText.textContent=MONO[Math.min(i++,MONO.length-1)];if(i<MONO.length)timer=setTimeout(next,8200)};
-   const finish=()=>{if(completed)return;completed=true;monologuePlaying=false;clearTimeout(timer);if(mono)mono.hidden=true;done?.()};
-   next();
+   if(mono)mono.hidden=true;
+   let completed=false;
+   const finish=()=>{if(completed)return;completed=true;monologuePlaying=false;done?.()};
    raddleVoice.onended=finish;
    raddleVoice.onerror=()=>{tell('Hlasový záznam se nepodařilo načíst. Pokračuj přes hadí pečeť.');finish()};
    raddleVoice.currentTime=0;
    raddleVoice.play().catch(()=>{
-     if(monoText)monoText.textContent='Klikni na deník ještě jednou pro přehrání monologu se zvukem.';
-     clearTimeout(timer);monologuePlaying=false;
+     tell('Klikni na deník znovu a dovol prohlížeči přehrát zvuk.');
+     monologuePlaying=false;
    });
  }
  function runePuzzle(){

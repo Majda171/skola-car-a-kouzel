@@ -14,6 +14,12 @@ const extras={
  "astronomicka-vez.html":[{id:"svicen-450",img:"img/svicen-v450.webp",x:25,y:71,w:42,opacity:.58,kind:"encounter",title:"Starý svícen",description:"Světlo svíček zvýrazňuje hvězdné mapy."}]
 };
 for(const [key,added] of Object.entries(extras))scenes[key]=(scenes[key]||[]).concat(added);
+// V17: odstraněné přebytečné dekorace ze scén.
+for(const [place,removed] of [
+ ['chodby-podzemni-2.html','truhla-drevena'],
+ ['kuchyne.html','konvice-450'],
+ ['ucebna-lektvaru.html','kotlik-450']
+])scenes[place]=(scenes[place]||[]).filter(prop=>prop.id!==removed);
 // Roztrousene nalezy bomb v chodbach, kolejich a pokojich.
 const bombPlaces={
  "chodby.html":[[22,82]],"chodby-stara-galerie.html":[[39,83]],

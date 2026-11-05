@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 if(window.BradaviceInventory)return;
-const DB=window.BradaviceDB,MAX=12;
+const DB=window.BradaviceDB,MAX=40;
 const catalogue={
   "raddle-denik": {label:"Deník Toma Raddla",description:"Starý deník z dívčí umývárny. Zdá se, že v něm ožívá vzpomínka.",image:"img/chamber-diary-transparent-v4367.webp"},
   "harp": {label:"Stará harfa",description:"Hudba dokáže na chvíli uspat Chloupka.",image:"img/philosopher-harp.webp"},
@@ -66,24 +66,25 @@ function repaint(){
    }else slot.append(remove);
    grid.append(slot);
  }
- for(let i=owned.size;i<MAX;i++){const slot=document.createElement('div');slot.className='bag-item bag-empty';slot.setAttribute('aria-label','Volné místo');slot.textContent='✧';grid.append(slot)} }
+ const visible=Math.min(MAX,Math.max(12,Math.ceil((owned.size+2)/6)*6));
+ for(let i=owned.size;i<visible;i++){const slot=document.createElement('div');slot.className='bag-item bag-empty';slot.setAttribute('aria-label','Volné místo');slot.textContent='✧';grid.append(slot)} }
  const usage=document.getElementById('bagUsage');if(usage)usage.textContent=`Obsazeno ${owned.size} / ${MAX} míst`;
  const cap=document.getElementById('bagCapacity');if(cap){cap.max=MAX;cap.value=Math.min(owned.size,MAX)}
  document.querySelectorAll('[data-inventory-pickup]').forEach(el=>{el.hidden=has(el.dataset.inventoryPickup)})
  window.dispatchEvent(new CustomEvent('bradavice:inventory-updated',{detail:{owned:items(),capacity:MAX}}));
 }
 async function checkRpc(){if(!DB?.client||!me)return false;
- try{const {data,error}=await DB.client.rpc('v445_collect_item',{p_item_id:'__check__'});
+ try{const {data,error}=await DB.client.rpc('v17_collect_item',{p_item_id:'__check__'});
  // SQL recognizes check sentinel only for diagnostics; no insert takes place.
  if(error)return false;return data==='ready';}catch{return false}}
 async function collect(id){
  if(!me||!catalogue[id])return {ok:false,message:'Nejdříve se přihlas jako student.'};
  if(owned.has(id)&&id!=='hnojova-bomba')return {ok:true,already:true};
  if(pending.has(id))return {ok:false,message:'Předmět se právě ukládá.'};
- if(owned.size>=MAX&&!owned.has(id))return {ok:false,full:true,message:'Kouzelný batoh je plný (12/12). Nejdříve některou věc odlož.'};
+ if(owned.size>=MAX&&!owned.has(id))return {ok:false,full:true,message:'Kouzelný batoh je plný (40/40). Nejdříve některou věc odlož.'};
  pending.add(id);
  try{
- if(serverAvailable&&id!=='raddle-denik'){const {data,error}=await DB.client.rpc('v445_collect_item',{p_item_id:id});
+ if(serverAvailable&&id!=='raddle-denik'){const {data,error}=await DB.client.rpc('v17_collect_item',{p_item_id:id});
   if(error)return {ok:false,message:'Předmět se nepodařilo uložit. Zkus to znovu.'};
   if(data==='full'){await reloadFromServer();return {ok:false,full:true,message:'Batoh je na serveru plný. Nejprve odlož jiný předmět.'}};
   if(!['collected','already'].includes(data))return {ok:false,message:'Ukládání se nepodařilo.'};
@@ -92,7 +93,7 @@ async function collect(id){
  }finally{pending.delete(id)}
 }
 async function discard(id){if(!me||!owned.has(id))return {ok:false};if(pending.has(id))return {ok:false};pending.add(id);
- try{if(serverAvailable&&id!=='raddle-denik'){const {data,error}=await DB.client.rpc('v445_discard_item',{p_item_id:id});if(error||data!==true)return {ok:false,message:'Odložení se nepodařilo uložit.'}}
+ try{if(serverAvailable&&id!=='raddle-denik'){const {data,error}=await DB.client.rpc('v17_discard_item',{p_item_id:id});if(error||data!==true)return {ok:false,message:'Odložení se nepodařilo uložit.'}}
  if(id==='hnojova-bomba'&&(quantities.get(id)||1)>1){quantities.set(id,quantities.get(id)-1)}
  else{owned.delete(id);quantities.delete(id)}
  if(id==='harp'){try{localStorage.removeItem(legacyKey());const st=JSON.parse(localStorage.getItem('bradavice_student_v1')||'{}');for(const x of [st?.email,st?.supabaseUserId,me?.email].filter(Boolean))localStorage.removeItem(`bradavice_inventory_harp_v4363_${String(x).replace(/[^a-zA-Z0-9@._-]/g,'_')}`)}catch{}}
@@ -109,7 +110,7 @@ function createPanel(){if(!me||document.querySelector('.bag-trigger'))return;
  overlay=document.createElement('div');overlay.className='bag-overlay';overlay.hidden=true;
  const panel=document.createElement('section');panel.className='bag-panel';panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');panel.setAttribute('aria-label','Kouzelný batoh');
  closeBtn=document.createElement('button');closeBtn.className='bag-close';closeBtn.type='button';closeBtn.textContent='×';closeBtn.setAttribute('aria-label','Zavřít batoh');
- const title=document.createElement('h2');title.textContent='Kouzelný batoh';const sub=document.createElement('p');sub.textContent='Zvenku nenápadný, uvnitř ukrývá dvanáct míst.';
+ const title=document.createElement('h2');title.textContent='Kouzelný batoh';const sub=document.createElement('p');sub.textContent='Zvenku nenápadný, uvnitř ukrývá čtyřicet míst.';
  const usage=document.createElement('p');usage.id='bagUsage';usage.className='bag-usage';const progress=document.createElement('progress');progress.id='bagCapacity';progress.max=MAX;
  const grid=document.createElement('div');grid.className='bag-items';grid.id='bagItems';const hint=document.createElement('p');hint.className='bag-hint';hint.id='bagHint';
  panel.append(closeBtn,title,sub,usage,progress,grid,hint);overlay.append(panel);document.body.append(trigger,overlay);
@@ -134,7 +135,7 @@ async function init(){try{
  if(serverAvailable){
  // Import starého inventáře je omezen novým serverovým limitem, nemění existující položky.
  for(const id of [...owned]){if(id==='raddle-denik'||(rows||[]).some(r=>r.item_id===id))continue;
-   const {data:status,error:e}=await DB.client.rpc('v445_collect_item',{p_item_id:id});if(e||status==='full')break;
+   const {data:status,error:e}=await DB.client.rpc('v17_collect_item',{p_item_id:id});if(e||status==='full')break;
  }
  await reloadFromServer();
  }

@@ -2,8 +2,10 @@
 (() => {
   'use strict';
   const GRID = 21;
-  const STORAGE = 'baziliskova-zkouska-v1';
-  const NAME_STORAGE = 'baziliskova-zkouska-name';
+  const accountId=(()=>{try{const s=JSON.parse(localStorage.getItem('bradavice_student_v1')||'{}');return String(s.supabaseUserId||s.id||'guest').replace(/[^a-z0-9_-]/gi,'_')}catch{return 'guest'}})();
+  // Lokální rekord každého studentského účtu zůstává oddělený.
+  const STORAGE = 'baziliskova-zkouska-v17-'+accountId;
+  const NAME_STORAGE = 'baziliskova-zkouska-name-v17-'+accountId;
   const SOUND_STORAGE = 'baziliskova-zkouska-sound';
   const DB = window.BradaviceDB?.client;
   let rankedRound=null, rngState=0, replay='', cloudLeaders=null, cloudActive=false, starting=false;
@@ -236,7 +238,7 @@
   function updateUI() {
     ui.score.textContent = fmt(state.score);
     ui.best.textContent = fmt(Math.max(personalTop(), state.score));
-    ui.leader.textContent = fmt(Math.max(recordTop(), state.score));
+    ui.leader.textContent = fmt(Math.max(recordTop(), personalTop(), state.score));
     const goal = state.recordBaseline || 100;
     const pct = Math.min(100,Math.round((state.score/goal)*100));
     ui.progress.textContent = `${pct} %`; ui.progressFill.style.width = pct + '%';

@@ -92,7 +92,7 @@
   function refreshWash(){
     const book=document.getElementById('raddleWashDiary');if(book)book.hidden=phase()!==1;
     const progress=document.getElementById('raddleWashHint');if(!progress)return;
-    progress.textContent=phase()===1?'Mezi umyvadly leží kniha, která sem před chvílí dopadla.':phase()===2?'Záhadný deník je v kouzelném batohu.':phase()===3?'Zeptej se Hagrida na obvinění ze vzpomínky.':phase()===4?'Hagrid tě poslal za starým obyvatelem lesa.':phase()===5?'Aragog promluvil. Uršula si možná vzpomene na důležitý detail.':phase()>=6?'Zkus teď kohoutek s malým hadem.':'';
+    progress.textContent=phase()===1?'Mezi umyvadly leží kniha, která sem před chvílí dopadla.':phase()===2?'Záhadný deník je v kouzelném batohu.':phase()===3?'Vzpomínka vyvolává pochybnosti.':phase()===4?'V lese se ukrývá neznámé svědectví.':phase()===5?'Aragogovo svědectví je překvapivé.':phase()>=6?'Něco tu zůstalo skryté.':'';
   }
 
   function onWashroom(){
@@ -109,7 +109,7 @@
     const tap=document.getElementById('snakeTap');
     tap?.addEventListener('click',e=>{
       if(phase()<6){e.preventDefault();e.stopImmediatePropagation();
-        modal('Hadí znamení','Kohoutek je chladný a nehybný. Nejprve musíš rozluštit tajemství deníku, vyslechnout Hagrida, nalézt Aragogovo doupě a vrátit se za Uršulou.',[['Vrátit se']]);}
+        modal('Hadí znamení','Kohoutek je chladný a nehybný. Ještě neznáš celé tajemství.',[['Vrátit se']]);}
     },true);
     refreshWash();
   }
@@ -133,7 +133,7 @@
     if(phase()<4){location.replace('zapovezeny-les.html');return;}
     document.getElementById('aragogTalk')?.addEventListener('click',()=>{
       setPhase(5);
-      modal('Aragog','„Hagrid mě tehdy nevyužil k žádnému útoku. Jen mě chránil. Ta dívka nezemřela mou vinou. V hradě se probudilo něco mnohem staršího a děsivějšího… Měl by ses vrátit k duchu dívky, která to viděla.“',[["Vrátit se za Uršulou",()=>location.href='divci-umyvarna.html'],["Zůstat v lese"]]);
+      modal('Aragog','„Jsem nevinný. Hagrid mě chránil a já té dívce neublížil. Ve tmě se tehdy probudilo něco jiného… něco, čeho jsem se bál i já.“',[["Odejít z mýtiny",()=>location.href='zapovezeny-les.html'],["Zůstat ještě chvíli"]]);
     });
   }
 

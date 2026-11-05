@@ -19,7 +19,12 @@
 .chamber-copy-v4367{position:absolute;z-index:22;left:3vw;bottom:3vh;width:min(430px,91vw);padding:14px 17px;border:1px solid rgba(211,181,108,.28);background:rgba(4,6,5,.84);backdrop-filter:blur(5px);box-shadow:0 18px 45px #0009}
 .chamber-copy-v4367 .kicker{font:600 .5rem Cinzel,Georgia,serif;text-transform:uppercase;letter-spacing:.15em;color:#b99c5f}.chamber-copy-v4367 h1{font:600 clamp(1.45rem,3vw,2.25rem) Cinzel,Georgia,serif;margin:4px 0}.chamber-copy-v4367 p{margin:.25rem 0;color:#c8bea8}.chamber-message-v4367{min-height:1.35em;color:#e0c67f!important;font-style:italic}
 .chamber-diary-ground-v4367.pierced img{content:url('img/chamber-diary-pierced-transparent-v4367.webp')}
+.chamber-diary-ground-v4367{transform:rotate(-8deg);width:clamp(96px,12vw,185px);bottom:8%;filter:drop-shadow(0 9px 10px #000b)}
+.chamber-copy-v4367{width:min(310px,58vw);padding:9px 11px;background:rgba(4,6,5,.63);border-color:rgba(211,181,108,.18)}
+.chamber-copy-v4367 h1{font-size:clamp(1.2rem,2vw,1.65rem)}
+.chamber-message-v4367{font-size:.83rem}
 @media(max-width:760px){.chamber-founder-v4367{left:auto!important;right:4%!important;top:16%!important;width:16vw!important}.chamber-raddle-v4367{width:29vw;top:11%}.chamber-basilisk-v4367{width:65vw}.chamber-diary-ground-v4367{left:34%;width:21vw}.chamber-sword-v4367{right:7%;width:15vw}.chamber-fang-v4367{width:11vw}.chamber-copy-v4367{bottom:1vh}}
+.raddle-monologue-v437{display:none!important}
 
 
 /* v43.7 — Raddlův úvod před odhalením baziliška. */

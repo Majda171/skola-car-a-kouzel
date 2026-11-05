@@ -74,3 +74,10 @@
 body.v463-smoke-active .v457-quest-dialog{background:#02030773!important}
 body.v463-smoke-active .v457-quest-dialog section{background:linear-gradient(155deg,#2a2525e9,#13171ce9)}
 @media(max-width:750px){.corridor-arcade .v463-mcgonagall-scene{right:6%;width:29vw;height:42vh;bottom:14%}.corridor-arcade .v463-mcgonagall-scene span{font-size:11px}.v457-quest-dialog section:has(.v457-quest-portrait){grid-template-columns:1fr!important}}
+
+/* v17: Filch vstoupí do scény při Protivově výbuchu, místo textového popupu. */
+.v17-filch-quest{position:absolute;z-index:52;bottom:10%;right:4%;height:min(51vh,490px);max-width:70%;pointer-events:none;display:flex;align-items:flex-start;gap:12px;animation:v17-filch-enter .7s ease-out both}
+.v17-filch-quest>img{height:100%;width:auto;max-width:22vw;object-fit:contain;object-position:bottom;filter:drop-shadow(0 12px 20px #000)}
+.v17-filch-speech{max-width:350px;margin:18px 0 0;padding:14px 18px;background:#1a1518e8;border:1px solid #a78a57;border-radius:9px;box-shadow:0 12px 30px #000c;font:clamp(14px,1.2vw,18px)/1.5 Georgia,serif;color:#f8e9c7;text-shadow:0 1px 3px #000}
+@keyframes v17-filch-enter{from{opacity:0;transform:translateX(50px)}to{opacity:1;transform:translateX(0)}}
+@media(max-width:700px){.v17-filch-quest{height:42vh;right:1%;bottom:5%;gap:5px}.v17-filch-quest>img{max-width:35vw}.v17-filch-speech{max-width:52vw;padding:10px;font-size:12px}}

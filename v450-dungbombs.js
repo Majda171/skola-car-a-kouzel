@@ -2,6 +2,18 @@
 (()=>{'use strict';
  const path=(location.pathname.split('/').pop()||'').toLowerCase();
 
+ function peevesLaugh(){
+  try{const laugh=new Audio('audio/peeves-laugh-v463.mp3');laugh.volume=.78;laugh.play().catch(()=>{});}catch(e){console.debug('Protivův smích není dostupný',e);}
+ }
+
+ function enableFilchEverywhere(){
+  if(document.querySelector('script[src*="filch-random-v442.js"]'))return;
+  if(!document.querySelector('link[href*="filch-random-v442.css"]')){
+    const style=document.createElement('link');style.rel='stylesheet';style.href='filch-random-v442.css?v=17';document.head.append(style);
+  }
+  const script=document.createElement('script');script.src='filch-random-v442.js?v=17';document.body.append(script);
+ }
+
  function playBurst(volume=.7, repeats=2, gap=620){
   for(let i=0;i<repeats;i++){
    setTimeout(()=>{
@@ -18,6 +30,7 @@
   const total=duration|| (isPeeves ? 12500 : isUmbridge ? 9800 : 9300);
   const repeats=isPeeves ? 3 : 2;
   playBurst(isPeeves?0.72:0.68,repeats,isPeeves?540:680);
+  if(isPeeves)setTimeout(peevesLaugh,800);
   document.body.classList.add('v463-smoke-active');
 
   const clouds=document.createElement('img');
@@ -53,11 +66,13 @@
    return;
   }
   blast({actor:'student',message:false}); // zvuk a kouř bez rušivého popisku
-  if(/^chodby(?:-[\w-]+)?\.html$/.test(path)){
-   const warning=document.createElement('p');warning.className='v450-stink-toast';warning.textContent='Filch zaslechl výbuch! Máš pár vteřin na útěk z chodby.';document.body.append(warning);
-   setTimeout(()=>warning.remove(),6500);
-   const alarm=setTimeout(()=>window.dispatchEvent(new Event('bradavice:dungbomb-alarm')),7000);
-   window.addEventListener('pagehide',()=>clearTimeout(alarm),{once:true});
-  }
+  enableFilchEverywhere();
+  const warning=document.createElement('p');warning.className='v450-stink-toast';warning.textContent='Filch zaslechl výbuch! Máš chvíli na útěk.';document.body.append(warning);
+  setTimeout(()=>warning.remove(),6500);
+  const originalScene=location.pathname;
+  const alarm=setTimeout(()=>{
+    if(location.pathname===originalScene)window.dispatchEvent(new Event('bradavice:dungbomb-alarm'));
+  },9500);
+  window.addEventListener('pagehide',()=>clearTimeout(alarm),{once:true});
  });
 })();

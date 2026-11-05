@@ -1,13 +1,16 @@
 /* v442 — Náhodná setkání Filche. Zadržení a doprovod k Umbridgeové pouze ve třetím poschodí. */
 (()=>{
-  const scene=document.querySelector('main.corridor-stage');
+  // Filch může přijít kvůli bombě kamkoli na hradě; náhodně se dál potuluje jen chodbami.
+  const scene=document.querySelector('main.corridor-stage')||document.querySelector('main');
   if(!scene)return;
+  if(getComputedStyle(scene).position==='static')scene.style.position='relative';
   const page=(location.pathname.split('/').pop()||'').toLowerCase();
+  const randomCorridor=Boolean(document.querySelector('main.corridor-stage'));
   const thirdFloor=page==='chodby-horni.html';
   // Výskyt je náhodný při vstupu; na třetím poschodí je přísnější dohled.
   const visitKey='bradavice_filch_last_visit_v452';
   let lastVisit=0;try{lastVisit=Number(sessionStorage.getItem(visitKey)||0)}catch{}
-  const randomAppearance=Date.now()-lastVisit>=25*60*1000&&Math.random()<(thirdFloor ? 0.27 : 0.20);
+  const randomAppearance=randomCorridor&&Date.now()-lastVisit>=25*60*1000&&Math.random()<(thirdFloor ? 0.27 : 0.20);
   if(randomAppearance)try{sessionStorage.setItem(visitKey,String(Date.now()))}catch{}
   let bombIncident=false;
   const positions={
@@ -67,6 +70,8 @@
         if(!/^[0-9a-f]{8}-[0-9a-f-]{27,}$/.test(String(data||'')))throw new Error('Databáze nepotvrdila zadržení.');
         sessionStorage.setItem('bradavice_filch_incident_v446',data);
         sessionStorage.setItem('bradavice_filch_escorted_v442','1');
+        // Umbridgeová musí rozlišit použitou hnojůvku od běžného zadržení na chodbě.
+        sessionStorage.setItem('bradavice_filch_origin_v17',bombIncident?'dungbomb':'patrol');
         location.href='kabinet-umbridge.html';
       }catch(e){p.textContent='Školní evidence teď neodpovídá. Bodový trest nebyl zahájen; zkus to později.';console.warn('Filch:',e.message)}
       finally{next.disabled=false}

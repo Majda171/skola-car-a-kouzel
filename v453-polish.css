@@ -40,6 +40,8 @@ body .chat-shell,body .t-page{padding-top:90px!important;}
 .house-space .gryffindor-beans{left:48%!important;top:68%!important;width:clamp(66px,5.4vw,105px)!important;filter:brightness(.54) contrast(.83) saturate(.56) drop-shadow(0 4px 4px #000a)!important;opacity:.83!important;}
 /* Filch musí působit jako osoba v perspektivě, nikoli miniaturní figurka. */
 .corridor-stage .filch-wandering{height:min(69vh,690px)!important;width:clamp(152px,17vw,255px)!important;max-height:80%!important;bottom:2%!important;}
+.corridor-stage .filch-wandering{height:min(51vh,510px)!important;width:clamp(105px,13vw,192px)!important;max-height:62%!important;bottom:2%!important}
+@media(max-width:700px){.corridor-stage .filch-wandering{height:40vh!important;width:clamp(90px,22vw,130px)!important;max-height:51%!important}}
 @media(max-width:700px){.corridor-stage .filch-wandering{height:53vh!important;width:clamp(118px,28vw,184px)!important;}.v450-nick-scene .v452-patrick{right:27%!important;bottom:18%!important;height:35vh!important;max-width:26vw!important;}.hall-of-fame .v452-hall-bust{right:17%!important;bottom:27%!important;width:14vw!important;}.v452-crypt .v452-salazar{left:43%!important;top:23%!important;width:26vw!important;}}
 /* Přeměňování: pero se opírá o desku přední lavice, krysa stojí všemi tlapkami na lavici. */
 .v42-transfiguration .v42-feather:not(.is-flying){left:68.5%!important;bottom:20.4%!important;width:clamp(36px,4.1vw,61px)!important;height:clamp(44px,5vw,73px)!important;transform:rotate(71deg) scale(.85)!important;transform-origin:center bottom!important;}

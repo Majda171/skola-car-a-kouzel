@@ -24,12 +24,12 @@
  function counter(name){try{return Number(localStorage.getItem(`${key}_${userId}_${name}`)||0)}catch{return 0}}
  function setCounter(name,n){try{localStorage.setItem(`${key}_${userId}_${name}`,String(n))}catch{}}
  const types=['opisovani','razitka','kotatka','dekrety'];
- function punishment(type){
-  if(window.BradaviceUmbridgePunishments?.open){window.BradaviceUmbridgePunishments.open(type);return}
+ function punishment(type,mandatory=false){
+  if(window.BradaviceUmbridgePunishments?.open){window.BradaviceUmbridgePunishments.open(type,{mandatory});return}
   const title={opisovani:'Opisování školního řádu',razitka:'Ministerské formuláře',kotatka:'Leštění porcelánových koťátek',dekrety:'Řazení vzdělávacích dekretů'}[type];
   const q=pop(title,'„Ehm, ehm. Jak je milé, že se můžeš věnovat něčemu užitečnému. Třeba tě to odnaučí neposlušnosti, drahoušku.“');let count=0;
   const progress=document.createElement('strong');progress.className='v446-progress';progress.textContent='0 / 6';q.p.after(progress);
-  function finish(){q.p.textContent='„Vidíš, že to jde. A teď ta nejdůležitější část: přece mi poděkuješ, že jsem ti věnovala tolik svého drahocenného času.“';q.actions.replaceChildren();q.btn('Děkuji vám, paní profesorko.',q.close)}
+  function finish(){try{sessionStorage.removeItem('bradavice_filch_punishment_pending_v17')}catch{}q.p.textContent='„Vidíš, že to jde. A teď ta nejdůležitější část: přece mi poděkuješ, že jsem ti věnovala tolik svého drahocenného času.“';q.actions.replaceChildren();q.btn('Děkuji vám, paní profesorko.',q.close)}
   function advance(){count++;progress.textContent=`${count} / 6`;if(count>=6)finish()}
   if(type==='opisovani'){
    const phrase='Budu bez odmlouvání dodržovat všechna školní nařízení.';q.p.textContent=`Opiš šestkrát přesně tuto větu: ${phrase}`;const field=document.createElement('input');field.placeholder='Opiš větu přesně';field.className='v446-write';q.actions.before(field);
@@ -45,26 +45,43 @@
  }
  async function escorted(){
   let code=null,old=false;try{code=sessionStorage.getItem('bradavice_filch_incident_v446');old=sessionStorage.getItem('bradavice_filch_escorted_v442')==='1'}catch{}
-  if(!code&&!old)return;
+  if(!code&&!old){
+    if(sessionStorage.getItem('bradavice_filch_punishment_pending_v17')==='1')punishment(types[Math.floor(Math.random()*types.length)],true);
+    return;
+  }
   if(!code){notice('Filchovo zadržení zatím není potvrzené školní evidencí. Body zůstaly beze změny.');try{sessionStorage.removeItem('bradavice_filch_escorted_v442')}catch{};return;}
   const incident=code;
-  if(stage.classList.contains('v446-empty')){notice('Filch tě dovedl před prázdný kabinet. Profesorka je pryč.');return}
+  const bombIncident=sessionStorage.getItem('bradavice_filch_origin_v17')==='dungbomb';
+  if(bombIncident)try{sessionStorage.setItem('bradavice_filch_punishment_pending_v17','1')}catch{}
+  if(!bombIncident&&stage.classList.contains('v446-empty')){notice('Filch tě dovedl před prázdný kabinet. Profesorka je pryč.');return}
+  // Zadržení Filchem má přednost před běžným časovým rozvrhem kabinetu.
+  stage.classList.remove('v446-empty');if(character)character.hidden=false;
   const visits=counter('visits')+1;setCounter('visits',visits);
-  const intro=visits===1
-   ? '„Ehm… ehm. Pan Filch tvrdí, že ses potuloval/a po třetím poschodí. Drahé dítě, je mi tak líto, že stále nechápeš význam pravidel. Ministerstvo přece nezakazuje věci jen tak pro nic za nic.“'
-   : '„Ale, ale. Zase ty? Máš snad slabost pro můj kabinet, drahoušku? Očividně si ještě budeme muset něco vysvětlit. Velmi důkladně.“';
-  let result='pending',working=true;
-  UI?.render(intro,[["Chtěl/a jsem se jen rozhlédnout.",()=>reply(false)],["Omlouvám se, paní profesorko.",()=>reply(true)]], 'Probíhá ověření kázeňského trestu…');
-  async function reply(apologize){
-   const answer=apologize
-    ? '„Ach, omluva! Jak rozkošné. Bohužel, drahoušku, pravidla zůstávají pravidly, i když se omluvíš tím nejlíbeznějším hláskem.“'
-    : '„Rozhlédnout? Ehm, ehm! Zvědavost není v osnovách, pokud ji ministerstvo výslovně neschválí. Tvé nápady by zasloužily trochu usměrnění.“';
-   const note=result==='deducted'?'Tvé koleji bylo odečteno 50 bodů.':result==='already'?'Trest za toto zadržení už byl zaúčtován.':result==='pending'?'Školní evidence potvrzuje trest…':'Bodový trest se zatím nepodařilo zaúčtovat.';
-   const next=()=>{
-    const severe=(visits%2===0)||Math.random()<.35;
-    UI?.render(severe?'„A nyní trocha užitečné práce, drahoušku. Za domácí úkol to nepovažuj. To je milé drobné kázeňské opatření.“':'„A teď mi zmiz z očí. Nebo si snad přeješ, abychom v debatě pokračovali s panem Filchem?“',[[severe?'Přijmout školní trest':'Děkuji, paní profesorko.',()=>{UI?.close();if(severe)punishment(types[Math.floor(Math.random()*types.length)])}]], note);
-   };
-   UI?.render(answer+' „Tvoje kolej si musí vzít ponaučení.“',[["Rozumím, paní profesorko.",next]],note);
+  const intro=bombIncident
+   ? '„Ehm, ehm… Pan Filch mi oznámil, že jsi na hradní chodbě provedl jeden velice nevkusný žertík. Ten příšerný zápach! Pravidla jsou tu proto, aby se dodržovala, drahoušku. Tvůj prohřešek bude zaznamenán a tebe čeká jedna velice poučná činnost. Žádné výmluvy. Teď se laskavě dej do práce.“'
+   : visits===1?'„Ehm… ehm. Pan Filch tvrdí, že ses potuloval/a po třetím poschodí. Drahé dítě, je mi tak líto, že stále nechápeš význam pravidel. Ministerstvo přece nezakazuje věci jen tak pro nic za nic.“':'„Ale, ale. Zase ty? Máš snad slabost pro můj kabinet, drahoušku? Očividně si ještě budeme muset něco vysvětlit. Velmi důkladně.“';
+  let result='pending';
+  if(bombIncident){
+    const voice=new Audio('audio/umbridge-hnojovka-v17.mp3');voice.preload='auto';voice.volume=.76;
+    const x=document.getElementById('umbridgeDialogClose');if(x)x.hidden=true;
+    const startPunishment=()=>{voice.pause();voice.currentTime=0;UI?.close();punishment(types[Math.floor(Math.random()*types.length)],true)};
+    const replay=()=>{voice.pause();voice.currentTime=0;voice.play().catch(()=>notice('Pro přehrání hlasu klikni znovu na Přehrát promluvu.'))};
+    UI?.render(intro,[['▶ Přehrát promluvu znovu',replay],['Nastoupit školní trest',startPunishment]],'Školní evidence ověřuje odečet 50 kolejních bodů…');
+    // Prohlížeč někdy zakáže automatické audio po přesměrování; zůstává ruční tlačítko.
+    voice.play().catch(()=>notice('Přehrávání hlasu spustíš tlačítkem v rozhovoru.'));
+    window.addEventListener('pagehide',()=>voice.pause(),{once:true});
+  }
+  else UI?.render(intro,[["Chtěl/a jsem se jen rozhlédnout.",()=>reply(false)],["Omlouvám se, paní profesorko.",()=>reply(true)]], 'Probíhá ověření kázeňského trestu…');
+  function reply(apologize){
+    const answer=apologize
+      ? '„Ach, omluva! Jak rozkošné. Bohužel, drahoušku, pravidla zůstávají pravidly, i když se omluvíš tím nejlíbeznějším hláskem.“'
+      : '„Rozhlédnout? Ehm, ehm! Zvědavost není v osnovách, pokud ji ministerstvo výslovně neschválí. Tvé nápady by zasloužily trochu usměrnění.“';
+    const note=result==='deducted'?'Tvé koleji bylo odečteno 50 bodů.':result==='already'?'Trest za toto zadržení už byl zaúčtován.':result==='pending'?'Školní evidence potvrzuje trest…':'Bodový trest se zatím nepodařilo zaúčtovat.';
+    const next=()=>{
+      const severe=(visits%2===0)||Math.random()<.35;
+      UI?.render(severe?'„A nyní trocha užitečné práce, drahoušku. Za domácí úkol to nepovažuj. To je milé drobné kázeňské opatření.“':'„A teď mi zmiz z očí. Nebo si snad přeješ, abychom v debatě pokračovali s panem Filchem?“',[[severe?'Přijmout školní trest':'Děkuji, paní profesorko.',()=>{UI?.close();if(severe)punishment(types[Math.floor(Math.random()*types.length)],false)}]],note);
+    };
+    UI?.render(answer+' „Tvoje kolej si musí vzít ponaučení.“',[["Rozumím, paní profesorko.",next]],note);
   }
   if(!DB){result='failed';UI?.status&&(UI.status.textContent='Školní evidence teď neodpovídá. Body se neodečetly.');return}
   try{
@@ -72,13 +89,12 @@
    if(response.error){throw response.error}
    result=response.data;
    if(result==='deducted'||result==='already'){
-    try{sessionStorage.removeItem('bradavice_filch_incident_v446');sessionStorage.removeItem('bradavice_filch_escorted_v442')}catch{}
+    try{sessionStorage.removeItem('bradavice_filch_incident_v446');sessionStorage.removeItem('bradavice_filch_escorted_v442');sessionStorage.removeItem('bradavice_filch_origin_v17')}catch{}
     await syncPoints();
     /* Výsledek stržení bodů se zobrazuje pouze jednou v dialogu. */
    }else{notice('Kázeňský trest se neodečetl: '+(result==='recent'?'jiný trest byl zaznamenán nedávno.':'databáze jej nepotvrdila.'))}
   }catch(e){result='failed';console.warn('Umbridge: trest od Filche:',e);notice('Školní evidence teď neodpovídá. Body zůstaly beze změny.');}
   finally{
-   working=false;
    if(UI?.status&&!document.getElementById('umbridgeDialog')?.hidden)UI.status.textContent=result==='deducted'?'Tvé koleji bylo odečteno 50 bodů.':result==='already'?'Trest za toto zadržení již byl zaúčtován.':result==='recent'?'Opakovaný trest byl z bezpečnostních důvodů pozastaven.':'50 bodů zatím odečteno nebylo.';
   }
  }
