@@ -1,0 +1,5 @@
+#diagonSchoolProfile .diagon-summary-lines{display:grid;gap:5px;margin:15px 0 20px}
+#diagonSchoolProfile .history-row{display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid #ad9a7540;padding:9px 0;color:inherit}
+#diagonSchoolProfile .history-row strong{font-weight:600;text-align:right}
+#diagonSchoolProfile .diagon-profile-link{display:inline-block;padding:11px 16px;border-radius:6px;border:1px solid #a88d56;color:#e9cc92;text-decoration:none}
+#diagonSchoolProfile .diagon-profile-link:hover{background:#a88d5629;color:#ffe1a4}

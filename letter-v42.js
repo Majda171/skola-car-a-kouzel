@@ -13,7 +13,7 @@
     if(shell.classList.contains('closing'))return;shell.classList.add('closing');document.body.classList.add('acceptance-transition');
     setTimeout(async()=>{
       const mode=document.body.dataset.letterMode;
-      if(mode==='acceptance'){location.replace('rozrazeni.html');return}
+      if(mode==='acceptance'){location.replace('https://majda171.github.io/bradadavice_pricna_ulice/');return}
       if(mode==='expulsion'){try{await DB?.signOut?.()}catch{}location.replace('index.html');return}
       shell.hidden=true;
     },980);

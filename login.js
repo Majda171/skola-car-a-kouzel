@@ -14,7 +14,17 @@ form.addEventListener('submit',async e=>{
     const access=await window.BradaviceDB.getAccessState();
     if(access?.banned){window.location.href='vylouceni.html';return;}
     const next=new URLSearchParams(location.search).get('next');
-    window.location.href=student.sortingCompleted?(next||'hrad.html'):'rozrazeni.html';
+    const DIAGON='https://majda171.github.io/bradadavice_pricna_ulice/';
+    // Starší přihlašovací návrat z Příčné ulice může ještě obsahovat původní návrhovou URL.
+    const returnToDiagon=next===DIAGON || next==='https://majda171.github.io/pricna-ulice/' || next==='pricna-ulice/index.html';
+    if(student.sortingCompleted){window.location.href=returnToDiagon?DIAGON:(next||'hrad.html');return}
+    if(returnToDiagon){window.location.href=DIAGON;return}
+    try{
+      const {data:shop,error:shopError}=await window.BradaviceDB.client.rpc('v16_shop_state');
+      if(shopError)throw shopError;
+      const shoppingStarted=shop?.grantClaimed || Object.keys(shop?.purchases||{}).length>0;
+      window.location.href=shop?.schoolReady?'rozrazeni.html':(shoppingStarted?DIAGON:'prijeti.html');
+    }catch(error){console.warn('Školní nákupy se nepodařilo ověřit',error);window.location.href='prijeti.html'}
   }catch(error){
     console.error(error);
     const raw=String(error?.message||'').toLowerCase();

@@ -127,7 +127,13 @@
         'Havraspar.html','Mrzimor.html','Zmijozel.html'
       ]);
       if (!profile.house_code && !profile.is_admin && !sortingPages.has(page)) {
-        finish('rozrazeni.html');return;
+        // Nenařazený student se nesmí dostat do hradu před školními nákupy.
+        try {
+          const {data:shop,error:shopError}=await client.rpc('v16_shop_state');
+          if(shopError)throw shopError;
+          const shoppingStarted=shop?.grantClaimed || Object.keys(shop?.purchases||{}).length>0;
+          finish(shop?.schoolReady?'rozrazeni.html':(shoppingStarted?'https://majda171.github.io/bradadavice_pricna_ulice/':'prijeti.html'));return;
+        }catch(error){console.warn('Stav školních nákupů',error);finish('prijeti.html');return}
       }
       try { await DB.hydrateStudent?.({user:verifiedUser,profile}); }
       catch (err) {console.warn('Bradavice: nepodarilo se obnovit lokalni HUD; vstup uz byl overen.',err);}

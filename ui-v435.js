@@ -54,6 +54,9 @@
     document.body.appendChild(b);
   }
   // v443: kouzelny batoh jako spolecne vybaveni vsech prihlasenych studentu.
+  if(!document.querySelector('script[data-pricna-bridge]')){
+    const bridge=document.createElement('script');bridge.src='pricna-school-bridge-v15.js?v=16';bridge.dataset.pricnaBridge='1';document.body.appendChild(bridge);
+  }
   if(!/^(index|registrace|prihlaseni-student|vylouceni|admin.*)\.html$/.test(location.pathname.split('/').pop()||'')){
     if(!document.querySelector('script[data-bradavice-bag]')){
       const bag=document.createElement('script');bag.src='inventory-v445.js?v=465';bag.dataset.bradaviceBag='1';document.body.appendChild(bag);bag.addEventListener('load',()=>{const items=document.createElement('script');items.src='scene-items-v445.js?v=481';document.body.appendChild(items);const letters=document.createElement('script');letters.src='v449-letters.js?v=449';document.body.appendChild(letters)});

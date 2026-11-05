@@ -13,18 +13,24 @@
    tell('„Nejsem člověk. Jsem vzpomínka — otisk Toma Raddla, který v tomto deníku zůstal.“');
  }
  const MONO=['„Tak přece jen někdo deník otevřel.“','„Jméno je Tom Raddle. To, co vidíš, je vzpomínka uchovaná mezi těmito stránkami.“','„Tahle komnata čekala velmi dlouho na někoho, kdo se odváží vstoupit.“','„Mnozí slyšeli jen šeptat její jméno. Jen málokdo ale spatřil, co se skrývá uvnitř.“','„A teď ti ukážu, proč se jí ostatní tolik báli.“'];
+ const raddleVoice=new Audio('audio/raddle-monolog-v15.mp3');
+ raddleVoice.preload='metadata';raddleVoice.volume=.85;
+ let monologuePlaying=false;
  function playMonologue(done){
-   let i=0;
+   if(monologuePlaying)return;
+   monologuePlaying=true;
    if(mono)mono.hidden=false;
-   const next=()=>{
-     if(i>=MONO.length){
-       setTimeout(()=>{ if(mono)mono.hidden=true; done?.(); }, 700);
-       return;
-     }
-     if(monoText)monoText.textContent=MONO[i++];
-     setTimeout(next,3100);
-   };
+   let i=0,timer=null,completed=false;
+   const next=()=>{if(completed)return;if(monoText)monoText.textContent=MONO[Math.min(i++,MONO.length-1)];if(i<MONO.length)timer=setTimeout(next,8200)};
+   const finish=()=>{if(completed)return;completed=true;monologuePlaying=false;clearTimeout(timer);if(mono)mono.hidden=true;done?.()};
    next();
+   raddleVoice.onended=finish;
+   raddleVoice.onerror=()=>{tell('Hlasový záznam se nepodařilo načíst. Pokračuj přes hadí pečeť.');finish()};
+   raddleVoice.currentTime=0;
+   raddleVoice.play().catch(()=>{
+     if(monoText)monoText.textContent='Klikni na deník ještě jednou pro přehrání monologu se zvukem.';
+     clearTimeout(timer);monologuePlaying=false;
+   });
  }
  function runePuzzle(){
    if(stage!==1||document.getElementById('chamberRuneChallenge'))return;
@@ -65,19 +71,16 @@
    const end=e=>{if(!active)return;active=false;el.classList.remove('dragging');const ok=overlaps(el,target);el.style.translate='';if(ok)onDrop();else tell(el===sword?'Meč musí zasáhnout baziliška.':'Baziliščím zubem musíš probodnout deník.');try{el.releasePointerCapture?.(e.pointerId)}catch{}};
    el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
  }
- const diarySound=new Audio('audio/raddle-diary-v463.mp3');
- diarySound.volume=.55;diarySound.preload='none';
- function startDiarySound(){try{diarySound.pause();diarySound.currentTime=0;diarySound.play().catch(()=>{});}catch{}}
- window.addEventListener('pagehide',()=>diarySound.pause());
+ window.addEventListener('pagehide',()=>raddleVoice.pause());
  diary.addEventListener('click',()=>{
-   if(stage===0){save(1);startDiarySound();revealRaddle();playMonologue(()=>runePuzzle())}
-   else if(stage===1){startDiarySound();revealRaddle();playMonologue(()=>runePuzzle())}
+   if(stage===0){save(1);revealRaddle();playMonologue(()=>runePuzzle())}
+   else if(stage===1){revealRaddle();playMonologue(()=>runePuzzle())}
    else if(stage===4)tell('Deník je zničený. Raddle už z něj nemůže promluvit.');
  });
  makeDrag(sword,basilisk,killBasilisk);makeDrag(fang,diary,destroyDiary);
  // Obnova přesně podle studenta.
  if(stage>=1)revealRaddle();
- if(stage===1)setTimeout(()=>playMonologue(()=>runePuzzle()),1400);
+ if(stage===1)tell('Raddle čeká. Klikni znovu na deník, aby sis poslechl jeho monolog.');
  if(stage===2){basilisk.hidden=false;sword.hidden=false}
  if(stage===3){raddle.hidden=false;basilisk.hidden=true;sword.hidden=true;fang.hidden=false;tell('Bazilišek je pryč. Přetáhni jeho zub na deník.')}
  if(stage>=4){diary.classList.add('pierced');basilisk.hidden=true;sword.hidden=true;fang.hidden=true;raddle.hidden=true;if(intro)intro.textContent='Deník leží zničený na podlaze.';tell('Raddle zmizel. Tajemná komnata znovu ztichla.')}
