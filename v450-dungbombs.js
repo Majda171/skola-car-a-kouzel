@@ -9,9 +9,9 @@
  function enableFilchEverywhere(){
   if(document.querySelector('script[src*="filch-random-v442.js"]'))return;
   if(!document.querySelector('link[href*="filch-random-v442.css"]')){
-    const style=document.createElement('link');style.rel='stylesheet';style.href='filch-random-v442.css?v=17';document.head.append(style);
+    const style=document.createElement('link');style.rel='stylesheet';style.href='filch-random-v442.css?v=18';document.head.append(style);
   }
-  const script=document.createElement('script');script.src='filch-random-v442.js?v=17';document.body.append(script);
+  const script=document.createElement('script');script.src='filch-random-v442.js?v=18';document.body.append(script);
  }
 
  function playBurst(volume=.7, repeats=2, gap=620){

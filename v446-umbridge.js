@@ -1,4 +1,5 @@
-/* v447: Umbridgeová. Server potvrzuje přesný odečet 50 bodů, nikdy pouze klient. */
+/* v18: Umbridgeová. Děj pokračuje i při výpadku evidence,
+   odečtení bodů ale smí potvrdit pouze server. */
 (()=>{'use strict';
  const stage=document.getElementById('umbridgeOffice');if(!stage)return;
  const DB=window.BradaviceDB?.client, character=document.getElementById('umbridgeCharacter'),talk=document.getElementById('umbridgeTalk');
@@ -44,14 +45,18 @@
   try{await Promise.all([window.BradaviceDB?.hydrateStudent?.(),window.BradaviceDB?.hydrateProgress?.(),window.BradaviceDB?.syncHouseStandingsLocal?.()]);window.dispatchEvent(new CustomEvent('bradavice:progress-synced'))}catch(e){console.warn('Aktualizace bodů:',e)}
  }
  async function escorted(){
-  let code=null,old=false;try{code=sessionStorage.getItem('bradavice_filch_incident_v446');old=sessionStorage.getItem('bradavice_filch_escorted_v442')==='1'}catch{}
+  let code=null,old=false,bombIncident=false;
+  try{
+    code=sessionStorage.getItem('bradavice_filch_incident_v446');
+    old=sessionStorage.getItem('bradavice_filch_escorted_v442')==='1';
+    bombIncident=sessionStorage.getItem('bradavice_filch_origin_v17')==='dungbomb';
+  }catch{}
   if(!code&&!old){
     if(sessionStorage.getItem('bradavice_filch_punishment_pending_v17')==='1')punishment(types[Math.floor(Math.random()*types.length)],true);
     return;
   }
-  if(!code){notice('Filchovo zadržení zatím není potvrzené školní evidencí. Body zůstaly beze změny.');try{sessionStorage.removeItem('bradavice_filch_escorted_v442')}catch{};return;}
+  if(!code&&!bombIncident){notice('Filchovo zadržení zatím není potvrzené školní evidencí. Body zůstaly beze změny.');try{sessionStorage.removeItem('bradavice_filch_escorted_v442')}catch{};return;}
   const incident=code;
-  const bombIncident=sessionStorage.getItem('bradavice_filch_origin_v17')==='dungbomb';
   if(bombIncident)try{sessionStorage.setItem('bradavice_filch_punishment_pending_v17','1')}catch{}
   if(!bombIncident&&stage.classList.contains('v446-empty')){notice('Filch tě dovedl před prázdný kabinet. Profesorka je pryč.');return}
   // Zadržení Filchem má přednost před běžným časovým rozvrhem kabinetu.
@@ -64,9 +69,16 @@
   if(bombIncident){
     const voice=new Audio('audio/umbridge-hnojovka-v17.mp3');voice.preload='auto';voice.volume=.76;
     const x=document.getElementById('umbridgeDialogClose');if(x)x.hidden=true;
-    const startPunishment=()=>{voice.pause();voice.currentTime=0;UI?.close();punishment(types[Math.floor(Math.random()*types.length)],true)};
+    const startPunishment=()=>{
+      voice.pause();voice.currentTime=0;
+      try{
+        sessionStorage.removeItem('bradavice_filch_escorted_v442');
+        sessionStorage.removeItem('bradavice_filch_origin_v17');
+      }catch{}
+      UI?.close();punishment(types[Math.floor(Math.random()*types.length)],true);
+    };
     const replay=()=>{voice.pause();voice.currentTime=0;voice.play().catch(()=>notice('Pro přehrání hlasu klikni znovu na Přehrát promluvu.'))};
-    UI?.render(intro,[['▶ Přehrát promluvu znovu',replay],['Nastoupit školní trest',startPunishment]],'Školní evidence ověřuje odečet 50 kolejních bodů…');
+    UI?.render(intro,[['▶ Přehrát promluvu znovu',replay],['Nastoupit školní trest',startPunishment]],incident?'Školní evidence ověřuje odečet 50 kolejních bodů…':'Filch tě přivedl do kabinetu. Školní trest je povinný.');
     // Prohlížeč někdy zakáže automatické audio po přesměrování; zůstává ruční tlačítko.
     voice.play().catch(()=>notice('Přehrávání hlasu spustíš tlačítkem v rozhovoru.'));
     window.addEventListener('pagehide',()=>voice.pause(),{once:true});
@@ -83,7 +95,11 @@
     };
     UI?.render(answer+' „Tvoje kolej si musí vzít ponaučení.“',[["Rozumím, paní profesorko.",next]],note);
   }
-  if(!DB){result='failed';UI?.status&&(UI.status.textContent='Školní evidence teď neodpovídá. Body se neodečetly.');return}
+  if(!DB||!incident){
+    result='failed';
+    if(UI?.status)UI.status.textContent='Školní trest je povinný. Odečet kolejních bodů nebyl evidencí potvrzen.';
+    return;
+  }
   try{
    const response=await DB.rpc('v446_filch_penalty',{p_incident:incident});
    if(response.error){throw response.error}
