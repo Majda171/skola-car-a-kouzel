@@ -63,7 +63,7 @@
     }
   }
   // Tajné nálezy: lokace nejsou vyznačené na mapě a odměnu uděluje Supabase.
-  if(['tajemna-komnata.html','tajemna-cesta.html','chodby-stara-galerie.html'].includes(location.pathname.split('/').pop())){
-    const treasures=document.createElement('script');treasures.src='v17-treasures.js?v=17';document.body.append(treasures);
+  if(['tajna-mistnost.html','tajemna-komnata.html','tajemna-cesta.html','kamen-mudrcu-zrcadlo.html','zapovezeny-les.html'].includes(location.pathname.split('/').pop())){
+    const treasures=document.createElement('script');treasures.src='v17-treasures.js?v=19';document.body.append(treasures);
   }
 })();

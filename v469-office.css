@@ -54,3 +54,33 @@
   width:94% !important;max-width:none !important;padding:14px !important;z-index:20 !important}
  .umbridge-office .umbridge-dialog{right:3% !important;left:3% !important;bottom:37% !important;width:auto !important;max-height:42svh !important}
 }
+/* v19 – po zadržení kvůli hnojůvce necháváme Umbridgeovou celou vidět.
+   Mluví výhradně namluvená MP3, panel obsahuje jen malé ovládací prvky. */
+.umbridge-office .umbridge-dialog.v19-voice-only{
+ left:27% !important;right:auto !important;top:auto !important;bottom:5% !important;
+ width:min(425px,34vw) !important;max-width:95vw !important;
+ max-height:32svh !important;padding:12px 15px !important;
+ background:rgba(54,22,37,.91) !important;
+}
+.umbridge-office .umbridge-dialog.v19-voice-only > strong,
+.umbridge-office .umbridge-dialog.v19-voice-only #umbridgeDialogText{display:none !important}
+.umbridge-office .umbridge-dialog.v19-voice-only .v447-umbridge-actions{
+ margin:0 !important;display:flex;gap:7px;flex-wrap:wrap;
+}
+.umbridge-office .umbridge-dialog.v19-voice-only .v447-umbridge-status{
+ margin:8px 0 0;font-size:.82rem;
+}
+@media(min-width:801px) and (max-width:1100px){
+ .umbridge-office .umbridge-dialog.v19-voice-only{
+  left:4% !important;top:9% !important;bottom:auto !important;
+  width:min(340px,42vw) !important;
+ }
+}
+@media(max-width:800px){
+ .umbridge-office .umbridge-dialog.v19-voice-only{
+  position:fixed !important;left:3% !important;right:auto !important;
+  top:7% !important;bottom:auto !important;width:min(62vw,270px) !important;
+  max-height:39svh !important;padding:10px !important;
+ }
+ .umbridge-office .umbridge-dialog.v19-voice-only .v447-umbridge-actions{flex-direction:column}
+}

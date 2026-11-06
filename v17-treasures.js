@@ -1,14 +1,17 @@
-/* V17: tajné truhly a galeony, trvalá odměna vždy jen jednou na studentský účet. */
+/* V19: drobné galeony a truhla ve skutečné Zapomenuté místnosti.
+   Každý nález se připíše přes Supabase jen jednou na studentský účet. */
 (()=>{'use strict';
  const page=decodeURIComponent(location.pathname.split('/').pop()||'');
  const treasure={
-  'tajemna-komnata.html':{id:'salazar_chest',kind:'chest',x:72,y:73,w:'clamp(98px,12vw,180px)',title:'Stará truhla u Salazarova obrazu',reward:'V truhle leželo 10 galeonů!'},
-  'tajemna-cesta.html':{id:'chamber_corridor_coins',kind:'coins',x:60,y:81,w:'clamp(65px,8vw,110px)',title:'Ztracené galeony na cestě',reward:'Našel/a jsi 5 galeonů!'},
-  'chodby-stara-galerie.html':{id:'underground_dungbomb_chest',kind:'chest',x:67,y:82,w:'clamp(90px,10vw,160px)',title:'Zapomenutá truhlička v galerii',reward:'Našel/a jsi tři bomby hnojůvky!'}
+  'tajna-mistnost.html':{id:'forgotten_room_chest',kind:'chest',x:68,y:85,w:'clamp(90px,9vw,145px)',title:'Stará truhla v Zapomenuté místnosti',reward:'V truhle je 15 galeonů a 2 bomby hnojůvky!'},
+  'tajemna-komnata.html':{id:'secret_chamber_coins',kind:'coins',x:67,y:85,w:'clamp(36px,4vw,65px)',title:'Galeony v Tajemné komnatě',reward:'Našel/a jsi 40 galeonů!'},
+  'tajemna-cesta.html':{id:'chamber_corridor_coins',kind:'coins',x:60,y:81,w:'clamp(36px,4vw,65px)',title:'Ztracené galeony na cestě',reward:'Našel/a jsi 5 galeonů!'},
+  'kamen-mudrcu-zrcadlo.html':{id:'philosopher_hall_coins',kind:'coins',x:26,y:84,w:'clamp(36px,4vw,65px)',title:'Galeony u Zrcadla z Erisedu',reward:'Našel/a jsi 70 galeonů!'},
+  'zapovezeny-les.html':{id:'forbidden_forest_coins',kind:'coins',x:61,y:86,w:'clamp(36px,4vw,65px)',title:'Zapomenuté galeony v lese',reward:'Našel/a jsi 10 galeonů!'}
  }[page];
  if(!treasure)return;
  const DB=window.BradaviceDB?.client,host=document.querySelector('main');if(!host)return;
- const css=document.createElement('link');css.rel='stylesheet';css.href='v17-treasures.css?v=17';document.head.append(css);
+ const css=document.createElement('link');css.rel='stylesheet';css.href='v17-treasures.css?v=19';document.head.append(css);
  const button=document.createElement('button');button.type='button';button.className='v17-find v17-find-'+treasure.kind;
  button.setAttribute('aria-label',treasure.title);button.title=treasure.title;
  button.style.left=treasure.x+'%';button.style.top=treasure.y+'%';button.style.width=treasure.w;
@@ -25,14 +28,15 @@
  button.addEventListener('click',async()=>{
   if(busy||claimed)return;busy=true;button.disabled=true;
   try{
-   const {data,error}=await DB.rpc('v17_claim_treasure',{p_treasure_id:treasure.id});if(error)throw error;
+   const rpc=treasure.id==='chamber_corridor_coins'?'v17_claim_treasure':'v19_claim_treasure';
+   const {data,error}=await DB.rpc(rpc,{p_treasure_id:treasure.id});if(error)throw error;
    claimed=true;
    if(treasure.kind==='chest')img.src='img/odmeny/truhla_otevrena_bez_pasku.webp';
    note(data?.already?'Tenhle poklad už jsi vyzvedl/a.':treasure.reward);
    if(data?.dungbombs)await window.BradaviceInventory?.reload?.();
    window.dispatchEvent(new Event('bradavice:treasure-claimed'));
    setTimeout(()=>{button.hidden=true},1600);
-  }catch(e){note(e?.message||'Poklad se nepodařilo vyzvednout.');button.disabled=false;console.warn(e)}
+  }catch(e){note(e?.message||'Poklad se nepodařilo vyzvednout. Ověř SQL pro nové nálezy v19.');button.disabled=false;console.warn(e)}
   finally{busy=false}
  });
  init();

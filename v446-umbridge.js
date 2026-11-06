@@ -68,6 +68,8 @@
   let result='pending';
   if(bombIncident){
     const voice=new Audio('audio/umbridge-hnojovka-v17.mp3');voice.preload='auto';voice.volume=.76;
+    const voiceControls=document.getElementById('umbridgeDialog');
+    voiceControls?.classList.add('v19-voice-only');
     const x=document.getElementById('umbridgeDialogClose');if(x)x.hidden=true;
     const startPunishment=()=>{
       voice.pause();voice.currentTime=0;
@@ -75,10 +77,13 @@
         sessionStorage.removeItem('bradavice_filch_escorted_v442');
         sessionStorage.removeItem('bradavice_filch_origin_v17');
       }catch{}
-      UI?.close();punishment(types[Math.floor(Math.random()*types.length)],true);
+      UI?.close();voiceControls?.classList.remove('v19-voice-only');if(x)x.hidden=false;
+      punishment(types[Math.floor(Math.random()*types.length)],true);
     };
     const replay=()=>{voice.pause();voice.currentTime=0;voice.play().catch(()=>notice('Pro přehrání hlasu klikni znovu na Přehrát promluvu.'))};
-    UI?.render(intro,[['▶ Přehrát promluvu znovu',replay],['Nastoupit školní trest',startPunishment]],incident?'Školní evidence ověřuje odečet 50 kolejních bodů…':'Filch tě přivedl do kabinetu. Školní trest je povinný.');
+    // Nahrávka se neshoduje s dříve napsaným textem. Žádný falešný přepis
+    // proto nezobrazujeme; zůstane jen přehrávání a povinný trest.
+    UI?.render('',[['▶ Přehrát promluvu znovu',replay],['Nastoupit školní trest',startPunishment]],incident?'Školní evidence ověřuje odečet 50 kolejních bodů…':'Filch tě přivedl do kabinetu. Školní trest je povinný.');
     // Prohlížeč někdy zakáže automatické audio po přesměrování; zůstává ruční tlačítko.
     voice.play().catch(()=>notice('Přehrávání hlasu spustíš tlačítkem v rozhovoru.'));
     window.addEventListener('pagehide',()=>voice.pause(),{once:true});
