@@ -25,12 +25,12 @@ assert(load('raddle-story-v15.js').includes('if(phase()>=4)location.href'));
 assert(exists('video/tom-raddle-vzpominka-v15.mp4'));
 assert(exists('audio/raddle-monolog-v15.mp3'));
 assert(exists('img/aragogova-mytina-v15.webp'));
-assert(load('letter-v42.js').includes("location.replace('pricna-ulice/index.html')"));
-assert(load('pricna-ulice/app.js').includes('href="../rozrazeni.html"'));
-assert(load('hrad.html').includes('href="pricna-ulice/index.html"'));
-assert(load('inventory-v445.js').includes('MAX=12'));
-for(let i=1;i<=11;i++){
- const n=String(i).padStart(2,'0');
- assert(exists(`pricna-ulice/zbozi/hulky/novinka_${n}.webp`),`Chybí nová hůlka ${i}`);
-}
-console.log('OK — všech 6 scén, tajná stezka bez mapy, deník, video, monolog, 11 hůlek, 12 míst a přechody.');
+assert(load('letter-v42.js').includes("location.replace('https://majda171.github.io/bradadavice_pricna_ulice/')"));
+assert(load('hrad.html').includes('href="https://majda171.github.io/bradadavice_pricna_ulice/"'));
+const story=load('raddle-story-v15.js');
+assert(story.includes("['Co se ti stalo?',()=>{"),'Uršula se musí nejprve nechat zeptat, co se stalo.');
+assert(story.includes("Tamhle leží, mezi umyvadly"),'Uršula má ukázat na deník.');
+assert(!story.includes('Podívat se po knize')&&!story.includes('Zajdi se zeptat Hagrida'),'Úkol nesmí dávat explicitní návod.');
+assert(story.includes("modal('Vzpomínka skončila'")&&story.includes("[['Zavřít']]);"),'Vzpomínka končí bez úkolového tlačítka.');
+assert(load('inventory-v445.js').includes('MAX=40'));
+console.log('OK — všech 6 scén, tajná stezka bez mapy, přirozený dialog Uršuly, deník, video, 40 míst v batohu a přechody.');

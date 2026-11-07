@@ -64,6 +64,6 @@
   }
   // Tajné nálezy: lokace nejsou vyznačené na mapě a odměnu uděluje Supabase.
   if(['tajna-mistnost.html','tajemna-komnata.html','tajemna-cesta.html','kamen-mudrcu-zrcadlo.html','zapovezeny-les.html'].includes(location.pathname.split('/').pop())){
-    const treasures=document.createElement('script');treasures.src='v17-treasures.js?v=19';document.body.append(treasures);
+    const treasures=document.createElement('script');treasures.src='v17-treasures.js?v=20';document.body.append(treasures);
   }
 })();

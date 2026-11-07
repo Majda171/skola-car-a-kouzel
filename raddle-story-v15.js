@@ -66,7 +66,7 @@
   async function collectDiary(){
     setPhase(2);refreshWash();
     await synchronizeDiary();
-    modal('Starý deník','Na omšelém obalu je vyryté jméno T. R. Raddle. Deník se uložil do kouzelného batohu. Otevři batoh a vyber „Prozkoumat“.',[['Rozumím']]);
+    modal('Starý deník','Na omšelém obalu je vyryté jméno T. R. Raddle. Stránky jsou podivně prázdné. Deník máš teď v kouzelném batohu.',[['Zavřít']]);
   }
 
   function exploreDiary(){
@@ -75,24 +75,24 @@
     const mask=document.createElement('div');mask.id='raddleMemoryOverlay';mask.className='raddle-memory-shade';mask.setAttribute('role','dialog');mask.setAttribute('aria-modal','true');
     const card=document.createElement('section');card.className='raddle-memory-card';
     const heading=document.createElement('h2');heading.textContent='Tom Raddle';
-    const lead=document.createElement('p');lead.textContent='„Ahoj, já jsem Tom Raddle a ukážu ti tajemství, pořádně se dívej.“';
+    const lead=document.createElement('p');lead.textContent='Na prázdných stránkách deníku se objevuje inkoust. Před očima se otevírá dávná vzpomínka.';
     const video=document.createElement('video');video.src='video/tom-raddle-vzpominka-v15.mp4';video.poster='img/chamber-diary-transparent-v4367.webp';video.playsInline=true;video.controls=true;video.preload='metadata';
-    const caption=document.createElement('p');caption.className='raddle-memory-hint';caption.textContent='Vzpomínka z roku 1943. Dokoukej ji do konce, aby se odemkla další stopa.';
+    const caption=document.createElement('p');caption.className='raddle-memory-hint';caption.textContent='Rok 1943.';
     const close=document.createElement('button');close.type='button';close.textContent='Zavřít a vrátit se k deníku';close.addEventListener('click',()=>{video.pause();mask.remove()});
     video.addEventListener('ended',async()=>{
       setPhase(3);
       await synchronizeDiary();
       mask.remove();
-      modal('Vzpomínka skončila','Tom Raddle obvinil Hagrida. Deník se rozplynul a zmizel z batohu. Ale co když vzpomínka neříká celou pravdu? Zajdi se zeptat Hagrida.',[['Půjdu za Hagridem']]);
+      modal('Vzpomínka skončila','Tom Raddle obvinil Hagrida. Písmo na stránkách vybledlo, deník se rozplynul a zmizel z batohu. Vzpomínka v tobě zanechává zvláštní neklid.',[['Zavřít']]);
     },{once:true});
     card.append(heading,lead,video,caption,close);mask.append(card);document.body.append(mask);
-    video.play().catch(()=>{caption.textContent='Klikni na přehrávání videa. Po skončení vzpomínky se deník odebere z batohu.'});
+    video.play().catch(()=>{caption.textContent='Vzpomínka se nespustila automaticky. Přehrávač je připraven.'});
   }
 
   function refreshWash(){
     const book=document.getElementById('raddleWashDiary');if(book)book.hidden=phase()!==1;
     const progress=document.getElementById('raddleWashHint');if(!progress)return;
-    progress.textContent=phase()===1?'Mezi umyvadly leží kniha, která sem před chvílí dopadla.':phase()===2?'Záhadný deník je v kouzelném batohu.':phase()===3?'Vzpomínka vyvolává pochybnosti.':phase()===4?'V lese se ukrývá neznámé svědectví.':phase()===5?'Aragogovo svědectví je překvapivé.':phase()>=6?'Něco tu zůstalo skryté.':'';
+    progress.textContent='';
   }
 
   function onWashroom(){
@@ -100,11 +100,17 @@
     const book=document.getElementById('raddleWashDiary');
     book?.addEventListener('click',()=>{if(phase()===1)collectDiary()});
     ursula?.addEventListener('click',e=>{
-      if(phase()===0){e.preventDefault();e.stopImmediatePropagation();setPhase(1);refreshWash();
-        book?.classList.add('diary-arriving');
-        modal('Ufňukaná Uršula','„Au! Někdo po mně hodil nějakou starou knihu! To už se tu vážně nemůžu ani v klidu vyplakat?“ Kniha dopadla mezi umyvadla. Otevři oči a podívej se po ní.',[['Podívat se po knize']]);}
+      if(phase()===0){e.preventDefault();e.stopImmediatePropagation();
+        modal('Ufňukaná Uršula','„Búúú... To už vážně nemůžu mít ani chvilku klidu? Všichni jsou na mě tak zlí!“',[
+          ['Co se ti stalo?',()=>{
+            setPhase(1);refreshWash();
+            book?.classList.add('diary-arriving');
+            modal('Ufňukaná Uršula','„Někdo po mně hodil nějakou starou knihu! Jako bych toho už tak neměla dost! Tamhle leží, mezi umyvadly. Búúú!“',[['Zavřít']]);
+          }],
+          ['Nechat ji být']
+        ]);}
       else if(phase()===5){e.preventDefault();e.stopImmediatePropagation();setPhase(6);refreshWash();
-        modal('Uršulino svědectví','„Vzpomínám si! Někdo mluvil zvláštním syčivým hlasem… a pak jsem u jednoho umyvadla zahlédla obrovské žluté oči. Ten kohoutek měl na sobě malého hada!“, zašeptá Uršula.',[['Prozkoumat kohoutek']]);}
+        modal('Uršulino svědectví','„Vzpomínám si! Někdo mluvil zvláštním syčivým hlasem… a pak jsem u jednoho umyvadla zahlédla obrovské žluté oči. Ten kohoutek měl na sobě malého hada!“, zašeptá Uršula.',[['Zavřít']]);}
     },true);
     const tap=document.getElementById('snakeTap');
     tap?.addEventListener('click',e=>{
@@ -117,8 +123,8 @@
   function onHagrid(){
     document.getElementById('quest')?.addEventListener('click',e=>{
       if(phase()===3){e.preventDefault();e.stopImmediatePropagation();setPhase(4);
-        modal('Rubeus Hagrid','„Já komnatu nikdy neotevřel! Raddle to na mě svedl. Aragog, můj starý přítel, ví, co se tehdy opravdu stalo. Bydlí hluboko v Zapovězeném lese. Najdi v houští úzký temný průchod. Ale dej si pozor!“',[["Najdu Aragoga"]]);}
-      else if(phase()===4){e.preventDefault();e.stopImmediatePropagation();modal('Rubeus Hagrid','„Hledej v Zapovězeném lese. Tam, kde stromy zakrývají starou úzkou stezku. Aragog se skrývá mimo známé cesty.“',[["Díky, Hagride"]]);}
+        modal('Rubeus Hagrid','„Já komnatu nikdy neotevřel! Raddle to na mě svedl. Aragog, můj starý přítel, ví, co se tehdy opravdu stalo. Žije hluboko v Zapovězeném lese. Lidem se už léta vyhýbá.“',[["Zavřít"]]);}
+      else if(phase()===4){e.preventDefault();e.stopImmediatePropagation();modal('Rubeus Hagrid','„Aragog je můj starý přítel. V Zapovězeném lese mu bylo vždycky líp než mezi lidmi. Doufám, že je v pořádku.“',[["Zavřít"]]);}
     },true);
   }
 

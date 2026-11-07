@@ -4,10 +4,10 @@
  const page=decodeURIComponent(location.pathname.split('/').pop()||'');
  const treasure={
   'tajna-mistnost.html':{id:'forgotten_room_chest',kind:'chest',x:68,y:85,w:'clamp(90px,9vw,145px)',title:'Stará truhla v Zapomenuté místnosti',reward:'V truhle je 15 galeonů a 2 bomby hnojůvky!'},
-  'tajemna-komnata.html':{id:'secret_chamber_coins',kind:'coins',x:67,y:85,w:'clamp(36px,4vw,65px)',title:'Galeony v Tajemné komnatě',reward:'Našel/a jsi 40 galeonů!'},
-  'tajemna-cesta.html':{id:'chamber_corridor_coins',kind:'coins',x:60,y:81,w:'clamp(36px,4vw,65px)',title:'Ztracené galeony na cestě',reward:'Našel/a jsi 5 galeonů!'},
-  'kamen-mudrcu-zrcadlo.html':{id:'philosopher_hall_coins',kind:'coins',x:26,y:84,w:'clamp(36px,4vw,65px)',title:'Galeony u Zrcadla z Erisedu',reward:'Našel/a jsi 70 galeonů!'},
-  'zapovezeny-les.html':{id:'forbidden_forest_coins',kind:'coins',x:61,y:86,w:'clamp(36px,4vw,65px)',title:'Zapomenuté galeony v lese',reward:'Našel/a jsi 10 galeonů!'}
+  'tajemna-komnata.html':{id:'secret_chamber_coins',kind:'coins',x:67,y:85,w:'clamp(22px,2.1vw,36px)',title:'Galeony v Tajemné komnatě',reward:'Našel/a jsi 40 galeonů!'},
+  'tajemna-cesta.html':{id:'chamber_corridor_coins',kind:'coins',x:60,y:81,w:'clamp(22px,2.1vw,36px)',title:'Ztracené galeony na cestě',reward:'Našel/a jsi 5 galeonů!'},
+  'kamen-mudrcu-zrcadlo.html':{id:'philosopher_hall_coins',kind:'coins',x:26,y:84,w:'clamp(22px,2.1vw,36px)',title:'Galeony u Zrcadla z Erisedu',reward:'Našel/a jsi 70 galeonů!'},
+  'zapovezeny-les.html':{id:'forbidden_forest_coins',kind:'coins',x:61,y:86,w:'clamp(22px,2.1vw,36px)',title:'Zapomenuté galeony v lese',reward:'Našel/a jsi 10 galeonů!'}
  }[page];
  if(!treasure)return;
  const DB=window.BradaviceDB?.client,host=document.querySelector('main');if(!host)return;

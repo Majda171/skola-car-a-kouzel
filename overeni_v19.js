@@ -16,7 +16,7 @@ const locations={
 for(const [page,[id,amount,bombs]] of Object.entries(locations)){
   assert(treasures.includes(`'${page}':{id:'${id}'`),`Chybí nález ${id} na ${page}`);
   assert(loader.includes(`'${page}'`),`Nález se nenačte na ${page}`);
-  assert(read(page).includes('ui-v435.js?v=19'),`Stránka ${page} používá starý loader`);
+  assert(read(page).includes('ui-v435.js?v=20'),`Stránka ${page} používá starý loader`);
   if(id!=='chamber_corridor_coins'){
     assert(sql.includes(`when '${id}' then amount := ${amount};`),`Špatný počet galeonů: ${id}`);
     if(bombs)assert(sql.includes(`amount := ${amount}; bombs := ${bombs};`),`Chybí bomby v truhle ${id}`);
@@ -25,6 +25,8 @@ for(const [page,[id,amount,bombs]] of Object.entries(locations)){
 assert(!treasures.includes("'chodby-stara-galerie.html':"),'V podzemní galerii nesmí zůstat stará truhla');
 assert(!treasures.includes("'tajemna-komnata.html':{id:'salazar_chest'"),'Truhla nesmí být v Tajemné komnatě');
 assert(treasures.includes("'v19_claim_treasure'"),'Nové nálezy musejí používat nové zabezpečené RPC');
+assert(treasures.includes("w:'clamp(22px,2.1vw,36px)'"),'Galeony musí být malé a nenápadné.');
+assert(loader.includes('v17-treasures.js?v=20'),'Změna velikosti galeonů musí obejít mezipaměť prohlížeče.');
 assert(sql.includes('student_treasures')&&sql.includes('on conflict do nothing'),'Odměna musí být jednorázová');
 const office=read('v446-umbridge.js');
 const officeCss=read('v469-office.css');
